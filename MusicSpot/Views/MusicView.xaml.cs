@@ -1,19 +1,21 @@
 ﻿using MusicSpot.ViewModels;
 using System.Windows;
+using System.Windows.Controls;
 
-namespace MusicSpot
+namespace MusicSpot.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Music.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MusicView : UserControl
     {
-        protected readonly MainViewModel dataModel;
-        public MainWindow()
+        public MusicViewModel dataModel;
+
+        public MusicView()
         {
             InitializeComponent();
-            dataModel = MainViewModel.GetInstance();
-            DataContext = dataModel;
+            // dataModel = MusicViewModel.GetInstance();
+            this.DataContext = MusicViewModel.GetInstance();
         }
 
         private void PlayButton_OnClick(object sender, RoutedEventArgs e)
@@ -21,8 +23,6 @@ namespace MusicSpot
             if (dataModel.IsPlaying == false)
                 dataModel.IsPlaying = true;
             else dataModel.IsPlaying = false;
-
-
         }
     }
 }

@@ -4,30 +4,36 @@
     {
         private MainViewModel()
         {
-            IsPlaying = false;
+            SelectedTabIndex = 0;
+            MusicViewModel = MusicViewModel.GetInstance();
         }
-
+        //ensure beforefieldinit off
         static MainViewModel()
         {
 
         }
 
         private static readonly MainViewModel mainViewModel = new MainViewModel();
+        public MusicViewModel MusicViewModel { get; set; }
 
-        private bool _isPlaying;
-        public bool IsPlaying
+
+        private byte _selectedTabIndex;
+
+        public byte SelectedTabIndex
         {
-            get => _isPlaying;
+            get => _selectedTabIndex;
             set
             {
-                _isPlaying = value;
-                OnPropertyChanged("IsPlaying");
+                if (value == _selectedTabIndex) return;
+                _selectedTabIndex = value;
+                OnPropertyChanged();
             }
         }
 
+
         public static MainViewModel GetInstance()
         {
-            return mainViewModel ?? new MainViewModel();
+            return mainViewModel;
         }
     }
 }
