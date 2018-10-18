@@ -8,11 +8,11 @@ namespace MusicSpot
     /// </summary>
     public partial class MainWindow
     {
-        MainViewModel dataModel;
+        protected readonly MainViewModel dataModel;
         public MainWindow()
         {
             InitializeComponent();
-            dataModel = new MainViewModel();
+            dataModel = MainViewModel.GetInstance();
             DataContext = dataModel;
         }
 

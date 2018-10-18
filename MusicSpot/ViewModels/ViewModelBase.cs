@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace MusicSpot
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

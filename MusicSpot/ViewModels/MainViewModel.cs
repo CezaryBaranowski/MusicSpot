@@ -1,13 +1,19 @@
 ﻿namespace MusicSpot.ViewModels
 {
-    class MainViewModel : ViewModelBase
+    public sealed class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        private MainViewModel()
         {
-            _isPlaying = false;
+            IsPlaying = false;
         }
 
-       // private MainViewModel mainViewModel;
+        static MainViewModel()
+        {
+
+        }
+
+        private static readonly MainViewModel mainViewModel = new MainViewModel();
+
         private bool _isPlaying;
         public bool IsPlaying
         {
@@ -19,9 +25,9 @@
             }
         }
 
-        //public MainViewModel GetMainViewModel()
-        //{
-        //    return mainViewModel ?? new MainViewModel();
-        //}
+        public static MainViewModel GetInstance()
+        {
+            return mainViewModel ?? new MainViewModel();
+        }
     }
 }
