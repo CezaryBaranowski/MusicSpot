@@ -21,7 +21,7 @@
 
         public byte SelectedTabIndex
         {
-            get => _selectedTabIndex;
+            get { return _selectedTabIndex; }
             set
             {
                 if (value == _selectedTabIndex) return;

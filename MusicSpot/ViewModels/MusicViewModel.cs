@@ -14,7 +14,7 @@
 
         public bool IsPlaying
         {
-            get => _isPlaying;
+            get { return _isPlaying; }
             set
             {
                 _isPlaying = value;

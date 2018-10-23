@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Windows;
+using MahApps.Metro.Controls;
 using MusicSpot.ViewModels;
 
 namespace MusicSpot
@@ -17,5 +18,9 @@ namespace MusicSpot
 
         }
 
+        private void MusicView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MessageBox.Show(MainViewModel.GetInstance().SelectedTabIndex.ToString());
+        }
     }
 }

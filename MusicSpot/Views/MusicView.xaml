@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:MusicSpot.Views"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -13,24 +14,19 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
+            
+            
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
-        <Expander Header="Goalscorers" 
-                  IsExpanded="True"
-                  Grid.Column="1">
-        </Expander>
+        </Grid.ColumnDefinitions>
 
         <!--MetroTabs for application mode switching - music, videos, pictures-->
 
         <!--Lower playing control panel-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
             <Button Width="40" Height="40" Margin="150,0,0,0" BorderThickness="0" Background="Transparent">
-                <iconPacks:PackIconMaterial Width="30" Height="25" Kind="SkipPrevious" Margin="0,0,0,0"/>
+                <iconPacks:Material Width="30" Height="25" Kind="SkipPrevious" />
             </Button>
 
             <Button BorderThickness="0" BorderBrush="White" Margin="30,0,0,0" Width="50" Height="50"
@@ -57,7 +53,7 @@
                 <!--<iconPacks:PackIconMaterial Width="35" Height="35" Kind="PlayCircleOutline"/>-->
             </Button>
             <Button Height="40" Width="40" Margin="30,0,0,0" BorderThickness="0" Background="Transparent">
-                <iconPacks:PackIconMaterial Width="25" Height="25" Kind="SkipNext" Margin="0,0,0,0"/>
+                <iconPacks:Material Width="25" Height="25" Kind="SkipNext"/>
             </Button>
         </StackPanel>
     </Grid>
