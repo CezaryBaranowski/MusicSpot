@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MusicSpot.ViewModels;
 
 namespace MusicSpot
@@ -9,18 +8,16 @@ namespace MusicSpot
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        protected MainViewModel dataModel;
         public MainWindow()
         {
             InitializeComponent();
             // dataModel = MainViewModel.GetInstance();
             this.DataContext = MainViewModel.GetInstance();
-
         }
 
-        private void MusicView_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            MessageBox.Show(MainViewModel.GetInstance().SelectedTabIndex.ToString());
-        }
+        //private void MusicView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    MessageBox.Show(MainViewModel.GetInstance().SelectedTabIndex.ToString());
+        //}
     }
 }

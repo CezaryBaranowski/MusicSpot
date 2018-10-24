@@ -7,6 +7,35 @@
         mc:Ignorable="d"
  >
     <Grid>
-        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
+                    Orientation="Vertical" Margin="10,10,0,0">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+                    <Setter Property="Margin" Value="0,10,0,0"/>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Label FontSize="18" FontStretch="Expanded">Local Music</Label>
+            <Button>Songs</Button>
+            <Button>Artists</Button>
+            <Button>Albums</Button>
+            <Button>Local Music</Button>
+
+            <Label FontSize="18" FontStretch="Expanded" Margin="0,20,0,0">Discover</Label>
+            <Button>Songs</Button>
+            <Button>Artists</Button>
+            <Button>Albums</Button>
+
+        </StackPanel>
+
     </Grid>
 </UserControl>

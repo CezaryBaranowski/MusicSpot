@@ -14,8 +14,19 @@
         }
 
         private static readonly MainViewModel mainViewModel = new MainViewModel();
-        public MusicViewModel MusicViewModel { get; set; }
 
+
+        private MusicViewModel _musicViewModel;
+
+        public MusicViewModel MusicViewModel
+        {
+            get => _musicViewModel;
+            set
+            {
+                _musicViewModel = value;
+                OnPropertyChanged();
+            }
+        }
 
         private byte _selectedTabIndex;
 

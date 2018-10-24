@@ -9,23 +9,36 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="8*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <controls:MetroAnimatedTabControl 
-            controls:TabControlHelper.IsUnderlined="True"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="Menu" Width="*"></ColumnDefinition>
+            <ColumnDefinition Name ="Content"  Width="5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <controls:MetroAnimatedSingleRowTabControl 
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            TabStripMargin="6"
+            Background="#FF131313"
+            
+            TabStripPlacement="Top"
             controls:TabControlHelper.Transition="Up"
 
             SelectedIndex="{Binding SelectedTabIndex}">
-            <controls:MetroTabItem Header="matches">
-                <views:MusicView DataContext="{Binding MatchesViewModel}" />
+            <controls:MetroTabItem Header="Music" Margin="0,0,-8,0">
+                <views:MusicView DataContext="{Binding MusicViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="video">
-                <views:VideoView DataContext="{Binding MatchesViewModel}" />
+            <controls:MetroTabItem Header="Video" Margin="4,0,-8,0">
+                <views:VideoView DataContext="{Binding VideoViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="pictures">
-                <views:PictureView DataContext="{Binding MatchesViewModel}" />
+            <controls:MetroTabItem Header="Pictures" Margin="8,0,-8,0">
+                <views:PictureView DataContext="{Binding PictureViewModel}" />
             </controls:MetroTabItem>
-        </controls:MetroAnimatedTabControl>
+        </controls:MetroAnimatedSingleRowTabControl>
+
     </Grid>
 </controls:MetroWindow>
