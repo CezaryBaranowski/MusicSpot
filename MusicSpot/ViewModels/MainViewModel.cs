@@ -6,6 +6,7 @@
         {
             SelectedTabIndex = 0;
             MusicViewModel = MusicViewModel.GetInstance();
+            SettingsViewModel = SettingsViewModel.GetInstance();
         }
         //ensure beforefieldinit off
         static MainViewModel()
@@ -28,6 +29,18 @@
             }
         }
 
+        private SettingsViewModel _settingViewModel;
+
+        public SettingsViewModel SettingsViewModel
+        {
+            get => _settingViewModel;
+            set
+            {
+                _settingViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         private byte _selectedTabIndex;
 
         public byte SelectedTabIndex
@@ -37,6 +50,19 @@
             {
                 if (value == _selectedTabIndex) return;
                 _selectedTabIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSettingFlyoutOpen;
+
+        public bool IsSettingFlyoutOpen
+        {
+            get { return _isSettingFlyoutOpen; }
+            set
+            {
+                if (value == _isSettingFlyoutOpen) return;
+                _isSettingFlyoutOpen = value;
                 OnPropertyChanged();
             }
         }

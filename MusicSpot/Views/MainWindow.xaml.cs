@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MusicSpot.ViewModels;
+using System.Windows;
 
 namespace MusicSpot
 {
@@ -11,13 +12,12 @@ namespace MusicSpot
         public MainWindow()
         {
             InitializeComponent();
-            // dataModel = MainViewModel.GetInstance();
             this.DataContext = MainViewModel.GetInstance();
         }
 
-        //private void MusicView_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        //{
-        //    MessageBox.Show(MainViewModel.GetInstance().SelectedTabIndex.ToString());
-        //}
+        private void LaunchMenu(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.GetInstance().IsSettingFlyoutOpen = !MainViewModel.GetInstance().IsSettingFlyoutOpen;
+        }
     }
 }

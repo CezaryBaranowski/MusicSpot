@@ -11,22 +11,18 @@
              d:DesignHeight="800" d:DesignWidth="1000"
        >
 
-
     <Grid>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="5*"></ColumnDefinition>
 
         </Grid.ColumnDefinitions>
-
-        <!--MetroTabs for application mode switching - music, videos, pictures-->
-
 
         <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
                     Orientation="Vertical" Margin="0,20,0,0"
@@ -54,22 +50,22 @@
 
         <!--Lower playing control panel-->
 
-            <Grid Column="1" Row="1" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
+        <Grid Column="1" Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-                <Button Width="35" Height="35" Margin="20,30,0,0" BorderThickness="0" Background="Transparent">
-                    <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
+            <Button Width="35" Height="35" Margin="20,30,0,0" BorderThickness="0" Background="Transparent">
+                <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
-                </Button>
+            </Button>
 
-                <Button BorderThickness="0" BorderBrush="White" Margin="120,30,0,0" Width="50" Height="50"
+            <Button BorderThickness="0" BorderBrush="White" Margin="120,30,0,0" Width="50" Height="50"
                         Background="Transparent" Grid.Row="0" Grid.Column="0" Click="PlayButton_OnClick">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -85,12 +81,12 @@
                     </Style>
                 </Button.Style>
             </Button>
-                <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,30,0,0" BorderThickness="0" Background="Transparent">
-                    <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
+            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,30,0,0" BorderThickness="0" Background="Transparent">
+                <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
-                </Button>
+            </Button>
 
-                <controls:MetroProgressBar x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
+            <controls:MetroProgressBar x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
                              Width="300" Margin="110,0,0,0"
                              Height="4"
                              MinHeight="2"
@@ -98,11 +94,11 @@
                              Minimum="0"
                              Value="{Binding Value}">
 
-                </controls:MetroProgressBar>
+            </controls:MetroProgressBar>
 
             <Button x:Name="Mute" Width="25" Height="25" Background="Transparent" 
-                    Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0"
-                    BorderThickness="0">
+                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0"
+                BorderThickness="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Content" Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeHigh}"/>
@@ -119,12 +115,13 @@
             </Button>
 
             <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="1"
-                    Minimum="0"
-                    Maximum="100"
-                    Width="100" Margin="10,10,0,0">
+                        Minimum="0"
+                        Maximum="100"
+                        Height="25"
+                        Width="100" Margin="10,-4,0,0">
             </Slider>
 
-            </Grid>
+        </Grid>
 
     </Grid>
 </UserControl>

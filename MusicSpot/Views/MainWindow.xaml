@@ -6,6 +6,29 @@
         Title="MusicSpot" Height="800" Width="1000" MinHeight="600" MinWidth="800"
                       ResizeMode="CanResizeWithGrip"
 >
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout
+                Position="Right"
+                AreAnimationsEnabled="True"
+                Header="MusicSpot Settings"
+                Theme="Adapt"
+                IsModal="True"
+                IsOpen="{Binding IsSettingFlyoutOpen, Mode=TwoWay}">
+                <views:SettingsView DataContext="{Binding SettingsViewModel}">
+                </views:SettingsView>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button 
+                Click="LaunchMenu"
+                Content="Settings"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -14,8 +37,9 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="Menu" Width="*"></ColumnDefinition>
-            <ColumnDefinition Name ="Content"  Width="5*"></ColumnDefinition>
+            <ColumnDefinition Name ="Content" Width="5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
 
         <controls:MetroAnimatedSingleRowTabControl 
             Grid.Row="0"

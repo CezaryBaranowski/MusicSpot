@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="MusicSpot.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MusicSpot.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600"
+             Width="500" MinWidth="400"
+             >
+              
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="General" Height="2*"/>
+            <RowDefinition x:Name="MusicProperties" Height="2*"/>
+            <RowDefinition x:Name="VideoProperties" Height="*"/>
+            <RowDefinition x:Name="PictureProperties" Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Row="0">
+            <Label FontSize="18"> General</Label>
+        </Grid>
+
+        <Grid Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label FontSize="18">
+                    Music Player
+                </Label>
+                <ListBox Grid.Column="1" 
+                ItemsSource="{Binding MusicDirectories}"
+                BorderThickness="1" 
+                Height="100"
+                         >
+                </ListBox>
+            </Grid>
+
+        </Grid>
+        <Grid Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Label FontSize="18">
+                Video Player
+            </Label>
+        </Grid> 
+        <Grid Row="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*">
+                    </ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Label FontSize="18">
+                Pictures
+            </Label>
+        </Grid>
+
+    </Grid>
+</UserControl>

@@ -1,4 +1,6 @@
-﻿namespace MusicSpot.ViewModels
+﻿using System.Collections.Generic;
+
+namespace MusicSpot.ViewModels
 {
     public sealed class MusicViewModel : ViewModelBase
     {
@@ -14,7 +16,7 @@
 
         public bool IsPlaying
         {
-            get { return _isPlaying; }
+            get => _isPlaying;
             set
             {
                 _isPlaying = value;

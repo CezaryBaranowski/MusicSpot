@@ -68,11 +68,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Picture.cs" />
+    <Compile Include="Models\Song.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ServiceControllers\LastFmController.cs" />
-    <Compile Include="ServiceControllers\SoundCloudController.cs" />
-    <Compile Include="ServiceControllers\SpotifyController.cs" />
+    <Compile Include="APIControllers\LastFmController.cs" />
+    <Compile Include="APIControllers\SoundCloudController.cs" />
+    <Compile Include="APIControllers\SpotifyController.cs" />
     <Compile Include="ViewModels\MusicViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MusicView.xaml.cs">
@@ -80,6 +84,9 @@
     </Compile>
     <Compile Include="Views\PictureView.xaml.cs">
       <DependentUpon>PictureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VideoView.xaml.cs">
       <DependentUpon>VideoView.xaml</DependentUpon>
@@ -101,6 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PictureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,8 +147,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
