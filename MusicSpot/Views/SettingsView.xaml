@@ -8,7 +8,34 @@
              d:DesignHeight="450" d:DesignWidth="600"
              Width="500" MinWidth="400"
              >
-              
+    <UserControl.Resources>
+
+        <Ellipse x:Key="AppThemeMenuIcon"
+                 x:Shared="False"
+                 Width="16"
+                 Height="16"
+                 StrokeThickness="1"
+                 Stroke="{Binding BorderColorBrush, Mode=OneWay}"
+                 Fill="{Binding ColorBrush, Mode=OneWay}" />
+        <Ellipse x:Key="AccentMenuIcon"
+                   x:Shared="False"
+                   Width="16"
+                   Height="16"
+                   Fill="{Binding ColorBrush, Mode=OneWay}" />
+
+
+        <Style x:Key="AppThemeMenuItemStyle"
+                 TargetType="{x:Type MenuItem}"
+                 BasedOn="{StaticResource MetroMenuItem}">
+            <Setter Property="Command"
+                      Value="{Binding ChangeAccentCommand}" />
+            <Setter Property="Icon"
+                      Value="{StaticResource AppThemeMenuIcon}" />
+            <Setter Property="Header"
+                      Value="{Binding Name, Mode=OneWay}" />
+        </Style>
+
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="General" Height="2*"/>
@@ -17,11 +44,23 @@
             <RowDefinition x:Name="PictureProperties" Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Row="0">
-            <Label FontSize="18"> General</Label>
+        <Grid Row="0" x:Name="GeneralSettings">
+            <Label FontSize="18">General</Label>
+            <Menu VerticalAlignment="Stretch"
+                  HorizontalAlignment="Left"
+                  Margin="5,20,0,0"
+                  Height="30">
+                <MenuItem 
+                      Header="Accent"
+                      ItemsSource="{Binding AccentColors, Mode=OneWay}"
+                      ItemContainerStyle="{StaticResource AppThemeMenuItemStyle}"
+                      >
+                </MenuItem>
+
+            </Menu>
         </Grid>
 
-        <Grid Row="1">
+        <Grid Row="1" x:Name="MusicSettigns">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*">
@@ -42,7 +81,7 @@
             </Grid>
 
         </Grid>
-        <Grid Row="2">
+        <Grid Row="2" x:Name="VideoSettings">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*">
@@ -54,8 +93,8 @@
             <Label FontSize="18">
                 Video Player
             </Label>
-        </Grid> 
-        <Grid Row="3">
+        </Grid>
+        <Grid Row="3" x:Name="PictureSettings">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*">

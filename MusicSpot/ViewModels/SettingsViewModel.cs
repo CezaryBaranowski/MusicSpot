@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using MusicSpot.MahAppsMetro;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+
 
 namespace MusicSpot.ViewModels
 {
@@ -6,6 +12,8 @@ namespace MusicSpot.ViewModels
     {
 
         private static readonly SettingsViewModel _settingsViewModel = new SettingsViewModel();
+        public List<AppThemeMenuData> AppThemes { get; set; }
+        public List<AccentColorMenuData> AccentColors { get; set; }
 
         private SettingsViewModel()
         {
@@ -15,13 +23,24 @@ namespace MusicSpot.ViewModels
 
             AddMusicDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
             AddMusicDirectory(@"E:\Muzyka\Muzyka\Klasyczna");
+
+            // create accent color menu items for the demo
+            this.AccentColors = ThemeManager.Accents
+                .Select(a => new AccentColorMenuData() { Name = a.Name, ColorBrush = a.Resources["AccentColorBrush"] as Brush })
+                .ToList();
+
+            // create metro theme color menu items for the demo
+            this.AppThemes = ThemeManager.AppThemes
+                .Select(a => new AppThemeMenuData() { Name = a.Name, BorderColorBrush = a.Resources["BlackColorBrush"] as Brush, ColorBrush = a.Resources["WhiteColorBrush"] as Brush })
+                .ToList();
+
         }
 
         public static SettingsViewModel GetInstance()
         {
             return _settingsViewModel;
-        }
 
+        }
 
         #region MediaDirectories
 

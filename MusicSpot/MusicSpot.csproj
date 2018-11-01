@@ -68,13 +68,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MahAppsMetro\AppTheme.cs" />
+    <Compile Include="MahAppsMetro\SafeRaise.cs" />
+    <Compile Include="MahAppsMetro\ThemeManager.cs" />
     <Compile Include="Models\Picture.cs" />
+    <Compile Include="Models\SimpleCommand.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="APIControllers\LastFmController.cs" />
     <Compile Include="APIControllers\SoundCloudController.cs" />
     <Compile Include="APIControllers\SpotifyController.cs" />
+    <Compile Include="MahAppsMetro\AccentColorMenuData.cs" />
+    <Compile Include="MahAppsMetro\AppThemeMenuData.cs" />
     <Compile Include="ViewModels\MusicViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
