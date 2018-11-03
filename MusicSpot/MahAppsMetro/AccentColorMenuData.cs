@@ -23,8 +23,6 @@ namespace MusicSpot.MahAppsMetro
             var theme = ThemeManager.DetectAppStyle(Application.Current);
             var accent = ThemeManager.GetAccent(this.Name);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
-            //ThemeManager.OnThemeChanged(accent, theme.Item1);
-
 
         }
     }

@@ -1,8 +1,7 @@
 ﻿using MusicSpot.MahAppsMetro;
-using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media;
 
 
@@ -17,12 +16,15 @@ namespace MusicSpot.ViewModels
 
         private SettingsViewModel()
         {
-            MusicDirectories = new List<string>();
-            VideoDirectories = new LinkedList<string>();
-            PictureDirectories = new LinkedList<string>();
+            MusicDirectories = new ObservableCollection<string>();
+            VideoDirectories = new ObservableCollection<string>();
+            PictureDirectories = new ObservableCollection<string>();
 
-            AddMusicDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
             AddMusicDirectory(@"E:\Muzyka\Muzyka\Klasyczna");
+            AddMusicDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            AddVideoDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            AddVideoDirectory(@"C:\Programowanie\NET");
+            AddPictureDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
 
             // create accent color menu items for the demo
             this.AccentColors = ThemeManager.Accents
@@ -44,9 +46,9 @@ namespace MusicSpot.ViewModels
 
         #region MediaDirectories
 
-        private List<string> _musicDirectories;
+        private ObservableCollection<string> _musicDirectories;
 
-        public List<string> MusicDirectories
+        public ObservableCollection<string> MusicDirectories
         {
             get => _musicDirectories;
             private set
@@ -68,8 +70,8 @@ namespace MusicSpot.ViewModels
             OnPropertyChanged("MusicDirectories");
         }
 
-        private LinkedList<string> _videoDirectories;
-        public LinkedList<string> VideoDirectories
+        private ObservableCollection<string> _videoDirectories;
+        public ObservableCollection<string> VideoDirectories
         {
             get => _videoDirectories;
             private set => _videoDirectories = value;
@@ -77,7 +79,7 @@ namespace MusicSpot.ViewModels
 
         public void AddVideoDirectory(string directory)
         {
-            VideoDirectories.AddLast(directory);
+            VideoDirectories.Add(directory);
         }
 
         public void RemoveVideoDirectory(string directory)
@@ -86,8 +88,9 @@ namespace MusicSpot.ViewModels
         }
 
 
-        private LinkedList<string> _pictureDirectories;
-        public LinkedList<string> PictureDirectories
+        private ObservableCollection<string> _pictureDirectories;
+
+        public ObservableCollection<string> PictureDirectories
         {
             get => _pictureDirectories;
             private set => _pictureDirectories = value;
@@ -95,13 +98,47 @@ namespace MusicSpot.ViewModels
 
         public void AddPictureDirectory(string directory)
         {
-            PictureDirectories.AddLast(directory);
+            PictureDirectories.Add(directory);
         }
 
         public void RemovePictureDirectory(string directory)
         {
             PictureDirectories.Remove(directory);
         }
+
+        private string _musicDirectoriesSelectedItem;
+        public string MusicDirectoriesSelectedItem
+        {
+            get => _musicDirectoriesSelectedItem;
+            set
+            {
+                _musicDirectoriesSelectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _videoDirectoriesSelectedItem;
+        public string VideoDirectoriesSelectedItem
+        {
+            get => _videoDirectoriesSelectedItem;
+            set
+            {
+                _videoDirectoriesSelectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _pictureDirectoriesSelectedItem;
+        public string PictureDirectoriesSelectedItem
+        {
+            get => _pictureDirectoriesSelectedItem;
+            set
+            {
+                _pictureDirectoriesSelectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
     }

@@ -24,7 +24,7 @@
                     <Setter Property="HorizontalAlignment" Value="Left"></Setter>
                 </Style>
             </StackPanel.Resources>
-            <Label FontSize="18" FontStretch="Expanded">Local Music</Label>
+            <Label FontSize="18" FontStretch="Expanded">Local Videos</Label>
             <Button>Songs</Button>
             <Button>Artists</Button>
             <Button>Albums</Button>
