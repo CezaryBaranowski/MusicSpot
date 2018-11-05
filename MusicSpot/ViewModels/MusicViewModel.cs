@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace MusicSpot.ViewModels
 {
@@ -26,6 +28,14 @@ namespace MusicSpot.ViewModels
         public void LoadMusicFiles()
         {
             IList<string> directories = new List<string>(GetMusicDirectories());
+            IEnumerable<string> files = null;
+            foreach (string directory in directories)
+            {
+                files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            }
+
+            var musicFiles = (files).Where(f =>
+                new[] { ".mp3", ".mp4", ".ogg", ".flac", ".wmv", ".wav" }.Contains(Path.GetExtension(f)));
         }
 
         #region Properties
@@ -87,6 +97,8 @@ namespace MusicSpot.ViewModels
 
         #endregion
 
+        #region MusicDirectoriesManipulating
+
         private IList<string> GetMusicDirectories()
         {
             if (MusicSelectedDirectory.Equals("All")) return SettingsViewModel.GetInstance().MusicDirectories;
@@ -99,5 +111,6 @@ namespace MusicSpot.ViewModels
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
         }
+        #endregion
     }
 }

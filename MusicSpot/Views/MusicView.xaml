@@ -82,7 +82,7 @@
                 <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
             
-            <Label Content="List/GridView"/>
+            <!--<Label Content="List/GridView"/>
             <ListView
              Grid.Row="1"
             VerticalAlignment="Stretch"
@@ -99,9 +99,37 @@
                                     Header="artist" />
                     </GridView>
                 </ListView.View>
-            </ListView>
-        </Grid>
+            </ListView>-->
 
+
+            <DataGrid x:Name="MetroDataGrid"
+              Grid.Column="0"
+              Grid.Row="1"
+              RenderOptions.ClearTypeHint="Enabled"
+              TextOptions.TextFormattingMode="Display"
+              Margin="5"
+              SelectionUnit="FullRow"
+              ItemsSource="{Binding Path=Albums}"
+              AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                            EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                            Header="IsSelected"
+                                            Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Title"
+                                        Binding="{Binding Title}" />
+                    <DataGridTextColumn Header="Artist"
+                                        Binding="{Binding Artist.Name}" />
+                    <DataGridTextColumn Header="Genre"
+                                        Binding="{Binding Genre.Name}" />
+                    <controls:DataGridNumericUpDownColumn Header="Price"
+                                                          Binding="{Binding Price}"
+                                                          StringFormat="C"
+                                                          Minimum="0" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
 
         <!--Lower playing control panel-->
 
