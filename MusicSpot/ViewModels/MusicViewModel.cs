@@ -10,8 +10,8 @@ namespace MusicSpot.ViewModels
 
         private MusicViewModel()
         {
-            SettingsViewModel = SettingsViewModel.GetInstance();
             IsPlaying = false;
+            IsMuted = false;
             IsEditingFilesEnabled = false;
             MusicSelectedDirectory = "All";
             RefreshMusicDirectories();
@@ -23,15 +23,12 @@ namespace MusicSpot.ViewModels
             return musicViewModel;
         }
 
-        public async void LoadMusicFiles()
+        public void LoadMusicFiles()
         {
-            IList<string> directories = new List<string>();
-            directories = GetMusicDirectories();
+            IList<string> directories = new List<string>(GetMusicDirectories());
         }
 
         #region Properties
-
-        private SettingsViewModel SettingsViewModel;
 
         private bool _isPlaying;
         public bool IsPlaying
@@ -43,6 +40,18 @@ namespace MusicSpot.ViewModels
                 OnPropertyChanged(nameof(IsPlaying));
             }
         }
+
+        private bool _isMuted;
+        public bool IsMuted
+        {
+            get => _isMuted;
+            set
+            {
+                _isMuted = value;
+                OnPropertyChanged(nameof(IsMuted));
+            }
+        }
+
         private bool _isEditingFilesEnables;
         public bool IsEditingFilesEnabled
         {
@@ -80,7 +89,7 @@ namespace MusicSpot.ViewModels
 
         private IList<string> GetMusicDirectories()
         {
-            if (MusicSelectedDirectory.Equals("All")) return SettingsViewModel.MusicDirectories;
+            if (MusicSelectedDirectory.Equals("All")) return SettingsViewModel.GetInstance().MusicDirectories;
             return new List<string> { MusicSelectedDirectory };
         }
 

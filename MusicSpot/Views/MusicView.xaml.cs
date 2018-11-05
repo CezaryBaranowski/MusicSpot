@@ -31,5 +31,11 @@ namespace MusicSpot.Views
             MusicViewModel.GetInstance().LoadMusicFiles();
         }
 
+        private void Mute(object sender, RoutedEventArgs e)
+        {
+            if (dataModel.IsMuted == false)
+                dataModel.IsMuted = true;
+            else dataModel.IsMuted = false;
+        }
     }
 }

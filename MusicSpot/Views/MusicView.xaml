@@ -151,18 +151,18 @@
 
             </controls:MetroProgressBar>
 
-            <Button x:Name="Mute" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0"
+            <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
+                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0" Click="Mute"
                 BorderThickness="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Content" Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeHigh}"/>
+                        <Setter Property="Content" Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeOff}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeHigh}"/>
-                            </DataTrigger>
                             <DataTrigger Binding="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                 <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeMute}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeHigh}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -172,6 +172,7 @@
             <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="1"
                         Minimum="0"
                         Maximum="100"
+                        Value="100"
                         Height="25"
                         Width="100" Margin="10,-4,0,0">
             </Slider>
