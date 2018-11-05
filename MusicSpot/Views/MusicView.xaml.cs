@@ -15,7 +15,7 @@ namespace MusicSpot.Views
         {
             InitializeComponent();
             dataModel = MusicViewModel.GetInstance();
-            this.DataContext = MusicViewModel.GetInstance();
+            this.DataContext = dataModel;
         }
 
         private void PlayButton_OnClick(object sender, RoutedEventArgs e)

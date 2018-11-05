@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MusicSpot.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -36,6 +37,22 @@ namespace MusicSpot.ViewModels
 
             var musicFiles = (files).Where(f =>
                 new[] { ".mp3", ".mp4", ".ogg", ".flac", ".wmv", ".wav" }.Contains(Path.GetExtension(f)));
+
+            Songs = new ObservableCollection<Song>();
+
+            foreach (var musicFile in musicFiles)
+            {
+                TagLib.File f = TagLib.File.Create(musicFile);
+                Songs.Add(new Song
+                {
+                    Title = f.Tag.Title,
+                    Album = f.Tag.Album,
+                    Artist = f.Tag.JoinedPerformers,
+                    TotalTime = f.Properties.Duration
+
+                });
+            }
+
         }
 
         #region Properties
@@ -91,6 +108,18 @@ namespace MusicSpot.ViewModels
             set
             {
                 _musicSelectedDirectory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Song> _songs;
+
+        public ObservableCollection<Song> Songs
+        {
+            get => _songs;
+            set
+            {
+                _songs = value;
                 OnPropertyChanged();
             }
         }
