@@ -15,7 +15,7 @@ namespace MusicSpot.Views
         {
             InitializeComponent();
             dataModel = MusicViewModel.GetInstance();
-            this.DataContext = dataModel;
+            this.DataContext = MusicViewModel.GetInstance();
         }
 
         private void PlayButton_OnClick(object sender, RoutedEventArgs e)
@@ -25,5 +25,11 @@ namespace MusicSpot.Views
             else dataModel.IsPlaying = false;
             //this.DataContext = dataModel;
         }
+
+        private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
+        {
+            MusicViewModel.GetInstance().LoadMusicFiles();
+        }
+
     }
 }

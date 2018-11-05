@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
              Width="500" MinWidth="400"
+             
              >
     <UserControl.Resources>
 
@@ -48,8 +49,8 @@
 
     </UserControl.Resources>
 
+    <Grid>
 
-    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="General" Height="2*"/>
             <RowDefinition x:Name="MusicProperties" Height="2*"/>
@@ -69,7 +70,7 @@
                       ItemsSource="{Binding AccentColors, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}"
                       >
-                </MenuItem> 
+                </MenuItem>
                 <MenuItem 
                       Header="Theme"
                       ItemsSource="{Binding AppThemes, Mode=OneWay}"
@@ -97,22 +98,22 @@
                 ItemsSource="{Binding MusicDirectories, Mode=OneWay}"
                 SelectedItem="{Binding MusicDirectoriesSelectedItem, Mode=OneWayToSource}"
                 BorderThickness="1" 
-                Height="80"
+                Height="70"
                 Margin="10,30,10,0"
                 VerticalAlignment="Top"
                 >
                 </ListBox>
                 <Button Grid.Column="1"
-                        Margin="60,30,20,0"
+                        Margin="60,0,20,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Left"
                         Content="Add"
                         Click="AddMusicDirectory">
 
-                </Button> 
+                </Button>
                 <Button Grid.Column="1"
-                        Margin="0,30,80,0"
+                        Margin="0,0,80,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Right"
@@ -143,13 +144,13 @@
                          ItemsSource="{Binding VideoDirectories, Mode=OneWay}"
                          SelectedItem="{Binding VideoDirectoriesSelectedItem, Mode=OneWayToSource}"
                          BorderThickness="1" 
-                         Height="50"
+                         Height="70"
                          Margin="10,20,10,0"
                          VerticalAlignment="Top"
                 >
                 </ListBox>
                 <Button Grid.Column="1"
-                        Margin="60,60,20,0"
+                        Margin="60,90,20,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Left"
@@ -158,7 +159,7 @@
 
                 </Button>
                 <Button Grid.Column="1"
-                        Margin="0,60,80,0"
+                        Margin="0,90,80,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Right"
@@ -187,13 +188,13 @@
                          ItemsSource="{Binding PictureDirectories, Mode=OneWay}"
                          SelectedItem="{Binding PictureDirectoriesSelectedItem, Mode=OneWayToSource}"
                          BorderThickness="1" 
-                         Height="50"
+                         Height="70"
                          Margin="10,20,10,0"
                          VerticalAlignment="Top"
                 >
                 </ListBox>
                 <Button Grid.Column="1"
-                        Margin="60,60,20,0"
+                        Margin="60,90,20,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Left"
@@ -202,7 +203,7 @@
 
                 </Button>
                 <Button Grid.Column="1"
-                        Margin="0,60,80,0"
+                        Margin="0,90,80,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Right"
@@ -213,6 +214,5 @@
                 </Button>
             </Grid>
         </Grid>
-
     </Grid>
 </UserControl>

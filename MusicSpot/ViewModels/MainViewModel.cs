@@ -5,8 +5,8 @@
         private MainViewModel()
         {
             SelectedTabIndex = 0;
+            //SettingsViewModel = SettingsViewModel.GetInstance();
             MusicViewModel = MusicViewModel.GetInstance();
-            SettingsViewModel = SettingsViewModel.GetInstance();
         }
         //ensure beforefieldinit off
         static MainViewModel()
@@ -29,17 +29,17 @@
             }
         }
 
-        private SettingsViewModel _settingViewModel;
+        //private SettingsViewModel _settingViewModel;
 
-        public SettingsViewModel SettingsViewModel
-        {
-            get => _settingViewModel;
-            set
-            {
-                _settingViewModel = value;
-                OnPropertyChanged();
-            }
-        }
+        //public SettingsViewModel SettingsViewModel
+        //{
+        //    get => _settingViewModel;
+        //    set
+        //    {
+        //        _settingViewModel = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         private byte _selectedTabIndex;
 

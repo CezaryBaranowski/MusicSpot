@@ -20,22 +20,25 @@ namespace MusicSpot.ViewModels
             VideoDirectories = new ObservableCollection<string>();
             PictureDirectories = new ObservableCollection<string>();
 
-            AddMusicDirectory(@"E:\Muzyka\Muzyka\Klasyczna");
-            AddMusicDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
-            AddVideoDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
-            AddVideoDirectory(@"C:\Programowanie\NET");
-            AddPictureDirectory(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            Initialize();
 
-            // create accent color menu items for the demo
             this.AccentColors = ThemeManager.Accents
                 .Select(a => new AccentColorMenuData() { Name = a.Name, ColorBrush = a.Resources["AccentColorBrush"] as Brush })
                 .ToList();
 
-            // create metro theme color menu items for the demo
             this.AppThemes = ThemeManager.AppThemes
                 .Select(a => new AppThemeMenuData() { Name = a.Name, BorderColorBrush = a.Resources["BlackColorBrush"] as Brush, ColorBrush = a.Resources["WhiteColorBrush"] as Brush })
                 .ToList();
 
+        }
+
+        private void Initialize()
+        {
+            _musicDirectories.Add(@"E:\Muzyka\Muzyka\Klasyczna");
+            _musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            _videoDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            _videoDirectories.Add(@"C:\Programowanie\NET");
+            _pictureDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
         }
 
         public static SettingsViewModel GetInstance()
@@ -62,12 +65,14 @@ namespace MusicSpot.ViewModels
         {
             _musicDirectories.Add(directory);
             OnPropertyChanged("MusicDirectories");
+            MusicViewModel.GetInstance().RefreshMusicDirectories();
         }
 
         public void RemoveMusicDirectory(string directory)
         {
             _musicDirectories.Remove(directory);
             OnPropertyChanged("MusicDirectories");
+            MusicViewModel.GetInstance().RefreshMusicDirectories();
         }
 
         private ObservableCollection<string> _videoDirectories;
