@@ -1,8 +1,13 @@
 ﻿using MusicSpot.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 
 namespace MusicSpot.ViewModels
 {
@@ -10,15 +15,17 @@ namespace MusicSpot.ViewModels
     {
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
+        object _songsLock = new object();
 
         private MusicViewModel()
         {
             IsPlaying = false;
             IsMuted = false;
+            Songs = new ObservableCollection<Song>();
+            BindingOperations.EnableCollectionSynchronization(Songs, _songsLock);
             IsEditingFilesEnabled = false;
             MusicSelectedDirectory = "All";
             RefreshMusicDirectories();
-            LoadMusicFiles();
         }
 
         public static MusicViewModel GetInstance()
@@ -26,31 +33,35 @@ namespace MusicSpot.ViewModels
             return musicViewModel;
         }
 
-        public void LoadMusicFiles()
+        public void LoadMusicFilesAsync()
         {
-            IList<string> directories = new List<string>(GetMusicDirectories());
+            IList<Song> LoadedSongs = new List<Song>();
+            ICollection<string> directories = new List<string>(GetMusicDirectories());
             IEnumerable<string> files = null;
+            Songs = new ObservableCollection<Song>();
             foreach (string directory in directories)
             {
                 files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
-            }
 
-            var musicFiles = (files).Where(f =>
-                new[] { ".mp3", ".mp4", ".ogg", ".flac", ".wmv", ".wav" }.Contains(Path.GetExtension(f)));
+                var musicFiles = (files).Where(f =>
+                    new[] { ".mp3", ".mp4", ".ogg", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
 
-            Songs = new ObservableCollection<Song>();
-
-            foreach (var musicFile in musicFiles)
-            {
-                TagLib.File f = TagLib.File.Create(musicFile);
-                Songs.Add(new Song
+                foreach (var musicFile in musicFiles)
                 {
-                    Title = f.Tag.Title,
-                    Album = f.Tag.Album,
-                    Artist = f.Tag.JoinedPerformers,
-                    TotalTime = f.Properties.Duration
-
-                });
+                    TagLib.File f = TagLib.File.Create(musicFile);
+                    var song = new Song
+                    {
+                        Title = f.Tag.Title,
+                        Album = f.Tag.Album,
+                        Artist = f.Tag.JoinedPerformers,
+                        TotalTime = f.Properties.Duration
+                    };
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                    {
+                        if (typeof(Song).GetProperties().All(propertyInfo => propertyInfo.GetValue(song) != null))
+                            Songs.Add(song);
+                    });
+                }
             }
 
         }
@@ -112,7 +123,7 @@ namespace MusicSpot.ViewModels
             }
         }
 
-        private ObservableCollection<Song> _songs;
+        private ObservableCollection<Song> _songs = new ObservableCollection<Song>();
 
         public ObservableCollection<Song> Songs
         {
@@ -120,6 +131,18 @@ namespace MusicSpot.ViewModels
             set
             {
                 _songs = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Song _currentlySelectedSong;
+
+        public Song CurrentlySelectedSong
+        {
+            get => _currentlySelectedSong;
+            set
+            {
+                _currentlySelectedSong = value;
                 OnPropertyChanged();
             }
         }
@@ -134,11 +157,14 @@ namespace MusicSpot.ViewModels
             return new List<string> { MusicSelectedDirectory };
         }
 
-        public void RefreshMusicDirectories()
+        public async void RefreshMusicDirectories()
         {
             _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
+            var uiContext = SynchronizationContext.Current;
+            await Task.Run(() => LoadMusicFilesAsync());
+            //Task.Run(() => { uiContext.Send(x => LoadMusicFilesAsync(), null); });
         }
         #endregion
     }

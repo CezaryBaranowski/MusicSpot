@@ -39,7 +39,7 @@ namespace MusicSpot.Views
         private void AddMusicDirectory(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.InitialDirectory = "C:\\Users";
+            dialog.InitialDirectory = "E:\\Muzyka\\Muzyka";
             dialog.IsFolderPicker = true;
             string directory = null;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -54,7 +54,7 @@ namespace MusicSpot.Views
         private void AddVideoDirectory(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.InitialDirectory = "C:\\Users";
+            dialog.InitialDirectory = "E:\\Muzyka\\Muzyka";
             dialog.IsFolderPicker = true;
             string directory = null;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)

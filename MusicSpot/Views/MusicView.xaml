@@ -81,55 +81,55 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
-            
-            <!--<Label Content="List/GridView"/>
-            <ListView
-             Grid.Row="1"
-            VerticalAlignment="Stretch"
-            Margin="0, 10, 0, 0"
-            BorderThickness="0"
-            ItemsSource="{Binding Artists}"
-            SelectedItem="{Binding SelectedMusicDirectory, Mode=OneWayToSource}"
-            SelectedIndex="0">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding ArtistId}"
-                                    Header="ID" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}"
-                                    Header="artist" />
-                    </GridView>
-                </ListView.View>
-            </ListView>-->
 
 
-            <DataGrid x:Name="MetroDataGrid"
+            <DataGrid x:Name="MainMusicDataGrid"
               Grid.Column="0"
               Grid.Row="1"
               RenderOptions.ClearTypeHint="Enabled"
               TextOptions.TextFormattingMode="Display"
               Margin="5"
+                      RowHeight="32"
               SelectionUnit="FullRow"
-              ItemsSource="{Binding Path=Albums}"
-              AutoGenerateColumns="False">
+              ItemsSource="{Binding Path=Songs}"
+              SelectedItem="{Binding CurrentlySelectedSong, Mode=OneWayToSource}"
+              AutoGenerateColumns="False"
+              GridLinesVisibility="Horizontal"
+                      >
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
+                        <Setter Property="Margin" Value="0,0,20,0"></Setter>
+                    </Style> 
+                </DataGrid.CellStyle>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MetroDataGridColumnHeader}">
+                        <Setter Property="Margin" Value="0,0,0,0"></Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                            EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                            Header="IsSelected"
-                                            Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}" />
                     <DataGridTextColumn Header="Title"
+                                        Width="2*"
                                         Binding="{Binding Title}" />
                     <DataGridTextColumn Header="Artist"
-                                        Binding="{Binding Artist.Name}" />
-                    <DataGridTextColumn Header="Genre"
-                                        Binding="{Binding Genre.Name}" />
-                    <controls:DataGridNumericUpDownColumn Header="Price"
-                                                          Binding="{Binding Price}"
-                                                          StringFormat="C"
-                                                          Minimum="0" />
+                                        Width="2*"
+                                        Binding="{Binding Artist}" />
+                    <DataGridTextColumn Header="Album"
+                                        Width="2*"
+                                        Binding="{Binding Album}" 
+                                        />
+                    <DataGridTextColumn
+                                        IsReadOnly="True"
+                                        Header="Length"
+                                        Width="*">
+                                        <DataGridTextColumn.Binding>
+                                        <Binding Path="TotalTime" StringFormat="m\:ss"/>
+                                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
         </Grid>
+
 
         <!--Lower playing control panel-->
 

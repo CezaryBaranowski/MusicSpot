@@ -28,7 +28,7 @@ namespace MusicSpot.Views
 
         private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
         {
-            MusicViewModel.GetInstance().LoadMusicFiles();
+            MusicViewModel.GetInstance().LoadMusicFilesAsync();
         }
 
         private void Mute(object sender, RoutedEventArgs e)
