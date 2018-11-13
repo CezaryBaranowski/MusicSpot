@@ -65,14 +65,14 @@ namespace MusicSpot.ViewModels
         {
             _musicDirectories.Add(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectories();
+            MusicViewModel.GetInstance().RefreshMusicDirectoriesAsync();
         }
 
         public void RemoveMusicDirectory(string directory)
         {
             _musicDirectories.Remove(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectories();
+            MusicViewModel.GetInstance().RefreshMusicDirectoriesAsync();
         }
 
         private ObservableCollection<string> _videoDirectories;

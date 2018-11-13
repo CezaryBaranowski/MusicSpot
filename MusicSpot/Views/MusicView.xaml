@@ -7,14 +7,23 @@
         xmlns:local="clr-namespace:MusicSpot.Views"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d"
+        xmlns:global2="clr-namespace:"
+        mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1000"
        >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
+             x:Key="ImageToSourceConverter">
+            </global2:ImageToSourceConverter>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
 
         </Grid.RowDefinitions>
@@ -41,16 +50,14 @@
             <Button>Songs</Button>
             <Button>Artists</Button>
             <Button>Albums</Button>
-            <Button>Local Music</Button>
 
             <TextBlock
                       Margin="15,20,0,0"
-                      Text="Allow Editing Files" />
+                      Text="Block Editing Files" />
             <CheckBox 
                       HorizontalAlignment="Left"
                       Margin="15,10,0,0"
                       IsChecked="{Binding IsEditingFilesEnabled}" />
-
             <TextBlock 
                       Margin="10,10,0,0"
                       Text="Show Music From Directories" />
@@ -62,10 +69,15 @@
                       SelectionChanged="ChangeMusicDirectory"
                       ItemsSource="{Binding MusicDirectories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             </ComboBox>
-            <Label FontSize="18" FontStretch="Expanded" Margin="10,20,0,0">Discover</Label>
-            <Button>Songs</Button>
-            <Button>Artists</Button>
-            <Button>Albums</Button>
+
+
+        <Image Margin="10,30,10,0"
+               Width ="150"
+               Height="150" 
+               Source="{Binding Path=CurrentlySelectedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
+               >
+        
+        </Image>
 
         </StackPanel>
 
@@ -89,7 +101,8 @@
               RenderOptions.ClearTypeHint="Enabled"
               TextOptions.TextFormattingMode="Display"
               Margin="5"
-                      RowHeight="32"
+              RowHeight="32"
+              IsReadOnly="{Binding IsEditingFilesEnabled}"
               SelectionUnit="FullRow"
               ItemsSource="{Binding Path=Songs}"
               SelectedItem="{Binding CurrentlySelectedSong, Mode=OneWayToSource}"
@@ -143,16 +156,16 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Width="35" Height="35" Margin="20,30,0,0" BorderThickness="0" Background="Transparent">
+            <Button Width="35" Height="35" Margin="20,15,0,0" BorderThickness="0" Background="Transparent">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
             </Button>
 
-            <Button BorderThickness="0" BorderBrush="White" Margin="120,30,0,0" Width="50" Height="50"
+            <Button BorderThickness="0" BorderBrush="White" Margin="120,10,0,0" Width="50" Height="50"
                         Background="Transparent" Grid.Row="0" Grid.Column="0" Click="PlayButton_OnClick">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Content" Value="{iconPacks:Material Height=30, Kind=PlayCircleOutline, Width=30}"/>
+                        <Setter Property="Content" Value="{iconPacks:Material Height=20, Kind=PlayCircleOutline, Width=20}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
                                 <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=35, Kind=PlayCircleOutline, Width=35}"/>
@@ -164,7 +177,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,30,0,0" BorderThickness="0" Background="Transparent">
+            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,0" BorderThickness="0" Background="Transparent">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
             </Button>

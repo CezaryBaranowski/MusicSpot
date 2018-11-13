@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
+using Application = System.Windows.Application;
 
 namespace MusicSpot.ViewModels
 {
@@ -15,17 +14,14 @@ namespace MusicSpot.ViewModels
     {
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
-        object _songsLock = new object();
 
         private MusicViewModel()
         {
             IsPlaying = false;
             IsMuted = false;
-            Songs = new ObservableCollection<Song>();
-            BindingOperations.EnableCollectionSynchronization(Songs, _songsLock);
-            IsEditingFilesEnabled = false;
+            IsEditingFilesEnabled = true;
             MusicSelectedDirectory = "All";
-            RefreshMusicDirectories();
+            RefreshMusicDirectoriesAsync();
         }
 
         public static MusicViewModel GetInstance()
@@ -33,9 +29,8 @@ namespace MusicSpot.ViewModels
             return musicViewModel;
         }
 
-        public void LoadMusicFilesAsync()
+        public void LoadMusicFiles()
         {
-            IList<Song> LoadedSongs = new List<Song>();
             ICollection<string> directories = new List<string>(GetMusicDirectories());
             IEnumerable<string> files = null;
             Songs = new ObservableCollection<Song>();
@@ -49,17 +44,23 @@ namespace MusicSpot.ViewModels
                 foreach (var musicFile in musicFiles)
                 {
                     TagLib.File f = TagLib.File.Create(musicFile);
+                    byte[] bin = null;
+                    if (f.Tag.Pictures.Length > 0)
+                        bin = (byte[])(f.Tag.Pictures[0].Data.Data);
+
                     var song = new Song
                     {
                         Title = f.Tag.Title,
                         Album = f.Tag.Album,
                         Artist = f.Tag.JoinedPerformers,
-                        TotalTime = f.Properties.Duration
+                        Path = f.Name,
+                        AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null,
+                        TotalTime = f.Properties.Duration,
                     };
                     Application.Current.Dispatcher.BeginInvoke((Action)delegate
                     {
-                        if (typeof(Song).GetProperties().All(propertyInfo => propertyInfo.GetValue(song) != null))
-                            Songs.Add(song);
+                        //if (typeof(Song).GetProperties().All(propertyInfo => propertyInfo.GetValue(song) != null))
+                        Songs.Add(song);
                     });
                 }
             }
@@ -90,13 +91,13 @@ namespace MusicSpot.ViewModels
             }
         }
 
-        private bool _isEditingFilesEnables;
+        private bool _isEditingFilesEnabled;
         public bool IsEditingFilesEnabled
         {
-            get => _isEditingFilesEnables;
+            get => _isEditingFilesEnabled;
             set
             {
-                _isEditingFilesEnables = value;
+                _isEditingFilesEnabled = value;
                 OnPropertyChanged(nameof(IsEditingFilesEnabled));
             }
         }
@@ -157,14 +158,16 @@ namespace MusicSpot.ViewModels
             return new List<string> { MusicSelectedDirectory };
         }
 
-        public async void RefreshMusicDirectories()
+        public void RefreshMusicDirectoriesAsync()
         {
             _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
-            var uiContext = SynchronizationContext.Current;
-            await Task.Run(() => LoadMusicFilesAsync());
-            //Task.Run(() => { uiContext.Send(x => LoadMusicFilesAsync(), null); });
+            Task.Run(() => LoadMusicFiles());
+
+
+            //var uiContext = SynchronizationContext.Current;
+            //Task.Run(() => { uiContext.Send(x => LoadMusicFiles(), null); });
         }
         #endregion
     }
