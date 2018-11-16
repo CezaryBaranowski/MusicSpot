@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MusicSpot.ViewModels;
+using System;
 using System.Windows;
 
 namespace MusicSpot
@@ -11,6 +12,7 @@ namespace MusicSpot
     {
         public MainWindow()
         {
+            var runArgs = Environment.GetCommandLineArgs();
             InitializeComponent();
             this.DataContext = MainViewModel.GetInstance();
         }

@@ -1,4 +1,5 @@
 ﻿using MusicSpot.Models;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Application = System.Windows.Application;
 
 namespace MusicSpot.ViewModels
@@ -15,11 +17,15 @@ namespace MusicSpot.ViewModels
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
 
+        private static readonly IWavePlayer MusicPlayerController = MusicPlayer.MusicPlayer.waveOutDevice;
+
         private MusicViewModel()
         {
             IsPlaying = false;
+            PlayControlOn = true;
             IsMuted = false;
             IsEditingFilesEnabled = true;
+            Volume = 100.0f;
             MusicSelectedDirectory = "All";
             RefreshMusicDirectoriesAsync();
         }
@@ -28,6 +34,24 @@ namespace MusicSpot.ViewModels
         {
             return musicViewModel;
         }
+
+        private ICommand playMusicCommand;
+
+        public ICommand PlayMusicCommand => this.playMusicCommand ??
+                                            (playMusicCommand = new SimpleCommand
+                                            {
+                                                CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPlayPauseButton,
+                                                ExecuteDelegate = MusicPlayer.MusicPlayer.PlayPauseButtonAction
+                                            });
+
+        private ICommand muteCommand;
+
+        public ICommand MuteCommand => this.muteCommand ??
+                                            (muteCommand = new SimpleCommand
+                                            {
+                                                CanExecuteDelegate = x => true,
+                                                ExecuteDelegate = MusicPlayer.MusicPlayer.MuteSoundAction
+                                            });
 
         public void LoadMusicFiles()
         {
@@ -39,14 +63,11 @@ namespace MusicSpot.ViewModels
                 files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
 
                 var musicFiles = (files).Where(f =>
-                    new[] { ".mp3", ".mp4", ".ogg", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
+                    new[] { ".mp3", ".mp4", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
 
                 foreach (var musicFile in musicFiles)
                 {
                     TagLib.File f = TagLib.File.Create(musicFile);
-                    byte[] bin = null;
-                    if (f.Tag.Pictures.Length > 0)
-                        bin = (byte[])(f.Tag.Pictures[0].Data.Data);
 
                     var song = new Song
                     {
@@ -54,13 +75,12 @@ namespace MusicSpot.ViewModels
                         Album = f.Tag.Album,
                         Artist = f.Tag.JoinedPerformers,
                         Path = f.Name,
-                        AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null,
                         TotalTime = f.Properties.Duration,
                     };
                     Application.Current.Dispatcher.BeginInvoke((Action)delegate
                     {
-                        //if (typeof(Song).GetProperties().All(propertyInfo => propertyInfo.GetValue(song) != null))
-                        Songs.Add(song);
+                        if (song.Path != null && song.Artist != null && song.Title != null && song.TotalTime.TotalSeconds > 0)
+                            Songs.Add(song);
                     });
                 }
             }
@@ -77,6 +97,17 @@ namespace MusicSpot.ViewModels
             {
                 _isPlaying = value;
                 OnPropertyChanged(nameof(IsPlaying));
+            }
+        }
+
+        private bool _playControlOn;
+        public bool PlayControlOn
+        {
+            get => _playControlOn;
+            set
+            {
+                _playControlOn = value;
+                OnPropertyChanged();
             }
         }
 
@@ -125,7 +156,6 @@ namespace MusicSpot.ViewModels
         }
 
         private ObservableCollection<Song> _songs = new ObservableCollection<Song>();
-
         public ObservableCollection<Song> Songs
         {
             get => _songs;
@@ -137,15 +167,79 @@ namespace MusicSpot.ViewModels
         }
 
         private Song _currentlySelectedSong;
-
         public Song CurrentlySelectedSong
         {
             get => _currentlySelectedSong;
             set
             {
                 _currentlySelectedSong = value;
+
+                if (CurrentlyPlayedSong != null)
+                {
+                    if (!CurrentlySelectedSong.Path.Equals(CurrentlyPlayedSong.Path))
+                        PlayControlOn = true;
+
+                    if (PlayControlOn == false && CurrentlySelectedSong.Path.Equals(CurrentlyPlayedSong.Path))
+                        PlayControlOn = false;
+                }
+
                 OnPropertyChanged();
             }
+        }
+
+        private Song _currentlyPlayedSong;
+        public Song CurrentlyPlayedSong
+        {
+            get => _currentlyPlayedSong;
+            set
+            {
+                _currentlyPlayedSong = value;
+                if (_currentlySelectedSong != null)
+                {
+                    TagLib.File f = TagLib.File.Create(CurrentlySelectedSong.Path);
+                    byte[] bin = null;
+                    if (f.Tag.Pictures.Length > 0)
+                        bin = (byte[])(f.Tag.Pictures[0].Data.Data);
+                    CurrentlySelectedSong.AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private float _volume;
+        public float Volume
+        {
+            get => _volume * 100;
+            set
+            {
+                _volume = value / 100;
+                MusicPlayer.MusicPlayer.waveOutDevice.Volume = _volume;
+                OnPropertyChanged();
+            }
+        }
+
+        private TimeSpan _trackPosition;
+
+        public TimeSpan TrackPosition
+        {
+            get => _trackPosition;
+            set
+            {
+                _trackPosition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private TimeSpan _trackTotalTime;
+        public TimeSpan TrackTotalTime
+        {
+            get => _trackTotalTime;
+            set
+            {
+                _trackTotalTime = value;
+                OnPropertyChanged();
+            }
+
         }
 
         #endregion

@@ -71,10 +71,10 @@
             </ComboBox>
 
 
-        <Image Margin="10,30,10,0"
-               Width ="150"
-               Height="150" 
-               Source="{Binding Path=CurrentlySelectedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
+        <Image Margin="10,30,0,0"
+               Width ="Auto"
+               Height="Auto" 
+               Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
         
         </Image>
@@ -100,7 +100,7 @@
               Grid.Row="1"
               RenderOptions.ClearTypeHint="Enabled"
               TextOptions.TextFormattingMode="Display"
-              Margin="5"
+              Margin="10"
               RowHeight="32"
               IsReadOnly="{Binding IsEditingFilesEnabled}"
               SelectionUnit="FullRow"
@@ -108,15 +108,16 @@
               SelectedItem="{Binding CurrentlySelectedSong, Mode=OneWayToSource}"
               AutoGenerateColumns="False"
               GridLinesVisibility="Horizontal"
+              MouseDoubleClick="MainMusicDataGrid_OnMouseDoubleClick"
                       >
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
-                        <Setter Property="Margin" Value="0,0,20,0"></Setter>
+                        <Setter Property="Margin" Value="5,0,20,0"></Setter>
                     </Style> 
                 </DataGrid.CellStyle>
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MetroDataGridColumnHeader}">
-                        <Setter Property="Margin" Value="0,0,0,0"></Setter>
+                        <Setter Property="Margin" Value="5,0,5,0"></Setter>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
@@ -156,44 +157,45 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Width="35" Height="35" Margin="20,15,0,0" BorderThickness="0" Background="Transparent">
+            <Button Width="35" Height="35" Margin="20,15,0,5" BorderThickness="0" Background="Transparent">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
             </Button>
 
-            <Button BorderThickness="0" BorderBrush="White" Margin="120,10,0,0" Width="50" Height="50"
-                        Background="Transparent" Grid.Row="0" Grid.Column="0" Click="PlayButton_OnClick">
+            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="120,10,0,0" Width="45" Height="45"
+                        Background="Transparent" Grid.Row="0" Grid.Column="0" Click="PlayButton_OnClick"
+                    Command="{Binding PlayMusicCommand}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Content" Value="{iconPacks:Material Height=20, Kind=PlayCircleOutline, Width=20}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=35, Kind=PlayCircleOutline, Width=35}"/>
+                            <DataTrigger Binding="{Binding PlayControlOn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=30, Kind=PlayCircleOutline, Width=30}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=35, Kind=PauseCircleOutline, Width=35}"/>
+                            <DataTrigger Binding="{Binding PlayControlOn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=30, Kind=PauseCircleOutline, Width=30}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,0" BorderThickness="0" Background="Transparent">
+            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,5" BorderThickness="0" Background="Transparent">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
             </Button>
 
             <controls:MetroProgressBar x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
-                             Width="300" Margin="110,0,0,0"
+                             Width="Auto" Margin="110,0,0,10"
                              Height="4"
                              MinHeight="2"
-                             Maximum="100"
+                             Maximum="{Binding TrackTotalTime.TotalSeconds, Mode=OneWay}"
                              Minimum="0"
-                             Value="{Binding Value}">
-
+                             Value="{Binding TrackPosition.TotalSeconds, Mode=OneWay, Delay=100}"
+                                       >
             </controls:MetroProgressBar>
 
             <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0" Click="Mute"
+                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0" Command="{Binding MuteCommand}"
                 BorderThickness="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -213,7 +215,7 @@
             <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="1"
                         Minimum="0"
                         Maximum="100"
-                        Value="100"
+                        Value="{Binding Volume, Mode=TwoWay}"
                         Height="25"
                         Width="100" Margin="10,-4,0,0">
             </Slider>
