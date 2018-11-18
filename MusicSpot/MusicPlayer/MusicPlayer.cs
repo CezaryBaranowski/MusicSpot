@@ -1,6 +1,7 @@
 ﻿using MusicSpot.ViewModels;
 using NAudio.Wave;
 using System;
+using System.Linq;
 using System.Timers;
 
 namespace MusicSpot.MusicPlayer
@@ -18,34 +19,28 @@ namespace MusicSpot.MusicPlayer
 
         public static void PlayAudioFile(string fileName)
         {
-            if (!fileName.EndsWith(".ogg"))
-            {
-                CloseWaveOut();
-                waveOutDevice = new NAudio.Wave.WaveOut();
-                audioFileReader = new AudioFileReader(fileName);
-                waveOutDevice.Init(audioFileReader);
-                waveOutDevice.Play();
-                timer.Elapsed += UpdateCurrentTrackTime;
-                timer.AutoReset = true;
-                timer.Enabled = true;
-            }
-            else
-            {
-                CloseWaveOut();
-                waveOutDevice = new NAudio.Wave.WaveOutEvent();
-                vorbisAudioFileReader = new NAudio.Vorbis.VorbisWaveReader(fileName);
-                waveOutDevice.Init(vorbisAudioFileReader);
-                waveOutDevice.Play();
-            }
+            CloseWaveOut();
+            waveOutDevice = new NAudio.Wave.WaveOut();
+            audioFileReader = new AudioFileReader(fileName);
+            waveOutDevice.Init(audioFileReader);
+            waveOutDevice.Play();
+            timer.Elapsed += UpdateCurrentTrackTime;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+            waveOutDevice.PlaybackStopped += SongEndedAction;
+            MusicViewModel.GetInstance().TrackTotalTime = audioFileReader.TotalTime;
+            MusicViewModel.GetInstance().IsPlaying = true;
+
         }
         public static void PauseAudioFile()
         {
             waveOutDevice?.Pause();
-            Console.WriteLine(audioFileReader.CurrentTime.ToString());
+            MusicViewModel.GetInstance().IsPlaying = false;
         }
         public static void ResumeAudioFile()
         {
             waveOutDevice?.Play();
+            MusicViewModel.GetInstance().IsPlaying = true;
         }
 
         private static void CloseWaveOut()
@@ -59,11 +54,6 @@ namespace MusicSpot.MusicPlayer
                 audioFileReader.Dispose();
                 audioFileReader = null;
             }
-            if (vorbisAudioFileReader != null)
-            {
-                vorbisAudioFileReader.Dispose();
-                vorbisAudioFileReader = null;
-            }
             if (waveOutDevice != null)
             {
                 waveOutDevice.Dispose();
@@ -71,52 +61,89 @@ namespace MusicSpot.MusicPlayer
             }
         }
 
-        public static bool CanClickPlayPauseButton(object parameter)
+        public static bool CanClickPlayPauseButton(object parameter)    // May cause bug - test it 
         {
             if (MusicViewModel.GetInstance().CurrentlySelectedSong != null)
                 return true;
             return false;
         }
 
-        public static void PlayPauseButtonAction(object parameter)  // REFACTOR!!!
+        public static void PlayPauseButtonAction(object parameter)
         {
             if (MusicViewModel.GetInstance().IsPlaying == false)        // if player stopped or paused
             {
+                var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
                 var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
-                if (currentlyPlayedSong != null && MusicViewModel.GetInstance().CurrentlySelectedSong.Path
-                    .Equals(currentlyPlayedSong.Path))
+                if (currentlyPlayedSong != null)
                 {
-                    ResumeAudioFile();
-                    MusicViewModel.GetInstance().IsPlaying = true;
-                    MusicViewModel.GetInstance().PlayControlOn = false;
+                    if (currentlySelectedSong.Path.Equals(currentlyPlayedSong.Path) == false)
+                    {
+                        PlayAudioFile(currentlySelectedSong.Path);
+                        MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
+                    }
+                    else ResumeAudioFile();
                 }
                 else
                 {
-                    var currentSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
-                    PlayAudioFile(currentSong.Path);
-                    MusicViewModel.GetInstance().CurrentlyPlayedSong = currentSong;
-                    MusicViewModel.GetInstance().TrackTotalTime = audioFileReader.TotalTime;
-                    MusicViewModel.GetInstance().IsPlaying = true;
-                    MusicViewModel.GetInstance().PlayControlOn = false;
+                    PlayAudioFile(currentlySelectedSong.Path);
+                    MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
                 }
-
-            }
-            else if (MusicViewModel.GetInstance().PlayControlOn)
-            {
-                var currentSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
-                PlayAudioFile(currentSong.Path);
-                MusicViewModel.GetInstance().CurrentlyPlayedSong = currentSong;
-                MusicViewModel.GetInstance().TrackTotalTime = audioFileReader.TotalTime;
-                MusicViewModel.GetInstance().IsPlaying = true;
-                MusicViewModel.GetInstance().PlayControlOn = false;
             }
             else
             {
                 PauseAudioFile();
-                MusicViewModel.GetInstance().IsPlaying = false;
-                MusicViewModel.GetInstance().PlayControlOn = true;
             }
+        }
 
+        public static void MouseDoubleClickPlayAction(object parameter)
+        {
+            var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
+            PlayAudioFile(currentlySelectedSong.Path);
+            MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
+        }
+
+        public static bool CanClickNextSongButton(object parameter)
+        {
+            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
+            var currentlyPlayedSongIndex = MusicViewModel.GetInstance().Songs.IndexOf(currentlyPlayedSong);
+            if (currentlyPlayedSongIndex < MusicViewModel.GetInstance().Songs.Count - 1)
+                return true;
+            return false;
+        }
+
+        public static void NextSongAction(object parameter)
+        {
+            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
+            var index = MusicViewModel.GetInstance().Songs.IndexOf(currentlyPlayedSong) + 1;
+            var nextlyPlayedSong = MusicViewModel.GetInstance().Songs.ElementAt(index);
+            MusicViewModel.GetInstance().CurrentlySelectedSong = nextlyPlayedSong;
+            MusicViewModel.GetInstance().CurrentlyPlayedSong = nextlyPlayedSong;
+            PlayAudioFile(nextlyPlayedSong.Path);
+        }
+
+        public static bool CanClickPreviousSongButton(object parameter)
+        {
+            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
+            var currentlyPlayedSongIndex = MusicViewModel.GetInstance().Songs.IndexOf(currentlyPlayedSong);
+            if (currentlyPlayedSongIndex > 0)
+                return true;
+            return false;
+        }
+
+        public static void PreviousSongAction(object parameter)
+        {
+            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
+            var index = MusicViewModel.GetInstance().Songs.IndexOf(currentlyPlayedSong) - 1;
+            var nextlyPlayedSong = MusicViewModel.GetInstance().Songs.ElementAt(index);
+            MusicViewModel.GetInstance().CurrentlySelectedSong = nextlyPlayedSong;
+            MusicViewModel.GetInstance().CurrentlyPlayedSong = nextlyPlayedSong;
+            PlayAudioFile(nextlyPlayedSong.Path);
+        }
+
+        public static void SongEndedAction(object parameter, StoppedEventArgs e)
+        {
+            if (CanClickNextSongButton(null))
+                NextSongAction(null);
         }
 
         public static void MuteSoundAction(object parameter)
@@ -134,7 +161,7 @@ namespace MusicSpot.MusicPlayer
             }
         }
 
-        private static void UpdateCurrentTrackTime(Object source, ElapsedEventArgs e)
+        public static void UpdateCurrentTrackTime(Object source, ElapsedEventArgs e)       // Method for timer
         {
             MusicViewModel.GetInstance().TrackPosition = audioFileReader.CurrentTime;
         }

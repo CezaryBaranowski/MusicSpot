@@ -44,12 +44,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>D6C61EDA5B0E5C82C98804E7AC3C5412FAC4A1C8</ManifestCertificateThumbprint>
@@ -123,7 +124,6 @@
     <Compile Include="MahAppsMetro\AppTheme.cs" />
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
-    <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\SimpleCommand.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\Video.cs" />
@@ -141,9 +141,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MusicView.xaml.cs">
       <DependentUpon>MusicView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PictureView.xaml.cs">
-      <DependentUpon>PictureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -164,10 +161,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MusicView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PictureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

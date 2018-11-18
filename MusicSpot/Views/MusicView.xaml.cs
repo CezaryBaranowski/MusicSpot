@@ -1,4 +1,5 @@
 ﻿using MusicSpot.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,42 +20,21 @@ namespace MusicSpot.Views
             this.DataContext = dataModel;
         }
 
-        private void PlayButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            //if (dataModel.IsPlaying == false)
-            //    dataModel.IsPlaying = true;
-            //else dataModel.IsPlaying = false;
-            //this.DataContext = dataModel;
-        }
-
         private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
         {
             MusicViewModel.GetInstance().LoadMusicFiles();
         }
 
-        private void Mute(object sender, RoutedEventArgs e)
-        {
-            //if (dataModel.IsMuted == false)
-            //    dataModel.IsMuted = true;
-            //else dataModel.IsMuted = false;
-        }
-
         private void MainMusicDataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MusicPlayer.MusicPlayer.PlayPauseButtonAction(null);
+            MusicPlayer.MusicPlayer.MouseDoubleClickPlayAction(null);
         }
 
-        private void MusicProgressBar_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double mousePosition = e.GetPosition(MusicProgressBar).X;
-            this.MusicProgressBar.Value = SetProgressBarValue(mousePosition);
-        }
-
-        private double SetProgressBarValue(double MousePosition)
-        {
-            double ratio = MousePosition / MusicProgressBar.ActualWidth;
-            double ProgressBarValue = ratio * MusicProgressBar.Maximum;
-            return ProgressBarValue;
+            if (Math.Abs(e.OldValue - e.NewValue) > 1.0)
+                MusicPlayer.MusicPlayer.audioFileReader.CurrentTime = new TimeSpan(0, 0, 0, (int)e.NewValue);
+            //var timespan = new TimeSpan(0, 0, 0, 140);
         }
     }
 }

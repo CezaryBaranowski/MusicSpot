@@ -18,7 +18,6 @@ namespace MusicSpot.ViewModels
         {
             MusicDirectories = new ObservableCollection<string>();
             VideoDirectories = new ObservableCollection<string>();
-            PictureDirectories = new ObservableCollection<string>();
 
             Initialize();
 
@@ -38,7 +37,6 @@ namespace MusicSpot.ViewModels
             _musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
             _videoDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
             _videoDirectories.Add(@"C:\Programowanie\NET");
-            _pictureDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
         }
 
         public static SettingsViewModel GetInstance()
@@ -92,25 +90,6 @@ namespace MusicSpot.ViewModels
             VideoDirectories.Remove(directory);
         }
 
-
-        private ObservableCollection<string> _pictureDirectories;
-
-        public ObservableCollection<string> PictureDirectories
-        {
-            get => _pictureDirectories;
-            private set => _pictureDirectories = value;
-        }
-
-        public void AddPictureDirectory(string directory)
-        {
-            PictureDirectories.Add(directory);
-        }
-
-        public void RemovePictureDirectory(string directory)
-        {
-            PictureDirectories.Remove(directory);
-        }
-
         private string _musicDirectoriesSelectedItem;
         public string MusicDirectoriesSelectedItem
         {
@@ -129,17 +108,6 @@ namespace MusicSpot.ViewModels
             set
             {
                 _videoDirectoriesSelectedItem = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _pictureDirectoriesSelectedItem;
-        public string PictureDirectoriesSelectedItem
-        {
-            get => _pictureDirectoriesSelectedItem;
-            set
-            {
-                _pictureDirectoriesSelectedItem = value;
                 OnPropertyChanged();
             }
         }

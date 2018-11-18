@@ -17,7 +17,7 @@ namespace MusicSpot.ViewModels
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
 
-        private static readonly IWavePlayer MusicPlayerController = MusicPlayer.MusicPlayer.waveOutDevice;
+        public static IWavePlayer MusicPlayerController = MusicPlayer.MusicPlayer.waveOutDevice;
 
         private MusicViewModel()
         {
@@ -52,6 +52,26 @@ namespace MusicSpot.ViewModels
                                                 CanExecuteDelegate = x => true,
                                                 ExecuteDelegate = MusicPlayer.MusicPlayer.MuteSoundAction
                                             });
+
+        private ICommand nextSongCommand;
+
+        public ICommand NextSongCommand => this.nextSongCommand ??
+                                            (nextSongCommand = new SimpleCommand
+                                            {
+                                                CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickNextSongButton,
+                                                ExecuteDelegate = MusicPlayer.MusicPlayer.NextSongAction
+                                            });
+
+        private ICommand previousSongCommand;
+
+        public ICommand PreviousSongCommand => this.previousSongCommand ??
+                                            (previousSongCommand = new SimpleCommand
+                                            {
+                                                CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPreviousSongButton,
+                                                ExecuteDelegate = MusicPlayer.MusicPlayer.PreviousSongAction
+                                            });
+
+
 
         public void LoadMusicFiles()
         {
@@ -173,16 +193,6 @@ namespace MusicSpot.ViewModels
             set
             {
                 _currentlySelectedSong = value;
-
-                if (CurrentlyPlayedSong != null)
-                {
-                    if (!CurrentlySelectedSong.Path.Equals(CurrentlyPlayedSong.Path))
-                        PlayControlOn = true;
-
-                    if (PlayControlOn == false && CurrentlySelectedSong.Path.Equals(CurrentlyPlayedSong.Path))
-                        PlayControlOn = false;
-                }
-
                 OnPropertyChanged();
             }
         }
@@ -258,7 +268,6 @@ namespace MusicSpot.ViewModels
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
             Task.Run(() => LoadMusicFiles());
-
 
             //var uiContext = SynchronizationContext.Current;
             //Task.Run(() => { uiContext.Send(x => LoadMusicFiles(), null); });

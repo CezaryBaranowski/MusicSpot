@@ -60,9 +60,6 @@
             <controls:MetroTabItem Header="Video" Margin="4,0,-8,0">
                 <views:VideoView DataContext="{Binding VideoViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Pictures" Margin="8,0,-8,0">
-                <views:PictureView DataContext="{Binding PictureViewModel}" />
-            </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>
 
     </Grid>

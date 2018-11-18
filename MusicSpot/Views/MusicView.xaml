@@ -96,6 +96,7 @@
 
 
             <DataGrid x:Name="MainMusicDataGrid"
+              Height="Auto"
               Grid.Column="0"
               Grid.Row="1"
               RenderOptions.ClearTypeHint="Enabled"
@@ -105,7 +106,7 @@
               IsReadOnly="{Binding IsEditingFilesEnabled}"
               SelectionUnit="FullRow"
               ItemsSource="{Binding Path=Songs}"
-              SelectedItem="{Binding CurrentlySelectedSong, Mode=OneWayToSource}"
+              SelectedItem="{Binding CurrentlySelectedSong, Mode=TwoWay}"
               AutoGenerateColumns="False"
               GridLinesVisibility="Horizontal"
               MouseDoubleClick="MainMusicDataGrid_OnMouseDoubleClick"
@@ -117,7 +118,7 @@
                 </DataGrid.CellStyle>
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MetroDataGridColumnHeader}">
-                        <Setter Property="Margin" Value="5,0,5,0"></Setter>
+                        <Setter Property="Margin" Value="0,0,5,0"></Setter>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
@@ -157,45 +158,75 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Width="35" Height="35" Margin="20,15,0,5" BorderThickness="0" Background="Transparent">
+            <Button Width="35" Height="35" Margin="20,15,0,5" BorderThickness="0" Background="Transparent"
+                    Command="{Binding PreviousSongCommand}">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
             </Button>
 
             <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="120,10,0,0" Width="45" Height="45"
-                        Background="Transparent" Grid.Row="0" Grid.Column="0" Click="PlayButton_OnClick"
+                        Background="Transparent" Grid.Row="0" Grid.Column="0"
                     Command="{Binding PlayMusicCommand}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Content" Value="{iconPacks:Material Height=20, Kind=PlayCircleOutline, Width=20}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding PlayControlOn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <DataTrigger Binding="{Binding IsPlaying, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
                                 <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=30, Kind=PlayCircleOutline, Width=30}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding PlayControlOn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                            <DataTrigger Binding="{Binding IsPlaying, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                 <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=30, Kind=PauseCircleOutline, Width=30}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,5" BorderThickness="0" Background="Transparent">
+            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,5" BorderThickness="0" Background="Transparent"
+                    Command="{Binding NextSongCommand}">
                 <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
             </Button>
 
-            <controls:MetroProgressBar x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
+            <Label x:Name="CurrentTrackPositionLabel"
+                   Grid.Row="1" Grid.Column="0"
+                   HorizontalAlignment="Left"
+                   Margin="70,-5,0,8"
+                   VerticalContentAlignment="Top"
+                   Width="40"
+                   Height="25"
+                   >
+                   <TextBlock>
+                    <TextBlock Text="{Binding TrackPosition, StringFormat=m\\:ss}" />
+                   </TextBlock>
+            </Label>
+            <Slider x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
                              Width="Auto" Margin="110,0,0,10"
-                             Height="4"
+                             Height="20"
                              MinHeight="2"
+                             IsEnabled="True"
+                             IsMoveToPointEnabled="True"
+                             ValueChanged="MusicProgressBar_OnValueChanged"
                              Maximum="{Binding TrackTotalTime.TotalSeconds, Mode=OneWay}"
                              Minimum="0"
                              Value="{Binding TrackPosition.TotalSeconds, Mode=OneWay, Delay=100}"
                                        >
-            </controls:MetroProgressBar>
+            </Slider>
+
+            <Label x:Name="CurrentTrackLengthLabel"
+                   Grid.Row="1" Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   Margin="0,-5,0,8"
+                   VerticalContentAlignment="Top"
+                   Width="40"
+                   Height="25"
+            >
+                <TextBlock>
+                    <TextBlock Text="{Binding TrackTotalTime, StringFormat=m\\:ss}" />
+                </TextBlock>
+            </Label>
 
             <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="1" Grid.Row="1" Margin="0,-6,130,0" Command="{Binding MuteCommand}"
+                Grid.Column="1" Grid.Row="1" Margin="30,-10,130,0" Command="{Binding MuteCommand}"
                 BorderThickness="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -217,7 +248,7 @@
                         Maximum="100"
                         Value="{Binding Volume, Mode=TwoWay}"
                         Height="25"
-                        Width="100" Margin="10,-4,0,0">
+                        Width="100" Margin="40,-5,0,0">
             </Slider>
 
         </Grid>

@@ -55,7 +55,6 @@
             <RowDefinition x:Name="General" Height="2*"/>
             <RowDefinition x:Name="MusicProperties" Height="2*"/>
             <RowDefinition x:Name="VideoProperties" Height="*"/>
-            <RowDefinition x:Name="PictureProperties" Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Row="0" x:Name="GeneralSettings">
@@ -170,52 +169,6 @@
                         Content="Remove"
                         IsEnabled="{Binding ElementName=VideoDirectoriesListBox, Path=SelectedItems.Count}"
                         Click="RemoveVideoDirectories"
-                >
-                </Button>
-            </Grid>
-        </Grid>
-        <Grid Row="3" x:Name="PictureSettings">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*">
-                    </ColumnDefinition>
-                    <ColumnDefinition Width="*">
-                    </ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Label FontSize="18">
-                    Pictures
-                </Label>
-                <Label Grid.Column="1" FontSize="12" Margin="0,10,0,0" HorizontalAlignment="Center">Picture Directories</Label>
-                <ListBox Grid.Column="1" 
-                         x:Name="PictureDirectoriesListBox"
-                         BorderBrush="Transparent" 
-                         Background="Transparent"
-                         ItemsSource="{Binding PictureDirectories, Mode=OneWay}"
-                         SelectedItem="{Binding PictureDirectoriesSelectedItem, Mode=OneWayToSource}"
-                         BorderThickness="1" 
-                         Height="60"
-                         Margin="10,30,10,0"
-                         VerticalAlignment="Top"
-                >
-                </ListBox>
-                <Button Grid.Column="1"
-                        Margin="60,90,20,0"
-                        Height="20"
-                        Width="50"
-                        HorizontalAlignment="Left"
-                        Content="Add"
-                        Click="AddPictureDirecotry">
-
-                </Button>
-                <Button Grid.Column="1"
-                        Margin="0,90,80,0"
-                        Height="20"
-                        Width="50"
-                        HorizontalAlignment="Right"
-                        Content="Remove"
-                        IsEnabled="{Binding ElementName=PictureDirectoriesListBox, Path=SelectedItems.Count}"
-                        Click="RemovePictureDirectories"
                 >
                 </Button>
             </Grid>
