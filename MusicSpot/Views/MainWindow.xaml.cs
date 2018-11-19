@@ -12,7 +12,7 @@ namespace MusicSpot
     {
         public MainWindow()
         {
-            var runArgs = Environment.GetCommandLineArgs();
+            //var runArgs = Environment.GetCommandLineArgs();
             InitializeComponent();
             this.DataContext = MainViewModel.GetInstance();
         }

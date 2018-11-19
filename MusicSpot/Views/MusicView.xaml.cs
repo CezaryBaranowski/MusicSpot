@@ -18,6 +18,7 @@ namespace MusicSpot.Views
             InitializeComponent();
             dataModel = MusicViewModel.GetInstance();
             this.DataContext = dataModel;
+            var timespan = new TimeSpan(0, 0, 0, 140);
         }
 
         private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
@@ -32,9 +33,8 @@ namespace MusicSpot.Views
 
         private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (Math.Abs(e.OldValue - e.NewValue) > 1.0)
+            if (Math.Abs(e.OldValue - e.NewValue) > 2)
                 MusicPlayer.MusicPlayer.audioFileReader.CurrentTime = new TimeSpan(0, 0, 0, (int)e.NewValue);
-            //var timespan = new TimeSpan(0, 0, 0, 140);
         }
     }
 }
