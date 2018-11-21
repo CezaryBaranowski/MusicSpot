@@ -52,7 +52,7 @@ namespace MusicSpot.ViewModels
         public ObservableCollection<string> MusicDirectories
         {
             get => _musicDirectories;
-            private set
+            set
             {
                 _musicDirectories = value;
                 OnPropertyChanged();

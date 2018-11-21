@@ -18,12 +18,12 @@ namespace MusicSpot.Views
             InitializeComponent();
             dataModel = MusicViewModel.GetInstance();
             this.DataContext = dataModel;
-            var timespan = new TimeSpan(0, 0, 0, 140);
         }
 
         private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
         {
             MusicViewModel.GetInstance().LoadMusicFiles();
+            MusicViewModel.GetInstance().RefreshSelectedSong();
         }
 
         private void MainMusicDataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -35,6 +35,24 @@ namespace MusicSpot.Views
         {
             if (Math.Abs(e.OldValue - e.NewValue) > 2)
                 MusicPlayer.MusicPlayer.audioFileReader.CurrentTime = new TimeSpan(0, 0, 0, (int)e.NewValue);
+        }
+
+        private void SearchBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                var tb = (TextBox)sender;
+                if (tb != null)
+                {
+                    tb.Text = string.Empty;
+                    MusicViewModel.GetInstance().FilterSongs(null);
+                }
+            }
+        }
+
+        private void Freezable_OnChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

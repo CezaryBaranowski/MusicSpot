@@ -7,8 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using Application = System.Windows.Application;
 
 namespace MusicSpot.ViewModels
 {
@@ -34,6 +34,8 @@ namespace MusicSpot.ViewModels
         {
             return musicViewModel;
         }
+
+        #region Commands
 
         private ICommand playMusicCommand;
 
@@ -71,41 +73,16 @@ namespace MusicSpot.ViewModels
                                                 ExecuteDelegate = MusicPlayer.MusicPlayer.PreviousSongAction
                                             });
 
+        private ICommand filterSongsCommand;
 
+        public ICommand FilterSongsCommand => this.filterSongsCommand ??
+                                              (filterSongsCommand = new SimpleCommand
+                                              {
+                                                  CanExecuteDelegate = CanFilterSongs,
+                                                  ExecuteDelegate = FilterSongs
+                                              });
 
-        public void LoadMusicFiles()
-        {
-            ICollection<string> directories = new List<string>(GetMusicDirectories());
-            IEnumerable<string> files = null;
-            Songs = new ObservableCollection<Song>();
-            foreach (string directory in directories)
-            {
-                files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
-
-                var musicFiles = (files).Where(f =>
-                    new[] { ".mp3", ".mp4", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
-
-                foreach (var musicFile in musicFiles)
-                {
-                    TagLib.File f = TagLib.File.Create(musicFile);
-
-                    var song = new Song
-                    {
-                        Title = f.Tag.Title,
-                        Album = f.Tag.Album,
-                        Artist = f.Tag.JoinedPerformers,
-                        Path = f.Name,
-                        TotalTime = f.Properties.Duration,
-                    };
-                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                    {
-                        if (song.Path != null && song.Artist != null && song.Title != null && song.TotalTime.TotalSeconds > 0)
-                            Songs.Add(song);
-                    });
-                }
-            }
-
-        }
+        #endregion
 
         #region Properties
 
@@ -186,6 +163,17 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        private ObservableCollection<Song> _filteredSongs = new ObservableCollection<Song>();
+        public ObservableCollection<Song> FilteredSongs
+        {
+            get => _filteredSongs;
+            set
+            {
+                _filteredSongs = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Song _currentlySelectedSong;
         public Song CurrentlySelectedSong
         {
@@ -258,20 +246,131 @@ namespace MusicSpot.ViewModels
 
         private IList<string> GetMusicDirectories()
         {
-            if (MusicSelectedDirectory.Equals("All")) return SettingsViewModel.GetInstance().MusicDirectories;
+            if (MusicSelectedDirectory.Equals("All"))
+                return SettingsViewModel.GetInstance().MusicDirectories;
             return new List<string> { MusicSelectedDirectory };
         }
 
-        public void RefreshMusicDirectoriesAsync()
+        public async void RefreshMusicDirectoriesAsync()
         {
             _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
-            Task.Run(() => LoadMusicFiles());
+            await Task.Run(() => LoadMusicFiles());
 
             //var uiContext = SynchronizationContext.Current;
             //Task.Run(() => { uiContext.Send(x => LoadMusicFiles(), null); });
         }
         #endregion
+
+        #region FilteringMethods
+
+        public bool CanFilterSongs(object parameter)
+        {
+            string pattern;
+            System.Windows.Controls.TextBox tb;
+            if (parameter.ToString().StartsWith("System.Controls"))
+            {
+                tb = (System.Windows.Controls.TextBox)parameter;
+                pattern = tb.Text;
+            }
+            else
+                pattern = parameter.ToString();
+
+            if (pattern.Length > 2 || pattern.Length == 0) return true;
+
+            return false;
+        }
+
+        public void FilterSongs(object parameter)                   // Async may be needed
+        {
+            var pattern = (parameter != null) ? parameter.ToString() : "";
+            FilteredSongs = new ObservableCollection<Song>();
+            if (pattern.Length > 2)
+            {
+                LoadSongsByTitle(pattern);
+                LoadSongsByArtist(pattern);
+                if (FilteredSongs.Count == 0)
+                    LoadSongsByAlbum(pattern);
+            }
+            else if (pattern.Length == 0)
+                FilteredSongs = Songs;
+        }
+
+        public void LoadSongsByTitle(string title)
+        {
+            //FilteredSongs = Songs.Where(song => song.Title.Contains(title)) as ObservableCollection<Song>;
+            foreach (var song in Songs)
+            {
+                if (song.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    FilteredSongs.Add(song);
+                }
+            }
+        }
+        public void LoadSongsByArtist(string artist)
+        {
+            foreach (var song in Songs)
+            {
+                if (song.Artist.IndexOf(artist, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    FilteredSongs.Add(song);
+                }
+            }
+        }
+        public void LoadSongsByAlbum(string album)
+        {
+            foreach (var song in Songs)
+            {
+                if (song.Album.IndexOf(album, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    FilteredSongs.Add(song);
+                }
+            }
+        }
+
+        #endregion
+
+        public void RefreshSelectedSong()
+        {
+            CurrentlySelectedSong = CurrentlyPlayedSong;
+        }
+
+        public void LoadMusicFiles()
+        {
+            ICollection<string> directories = new List<string>(GetMusicDirectories());
+            IEnumerable<string> files = null;
+            Songs = new ObservableCollection<Song>();
+            FilteredSongs = new ObservableCollection<Song>();
+            foreach (string directory in directories)
+            {
+                files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+
+                var musicFiles = (files).Where(f =>
+                    new[] { ".mp3", ".mp4", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
+
+                foreach (var musicFile in musicFiles)
+                {
+                    TagLib.File f = TagLib.File.Create(musicFile);
+
+                    var song = new Song
+                    {
+                        Title = f.Tag.Title,
+                        Album = f.Tag.Album,
+                        Artist = f.Tag.JoinedPerformers,
+                        Path = f.Name,
+                        TotalTime = f.Properties.Duration,
+                    };
+                    if (song.Path != null && song.Artist != null && song.Title != null && song.TotalTime.TotalSeconds > 0)
+                        Songs.Add(song);
+
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                    {
+                        FilteredSongs.Add(song);
+                    });
+                }
+            }
+
+        }
     }
 }

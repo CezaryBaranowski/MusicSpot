@@ -51,18 +51,33 @@
             <Button>Artists</Button>
             <Button>Albums</Button>
 
+            <TextBox x:Name="SearchBox" Margin="10, 10, 5, 0"
+                     controls:TextBoxHelper.Watermark="Search..."
+                     controls:TextBoxHelper.UseFloatingWatermark="True"
+                     controls:TextBoxHelper.ButtonCommand="{Binding FilterSongsCommand, Mode=OneWay}"
+                     controls:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=SearchBox}"
+                     Style="{DynamicResource SearchMetroTextBox}"
+                     KeyDown="SearchBox_OnKeyDown"
+                     >
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding FilterSongsCommand, Mode=OneWay}"
+                                CommandParameter="{Binding Text, ElementName=SearchBox}"
+                                Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
+
             <TextBlock
-                      Margin="15,20,0,0"
+                      Margin="10,20,0,0"
                       Text="Block Editing Files" />
             <CheckBox 
                       HorizontalAlignment="Left"
-                      Margin="15,10,0,0"
+                      Margin="10,10,0,0"
                       IsChecked="{Binding IsEditingFilesEnabled}" />
             <TextBlock 
                       Margin="10,10,0,0"
                       Text="Show Music From Directories" />
             <ComboBox x:Name="MusicDirectoriesComboBox"
-                      Margin="15,10,0,0"
+                      Margin="10,10,0,0"
                       HorizontalAlignment="Stretch"
                       SelectedItem="{Binding MusicSelectedDirectory}"
                       SelectedIndex="0"
@@ -105,7 +120,7 @@
               RowHeight="32"
               IsReadOnly="{Binding IsEditingFilesEnabled}"
               SelectionUnit="FullRow"
-              ItemsSource="{Binding Path=Songs}"
+              ItemsSource="{Binding Path=FilteredSongs}"
               SelectedItem="{Binding CurrentlySelectedSong, Mode=TwoWay}"
               AutoGenerateColumns="False"
               GridLinesVisibility="Horizontal"
@@ -159,7 +174,8 @@
             </Grid.RowDefinitions>
 
             <Button Width="35" Height="35" Margin="20,15,0,5" BorderThickness="0" Background="Transparent"
-                    Command="{Binding PreviousSongCommand}">
+                   Command="{Binding PreviousSongCommand}"
+                    >
                 <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
             </Button>
@@ -182,7 +198,8 @@
                 </Button.Style>
             </Button>
             <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,5" BorderThickness="0" Background="Transparent"
-                    Command="{Binding NextSongCommand}">
+                    Command="{Binding NextSongCommand}"
+                    >
                 <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
             </Button>
