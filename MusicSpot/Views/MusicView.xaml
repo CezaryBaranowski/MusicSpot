@@ -89,10 +89,77 @@
         <Image Margin="10,30,0,0"
                Width ="Auto"
                Height="Auto" 
+               MinHeight="150"
                Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
-        
         </Image>
+
+           <Button 
+                   x:Name="ArtistNameButton"
+                   Width="Auto"
+                   Height="Auto"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Cursor="Hand"
+                   Padding="0,0,0,0"
+                   Margin="0,15,0,0"
+                   >
+               <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
+                        <Setter Property="Background" Value="#FF232222"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Style.Triggers>
+                           <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#FF232222" />
+                               <Setter Property="BorderThickness" Value="0"></Setter>
+                           </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+               <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
+                           TextDecorations="Underline"
+                           Background="#FF232222"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="UltraLight"
+                           FontStyle="Normal"
+                           FontFamily="Lucida Sans" Height="25" Width="Auto">
+                   
+               </TextBlock>
+           </Button>   
+            
+            <Button x:Name="TitleNameButton"
+                   Width="Auto"
+                   Height="Auto"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Cursor="Hand"
+                   Padding="0,0,0,0"
+                    Margin="0,0,0,0"
+                   >
+               <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
+                        <Setter Property="Background" Value="#FF232222"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Style.Triggers>
+                           <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#FF232222" />
+                               <Setter Property="BorderThickness" Value="0"></Setter>
+                           </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="{Binding CurrentlyPlayedSong.Title}"
+                           TextDecorations="Underline"
+                           Background="#FF232222"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="UltraLight"
+                           FontStyle="Normal"
+                           FontFamily="Lucida Sans" Height="25" Width="Auto">
+                   
+               </TextBlock>
+           </Button>
 
         </StackPanel>
 
