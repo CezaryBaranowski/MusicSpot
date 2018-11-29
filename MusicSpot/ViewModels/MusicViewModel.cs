@@ -1,14 +1,15 @@
 ﻿using MusicSpot.Models;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using File = TagLib.File;
+using Image = System.Drawing.Image;
 
 namespace MusicSpot.ViewModels
 {
@@ -16,8 +17,6 @@ namespace MusicSpot.ViewModels
     {
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
-
-        public static IWavePlayer MusicPlayerController = MusicPlayer.MusicPlayer.waveOutDevice;
 
         private MusicViewModel()
         {
@@ -39,7 +38,7 @@ namespace MusicSpot.ViewModels
 
         private ICommand playMusicCommand;
 
-        public ICommand PlayMusicCommand => this.playMusicCommand ??
+        public ICommand PlayMusicCommand => playMusicCommand ??
                                             (playMusicCommand = new SimpleCommand
                                             {
                                                 CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPlayPauseButton,
@@ -48,7 +47,7 @@ namespace MusicSpot.ViewModels
 
         private ICommand muteCommand;
 
-        public ICommand MuteCommand => this.muteCommand ??
+        public ICommand MuteCommand => muteCommand ??
                                             (muteCommand = new SimpleCommand
                                             {
                                                 CanExecuteDelegate = x => true,
@@ -57,7 +56,7 @@ namespace MusicSpot.ViewModels
 
         private ICommand nextSongCommand;
 
-        public ICommand NextSongCommand => this.nextSongCommand ??
+        public ICommand NextSongCommand => nextSongCommand ??
                                             (nextSongCommand = new SimpleCommand
                                             {
                                                 CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickNextSongButton,
@@ -66,7 +65,7 @@ namespace MusicSpot.ViewModels
 
         private ICommand previousSongCommand;
 
-        public ICommand PreviousSongCommand => this.previousSongCommand ??
+        public ICommand PreviousSongCommand => previousSongCommand ??
                                             (previousSongCommand = new SimpleCommand
                                             {
                                                 CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPreviousSongButton,
@@ -75,7 +74,7 @@ namespace MusicSpot.ViewModels
 
         private ICommand filterSongsCommand;
 
-        public ICommand FilterSongsCommand => this.filterSongsCommand ??
+        public ICommand FilterSongsCommand => filterSongsCommand ??
                                               (filterSongsCommand = new SimpleCommand
                                               {
                                                   CanExecuteDelegate = CanFilterSongs,
@@ -152,6 +151,29 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        private ObservableCollection<string> _myMusicGenres;
+        public ObservableCollection<string> MyMusicGenres
+        {
+            get => _myMusicGenres;
+            set
+            {
+                _myMusicGenres = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedGenre;
+        public string SelectedGenre
+        {
+            get => _selectedGenre;
+            set
+            {
+                _selectedGenre = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //all loaded songs
         private ObservableCollection<Song> _songs = new ObservableCollection<Song>();
         public ObservableCollection<Song> Songs
         {
@@ -163,6 +185,7 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        //songs visible in datagrid inside view
         private ObservableCollection<Song> _filteredSongs = new ObservableCollection<Song>();
         public ObservableCollection<Song> FilteredSongs
         {
@@ -170,6 +193,17 @@ namespace MusicSpot.ViewModels
             set
             {
                 _filteredSongs = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Playlist> _playlists = new ObservableCollection<Playlist>();
+        public ObservableCollection<Playlist> Playlists
+        {
+            get => _playlists;
+            set
+            {
+                _playlists = value;
                 OnPropertyChanged();
             }
         }
@@ -194,10 +228,10 @@ namespace MusicSpot.ViewModels
                 _currentlyPlayedSong = value;
                 if (_currentlySelectedSong != null)
                 {
-                    TagLib.File f = TagLib.File.Create(CurrentlySelectedSong.Path);
+                    File f = File.Create(CurrentlySelectedSong.Path);
                     byte[] bin = null;
                     if (f.Tag.Pictures.Length > 0)
-                        bin = (byte[])(f.Tag.Pictures[0].Data.Data);
+                        bin = f.Tag.Pictures[0].Data.Data;
                     CurrentlySelectedSong.AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null;
                 }
                 OnPropertyChanged();
@@ -240,6 +274,18 @@ namespace MusicSpot.ViewModels
 
         }
 
+        private bool _genresLoaded;
+
+        public bool GenresLoaded
+        {
+            get => _genresLoaded;
+            set
+            {
+                _genresLoaded = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region MusicDirectoriesManipulating
@@ -268,10 +314,10 @@ namespace MusicSpot.ViewModels
         public bool CanFilterSongs(object parameter)
         {
             string pattern;
-            System.Windows.Controls.TextBox tb;
+            TextBox tb;
             if (parameter.ToString().StartsWith("System.Controls"))
             {
-                tb = (System.Windows.Controls.TextBox)parameter;
+                tb = (TextBox)parameter;
                 pattern = tb.Text;
             }
             else
@@ -299,7 +345,6 @@ namespace MusicSpot.ViewModels
 
         public void LoadSongsByTitle(string title)
         {
-            //FilteredSongs = Songs.Where(song => song.Title.Contains(title)) as ObservableCollection<Song>;
             foreach (var song in Songs)
             {
                 if (song.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -322,11 +367,27 @@ namespace MusicSpot.ViewModels
         {
             foreach (var song in Songs)
             {
-                if (song.Album.IndexOf(album, StringComparison.OrdinalIgnoreCase) >= 0)
+                if (song.Album?.IndexOf(album, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     FilteredSongs.Add(song);
                 }
             }
+        }
+
+        public void LoadSongsByGenre()
+        {
+            string genre = SelectedGenre;
+            if (!genre.Equals("All"))
+            {
+                FilteredSongs = new ObservableCollection<Song>();
+                var songsToAdd = Songs.Where(s =>
+                    s.Genres.Any(g => g.IndexOf(genre, StringComparison.OrdinalIgnoreCase) >= 0));
+                foreach (var song in songsToAdd)
+                {
+                    FilteredSongs.Add(song);
+                }
+            }
+            else FilteredSongs = Songs;
         }
 
         #endregion
@@ -339,9 +400,10 @@ namespace MusicSpot.ViewModels
         public void LoadMusicFiles()
         {
             ICollection<string> directories = new List<string>(GetMusicDirectories());
-            IEnumerable<string> files = null;
+            IEnumerable<string> files;
             Songs = new ObservableCollection<Song>();
             FilteredSongs = new ObservableCollection<Song>();
+            GenresLoaded = false;
             foreach (string directory in directories)
             {
                 files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
@@ -351,7 +413,7 @@ namespace MusicSpot.ViewModels
 
                 foreach (var musicFile in musicFiles)
                 {
-                    TagLib.File f = TagLib.File.Create(musicFile);
+                    File f = File.Create(musicFile);
 
                     var song = new Song
                     {
@@ -360,17 +422,40 @@ namespace MusicSpot.ViewModels
                         Artist = f.Tag.JoinedPerformers,
                         Path = f.Name,
                         TotalTime = f.Properties.Duration,
+                        Genres = f.Tag.Genres
                     };
-                    if (song.Path != null && song.Artist != null && song.Title != null && song.TotalTime.TotalSeconds > 0)
+                    if (song.Path != null && song.Artist != null && song.Title != null &&
+                        song.TotalTime.TotalSeconds > 0)
+                    {
                         Songs.Add(song);
 
-                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                    {
-                        FilteredSongs.Add(song);
-                    });
+                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                        {
+                            FilteredSongs.Add(song);
+                        });
+                    }
                 }
             }
 
+        }
+
+        public void InitGenres()
+        {
+            MyMusicGenres = new ObservableCollection<string>();
+            MyMusicGenres.Add("All");
+
+            foreach (var song in Songs)
+            {
+                var genres = song.Genres as IEnumerable<string>;
+                if (genres.Any())
+                {
+                    genres = genres.Except(MyMusicGenres);
+                    foreach (var genre in genres)
+                    {
+                        MyMusicGenres.Add(genre);
+                    }
+                }
+            }
         }
     }
 }

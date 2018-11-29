@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -7,7 +8,7 @@ using System.Windows.Media.Imaging;
 public class ImageToSourceConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter,
-        System.Globalization.CultureInfo culture)
+        CultureInfo culture)
     {
         Image image = value as Image;
         if (image != null)
@@ -25,7 +26,7 @@ public class ImageToSourceConverter : IValueConverter
     }
 
     public object ConvertBack(object value, Type targetType,
-        object parameter, System.Globalization.CultureInfo culture)
+        object parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

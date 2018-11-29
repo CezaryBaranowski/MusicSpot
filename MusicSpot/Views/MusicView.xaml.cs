@@ -28,7 +28,10 @@ namespace MusicSpot.Views
 
         private void MainMusicDataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MusicPlayer.MusicPlayer.MouseDoubleClickPlayAction(null);
+            System.Windows.Controls.DataGrid dg = sender as DataGrid;
+            object dgc = dg.CurrentItem;
+            MusicPlayer.MusicPlayer.MouseDoubleClickPlayAction(dgc);
+
         }
 
         private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -50,9 +53,16 @@ namespace MusicSpot.Views
             }
         }
 
-        private void Freezable_OnChanged(object sender, EventArgs e)
+        private void MusicGenresComboBox_OnGotMouseCapture(object sender, MouseEventArgs e)
         {
-            throw new NotImplementedException();
+            if (!MusicViewModel.GetInstance().GenresLoaded)
+                MusicViewModel.GetInstance().InitGenres();
+            MusicViewModel.GetInstance().GenresLoaded = true;
+        }
+
+        private void MusicGenresComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MusicViewModel.GetInstance().LoadSongsByGenre();
         }
     }
 }

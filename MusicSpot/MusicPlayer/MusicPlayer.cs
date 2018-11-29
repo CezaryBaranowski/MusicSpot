@@ -1,4 +1,5 @@
-﻿using MusicSpot.ViewModels;
+﻿using MusicSpot.Models;
+using MusicSpot.ViewModels;
 using NAudio.Wave;
 using System;
 using System.Linq;
@@ -23,14 +24,13 @@ namespace MusicSpot.MusicPlayer
             waveOutDevice = new NAudio.Wave.WaveOut();
             audioFileReader = new AudioFileReader(fileName);
             waveOutDevice.Init(audioFileReader);
-            waveOutDevice.Play();
-            timer.Elapsed += UpdateCurrentTrackTime;
-            timer.AutoReset = true;
-            timer.Enabled = true;
-            waveOutDevice.PlaybackStopped += SongEndedAction;
             MusicViewModel.GetInstance().TrackTotalTime = audioFileReader.TotalTime;
             MusicViewModel.GetInstance().IsPlaying = true;
-
+            waveOutDevice.PlaybackStopped += SongEndedAction;
+            timer.Elapsed += UpdateCurrentTrackTime;
+            timer.AutoReset = true;
+            waveOutDevice.Play();
+            timer.Enabled = true;
         }
         public static void PauseAudioFile()
         {
@@ -95,11 +95,15 @@ namespace MusicSpot.MusicPlayer
             }
         }
 
+
+
         public static void MouseDoubleClickPlayAction(object parameter)
         {
-            var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
-            PlayAudioFile(currentlySelectedSong.Path);
-            MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
+
+            //var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
+            Song song = (Song)parameter;
+            PlayAudioFile(song.Path);
+            MusicViewModel.GetInstance().CurrentlyPlayedSong = song;
         }
 
         public static bool CanClickNextSongButton(object parameter)

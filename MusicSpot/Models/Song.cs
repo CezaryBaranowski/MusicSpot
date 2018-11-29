@@ -1,5 +1,6 @@
 ﻿using MusicSpot.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace MusicSpot.Models
@@ -24,6 +25,7 @@ namespace MusicSpot.Models
         public string Title { get; set; }
         public string Album { get; set; }
         public string Path { get; set; }
+        public IList<string> Genres { get; set; }   
 
         private Image _albumArt;
         [CanBeNull]

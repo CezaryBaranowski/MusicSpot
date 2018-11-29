@@ -1,6 +1,6 @@
-﻿using MusicSpot.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MusicSpot.Annotations;
 
 namespace MusicSpot
 {

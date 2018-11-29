@@ -37,6 +37,7 @@
 
         <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
                     Orientation="Vertical" Margin="0,10,0,0"
+                    Grid.RowSpan="2"
                     Background="#FF232222">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -66,13 +67,6 @@
                 </TextBox.InputBindings>
             </TextBox>
 
-            <TextBlock
-                      Margin="10,20,0,0"
-                      Text="Block Editing Files" />
-            <CheckBox 
-                      HorizontalAlignment="Left"
-                      Margin="10,10,0,0"
-                      IsChecked="{Binding IsEditingFilesEnabled}" />
             <TextBlock 
                       Margin="10,10,0,0"
                       Text="Show Music From Directories" />
@@ -85,8 +79,21 @@
                       ItemsSource="{Binding MusicDirectories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             </ComboBox>
 
+            <TextBlock 
+                Margin="10,10,0,0"
+                Text="Select Your Genre" />
+            <ComboBox x:Name="MusicGenresComboBox"
+                      Margin="10,10,0,0"
+                      HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding SelectedGenre}"
+                      SelectedIndex="0"
+                      GotMouseCapture="MusicGenresComboBox_OnGotMouseCapture"
+                      SelectionChanged="MusicGenresComboBox_OnSelectionChanged"
+                      ItemsSource="{Binding MyMusicGenres, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
 
-        <Image Margin="10,30,0,0"
+
+            <Image Margin="10,30,0,0"
                Width ="Auto"
                Height="Auto" 
                MinHeight="150"
@@ -98,11 +105,11 @@
                    x:Name="ArtistNameButton"
                    Width="Auto"
                    Height="Auto"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                   Margin="0,15,0,0"
+                   Margin="10,15,0,0"
                    >
                <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
@@ -117,13 +124,16 @@
                     </Style>
                 </Button.Style>
                <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Center"
+                          TextWrapping="Wrap"
                            TextDecorations="Underline"
                            Background="#FF232222"
                            Foreground="White"
                            FontSize="14"
                            FontWeight="UltraLight"
                            FontStyle="Normal"
-                           FontFamily="Lucida Sans" Height="25" Width="Auto">
+                           FontFamily="Lucida Sans" Height="Auto" Width="Auto">
                    
                </TextBlock>
            </Button>   
@@ -135,7 +145,7 @@
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                    Margin="0,0,0,0"
+                   Margin="10,10,0,0"
                    >
                <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
@@ -149,14 +159,21 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
+
                 <TextBlock Text="{Binding CurrentlyPlayedSong.Title}"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
                            TextDecorations="Underline"
                            Background="#FF232222"
                            Foreground="White"
                            FontSize="14"
                            FontWeight="UltraLight"
                            FontStyle="Normal"
-                           FontFamily="Lucida Sans" Height="25" Width="Auto">
+                           MinHeight="25"
+                           FontFamily="Lucida Sans" 
+                           Height="Auto" 
+                           Width="Auto">
                    
                </TextBlock>
            </Button>
@@ -175,9 +192,17 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
+            <GridSplitter HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Bottom" 
+                          ResizeBehavior="CurrentAndNext"
+                          ResizeDirection="Rows"
+                          Grid.Row="0"
+                          Height="10" Background="#FFBCBCBC"/>
 
 
             <DataGrid x:Name="MainMusicDataGrid"
+                      CanUserReorderColumns="True"
+                      CanUserResizeRows="True"
               Height="Auto"
               Grid.Column="0"
               Grid.Row="1"
@@ -223,6 +248,15 @@
                                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
                 </DataGrid.Columns>
+
+                <Control.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Play"></MenuItem>
+                        <MenuItem Header="Add to playlist"></MenuItem>
+                        <MenuItem Header="Remove from queue"></MenuItem>
+                        <MenuItem Header="Go to directory"></MenuItem>
+                    </ContextMenu>
+                </Control.ContextMenu>
             </DataGrid>
 
         </Grid>
