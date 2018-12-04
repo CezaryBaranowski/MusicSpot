@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using MusicSpot.MahAppsMetro;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
-using MusicSpot.MahAppsMetro;
 
 namespace MusicSpot.ViewModels
 {
@@ -62,14 +62,14 @@ namespace MusicSpot.ViewModels
         {
             _musicDirectories.Add(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectoriesAsync();
+            MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
         }
 
         public void RemoveMusicDirectory(string directory)
         {
             _musicDirectories.Remove(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectoriesAsync();
+            MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
         }
 
         private ObservableCollection<string> _videoDirectories;

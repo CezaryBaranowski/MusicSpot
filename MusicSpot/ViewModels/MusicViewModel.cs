@@ -18,20 +18,34 @@ namespace MusicSpot.ViewModels
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
 
+        static MusicViewModel()
+        {
+        }
+
         private MusicViewModel()
+        {
+            InitMusicViewModel();
+        }
+
+        public static MusicViewModel GetInstance()
+        {
+            return musicViewModel;
+        }
+
+        private void InitMusicViewModel()
         {
             IsPlaying = false;
             PlayControlOn = true;
             IsMuted = false;
             IsEditingFilesEnabled = true;
             Volume = 100.0f;
+            // PlaylistManager.InitPlaylists();
+            RefreshMusicDirectoriesAndLoadSongsAsync();
+            MyMusicGenres = new ObservableCollection<string> { "All" };
+            PlaylistsNames.Add("None");
+            SelectedPlaylistName = "None";
             MusicSelectedDirectory = "All";
-            RefreshMusicDirectoriesAsync();
-        }
-
-        public static MusicViewModel GetInstance()
-        {
-            return musicViewModel;
+            SelectedGenre = "All";
         }
 
         #region Commands
@@ -80,6 +94,41 @@ namespace MusicSpot.ViewModels
                                                   CanExecuteDelegate = CanFilterSongs,
                                                   ExecuteDelegate = FilterSongs
                                               });
+
+        private ICommand removeSongFromPlaylistCommand;
+
+        public ICommand RemoveSongFromPlaylistCommand => removeSongFromPlaylistCommand ??
+                                              (removeSongFromPlaylistCommand = new SimpleCommand
+                                              {
+                                                  CanExecuteDelegate = CanRemoveSongFromPlaylist,
+                                                  ExecuteDelegate = RemoveSongFromPlaylist
+                                              });
+
+        public bool CanRemoveSongFromPlaylist(object parameter)
+        {
+            if (!SelectedPlaylistName.Equals("None"))
+                return true;
+            return false;
+        }
+
+        public void RemoveSongFromPlaylist(object parameter)
+        {
+            var css = CurrentlySelectedSong;
+            var csp = Playlists.FirstOrDefault(p => p.Name.Equals(SelectedPlaylistName));
+            if (csp != null) PlaylistManager.RemoveSongFromPlaylist(csp.Name, css);
+            var par = parameter;
+        }
+
+        //private ICommand addToPlaylistCommand;
+
+        //public ICommand AddToPlaylistCommand => addToPlaylistCommand ??
+        //                                      (addToPlaylistCommand = new SimpleCommand
+        //                                      {
+        //                                          CanExecuteDelegate = CanFilterSongs,
+        //                                          ExecuteDelegate = FilterSongs
+        //                                      });
+
+
 
         #endregion
 
@@ -151,28 +200,6 @@ namespace MusicSpot.ViewModels
             }
         }
 
-        private ObservableCollection<string> _myMusicGenres;
-        public ObservableCollection<string> MyMusicGenres
-        {
-            get => _myMusicGenres;
-            set
-            {
-                _myMusicGenres = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _selectedGenre;
-        public string SelectedGenre
-        {
-            get => _selectedGenre;
-            set
-            {
-                _selectedGenre = value;
-                OnPropertyChanged();
-            }
-        }
-
         //all loaded songs
         private ObservableCollection<Song> _songs = new ObservableCollection<Song>();
         public ObservableCollection<Song> Songs
@@ -197,13 +224,41 @@ namespace MusicSpot.ViewModels
             }
         }
 
-        private ObservableCollection<Playlist> _playlists = new ObservableCollection<Playlist>();
-        public ObservableCollection<Playlist> Playlists
+        private IList<Playlist> _playlists = new ObservableCollection<Playlist>();
+        public IList<Playlist> Playlists
         {
             get => _playlists;
             set
             {
                 _playlists = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<string> _playlistsNames = new ObservableCollection<string>();
+        public ObservableCollection<string> PlaylistsNames
+        {
+            get => _playlistsNames;
+            set
+            {
+                _playlistsNames = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> PlaylistNamesInContextMenu
+        {
+            get => new ObservableCollection<string>(_playlistsNames.Skip(1));
+        }
+
+        private string _selectedPlaylistName;
+
+        public string SelectedPlaylistName
+        {
+            get => _selectedPlaylistName;
+            set
+            {
+                _selectedPlaylistName = value;
                 OnPropertyChanged();
             }
         }
@@ -286,26 +341,49 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        private ObservableCollection<string> _myMusicGenres;
+        public ObservableCollection<string> MyMusicGenres
+        {
+            get => _myMusicGenres;
+            set
+            {
+                _myMusicGenres = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedGenre;
+        public string SelectedGenre
+        {
+            get => _selectedGenre;
+            set
+            {
+                _selectedGenre = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region MusicDirectoriesManipulating
 
-        private IList<string> GetMusicDirectories()
+        public IList<string> GetMusicDirectories()
         {
             if (MusicSelectedDirectory.Equals("All"))
                 return SettingsViewModel.GetInstance().MusicDirectories;
             return new List<string> { MusicSelectedDirectory };
         }
 
-        public async void RefreshMusicDirectoriesAsync()
+        public async void RefreshMusicDirectoriesAndLoadSongsAsync()
         {
             _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
-            await Task.Run(() => LoadMusicFiles());
+            await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories())));
+            //LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories()));
 
             //var uiContext = SynchronizationContext.Current;
-            //Task.Run(() => { uiContext.Send(x => LoadMusicFiles(), null); });
+            //Task.Run(() => { uiContext.Send(x => LoadMusicFilesFromDirectories(), null); });
         }
         #endregion
 
@@ -392,57 +470,79 @@ namespace MusicSpot.ViewModels
 
         #endregion
 
+        public async void LoadSongsFromPlaylist()
+        {
+            string currentlySelectedPlaylistName = SelectedPlaylistName;
+
+            if (!currentlySelectedPlaylistName.Equals("None"))
+            {
+                Playlist selectedPlaylist = Playlists
+                .FirstOrDefault(p => (p.Name.Equals(currentlySelectedPlaylistName)));
+
+                if (selectedPlaylist != null)
+                {
+                    IEnumerable<string> musicFilesStrings = selectedPlaylist.Songs.Select(s => s.Path);
+                    LoadSongsToMusicView(musicFilesStrings);
+                }
+            }
+            else await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories())));
+        }
+
         public void RefreshSelectedSong()
         {
             CurrentlySelectedSong = CurrentlyPlayedSong;
         }
 
-        public void LoadMusicFiles()
+        public IEnumerable<string> LoadMusicFilesFromDirectories(ICollection<string> directories)
         {
-            ICollection<string> directories = new List<string>(GetMusicDirectories());
-            IEnumerable<string> files;
+            IEnumerable<string> musicFiles = new List<string>();
+
+            foreach (string directory in directories)
+            {
+                IEnumerable<string> files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+
+                musicFiles = musicFiles.Concat((files).Where(f =>
+                    new[] { ".mp3", ".mp4", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f))));
+            }
+
+            return musicFiles;
+        }
+
+        public void LoadSongsToMusicView(IEnumerable<string> musicFilesStrings)
+        {
+
             Songs = new ObservableCollection<Song>();
             FilteredSongs = new ObservableCollection<Song>();
             GenresLoaded = false;
-            foreach (string directory in directories)
+            if (!musicFilesStrings.Any())
+                return;
+
+            foreach (var musicFile in musicFilesStrings)
             {
-                files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+                File f = File.Create(musicFile);
 
-                var musicFiles = (files).Where(f =>
-                    new[] { ".mp3", ".mp4", ".flac", ".wma", ".wav" }.Contains(Path.GetExtension(f)));
-
-                foreach (var musicFile in musicFiles)
+                var song = new Song
                 {
-                    File f = File.Create(musicFile);
+                    Title = f.Tag.Title,
+                    Album = f.Tag.Album,
+                    Artist = f.Tag.JoinedPerformers,
+                    Path = f.Name,
+                    TotalTime = f.Properties.Duration,
+                    Genres = f.Tag.Genres
+                };
+                if (song.Path != null && song.Artist != null && song.Title != null &&
+                    song.TotalTime.TotalSeconds > 0)
+                {
+                    Songs.Add(song);
 
-                    var song = new Song
-                    {
-                        Title = f.Tag.Title,
-                        Album = f.Tag.Album,
-                        Artist = f.Tag.JoinedPerformers,
-                        Path = f.Name,
-                        TotalTime = f.Properties.Duration,
-                        Genres = f.Tag.Genres
-                    };
-                    if (song.Path != null && song.Artist != null && song.Title != null &&
-                        song.TotalTime.TotalSeconds > 0)
-                    {
-                        Songs.Add(song);
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                        {
-                            FilteredSongs.Add(song);
-                        });
-                    }
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate { FilteredSongs.Add(song); });
                 }
             }
-
         }
 
         public void InitGenres()
         {
-            MyMusicGenres = new ObservableCollection<string>();
-            MyMusicGenres.Add("All");
+            MyMusicGenres = new ObservableCollection<string> { "All" };
 
             foreach (var song in Songs)
             {
@@ -457,5 +557,6 @@ namespace MusicSpot.ViewModels
                 }
             }
         }
+
     }
 }

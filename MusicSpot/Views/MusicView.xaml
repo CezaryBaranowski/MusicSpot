@@ -13,17 +13,15 @@
        >
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
-             x:Key="ImageToSourceConverter">
-            </global2:ImageToSourceConverter>
-        </ResourceDictionary>
+        <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
+                                       x:Key="ImageToSourceConverter">
+        </global2:ImageToSourceConverter>
     </UserControl.Resources>
 
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="7*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
 
         </Grid.RowDefinitions>
@@ -50,14 +48,13 @@
             <Label FontSize="18" FontStretch="Expanded" Margin="10,0,0,0">Local Music</Label>
             <Button>Songs</Button>
             <Button>Artists</Button>
-            <Button>Albums</Button>
+
 
             <TextBox x:Name="SearchBox" Margin="10, 10, 5, 0"
                      controls:TextBoxHelper.Watermark="Search..."
                      controls:TextBoxHelper.UseFloatingWatermark="True"
                      controls:TextBoxHelper.ButtonCommand="{Binding FilterSongsCommand, Mode=OneWay}"
                      controls:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=SearchBox}"
-                     Style="{DynamicResource SearchMetroTextBox}"
                      KeyDown="SearchBox_OnKeyDown"
                      >
                 <TextBox.InputBindings>
@@ -65,32 +62,73 @@
                                 CommandParameter="{Binding Text, ElementName=SearchBox}"
                                 Key="Enter"/>
                 </TextBox.InputBindings>
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </TextBox.Resources>
             </TextBox>
 
+
             <TextBlock 
-                      Margin="10,10,0,0"
+                      Margin="10,10,5,0"
                       Text="Show Music From Directories" />
             <ComboBox x:Name="MusicDirectoriesComboBox"
-                      Margin="10,10,0,0"
+                      Margin="10,10,3,0"
+                      UseLayoutRounding="True"
                       HorizontalAlignment="Stretch"
                       SelectedItem="{Binding MusicSelectedDirectory}"
                       SelectedIndex="0"
                       SelectionChanged="ChangeMusicDirectory"
-                      ItemsSource="{Binding MusicDirectories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                      ItemsSource="{Binding MusicDirectories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                      Style="{DynamicResource ComboBoxStyle1}"
+                      >
             </ComboBox>
 
             <TextBlock 
                 Margin="10,10,0,0"
                 Text="Select Your Genre" />
             <ComboBox x:Name="MusicGenresComboBox"
-                      Margin="10,10,0,0"
+                      Margin="10,10,3,0"
                       HorizontalAlignment="Stretch"
                       SelectedItem="{Binding SelectedGenre}"
                       SelectedIndex="0"
                       GotMouseCapture="MusicGenresComboBox_OnGotMouseCapture"
                       SelectionChanged="MusicGenresComboBox_OnSelectionChanged"
-                      ItemsSource="{Binding MyMusicGenres, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                      ItemsSource="{Binding MyMusicGenres, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{DynamicResource ComboBoxStyle1}"
+                      >
             </ComboBox>
+
+            <TextBlock 
+                Margin="10,10,0,0"
+                Text="Your Playlists" />
+            <ComboBox x:Name="PlaylistsComboBox"
+                      Margin="10,10,3,0"
+                      HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding SelectedPlaylistName}"
+                      SelectedIndex="0"
+                      SelectionChanged="PlaylistsComboBox_OnSelectionChanged"
+                      ItemsSource="{Binding PlaylistsNames,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{DynamicResource ComboBoxStyle1}"
+                      >
+            </ComboBox>
+
+            <Button
+                Margin ="20,15,15,0"
+                Content="New Playlist" HorizontalAlignment="Stretch"
+                Click="ShowPlaylistCreationDialog"
+                >
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="CornflowerBlue"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
 
             <Image Margin="10,30,0,0"
@@ -99,34 +137,43 @@
                MinHeight="150"
                Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
-        </Image>
+                <Image.Effect>
+                    <DropShadowEffect BlurRadius="50"></DropShadowEffect>
+                </Image.Effect>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="UseLayoutRounding" Value="True"></Setter>
+                    </Style>
+                </Image.Style>
+            </Image>
 
-           <Button 
+            <Button 
                    x:Name="ArtistNameButton"
                    Width="Auto"
                    Height="Auto"
-                   VerticalAlignment="Top"
+                   VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
                    Margin="10,15,0,0"
                    >
-               <Button.Style>
+                <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Background" Value="#FF232222"></Setter>
                         <Setter Property="BorderThickness" Value="0"></Setter>
                         <Style.Triggers>
-                           <Trigger Property="IsMouseOver" Value="true">
+                            <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#FF232222" />
-                               <Setter Property="BorderThickness" Value="0"></Setter>
-                           </Trigger>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-               <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
-                          VerticalAlignment="Top"
+                <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
+                          VerticalAlignment="Center"
                           HorizontalAlignment="Center"
                           TextWrapping="Wrap"
+                          TextTrimming="WordEllipsis"
                            TextDecorations="Underline"
                            Background="#FF232222"
                            Foreground="White"
@@ -134,10 +181,10 @@
                            FontWeight="UltraLight"
                            FontStyle="Normal"
                            FontFamily="Lucida Sans" Height="Auto" Width="Auto">
-                   
-               </TextBlock>
-           </Button>   
-            
+
+                </TextBlock>
+            </Button>
+
             <Button x:Name="TitleNameButton"
                    Width="Auto"
                    Height="Auto"
@@ -145,17 +192,17 @@
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                   Margin="10,10,0,0"
+                   Margin="10,5,0,0"
                    >
-               <Button.Style>
+                <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Background" Value="#FF232222"></Setter>
                         <Setter Property="BorderThickness" Value="0"></Setter>
                         <Style.Triggers>
-                           <Trigger Property="IsMouseOver" Value="true">
+                            <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#FF232222" />
-                               <Setter Property="BorderThickness" Value="0"></Setter>
-                           </Trigger>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
@@ -174,9 +221,9 @@
                            FontFamily="Lucida Sans" 
                            Height="Auto" 
                            Width="Auto">
-                   
-               </TextBlock>
-           </Button>
+
+                </TextBlock>
+            </Button>
 
         </StackPanel>
 
@@ -186,23 +233,49 @@
         <Grid x:Name="MainMusicPanel"
             Row="0"
             Column="1"
+              ClipToBounds="True"
               Margin="5,5,0,0"
             HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="1*" MinHeight="200"></RowDefinition>
                 <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="Auto" MinHeight="5"></RowDefinition>
             </Grid.RowDefinitions>
             <GridSplitter HorizontalAlignment="Stretch" 
                           VerticalAlignment="Bottom" 
                           ResizeBehavior="CurrentAndNext"
                           ResizeDirection="Rows"
                           Grid.Row="0"
-                          Height="10" Background="#FFBCBCBC"/>
+                          BorderThickness="2"
+                          Height="5" Background="#FFBCBCBC"/>
 
+
+            <Image Grid.Column="0"
+                   Grid.Row="0"
+                Margin="10,10,10,10"
+                   Stretch="UniformToFill"
+                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
+            >
+
+                <Image.Effect>
+                    <BlurEffect Radius="20"></BlurEffect>
+                    
+                </Image.Effect>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="ClipToBounds" Value="True"></Setter>
+                        <Setter Property="Stretch" Value="None"></Setter>
+                    </Style>
+                </Image.Style>
+            </Image>
 
             <DataGrid x:Name="MainMusicDataGrid"
                       CanUserReorderColumns="True"
                       CanUserResizeRows="True"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Stretch"
+                      VerticalContentAlignment="Top"
+                      VerticalScrollBarVisibility="Auto"
               Height="Auto"
               Grid.Column="0"
               Grid.Row="1"
@@ -221,7 +294,7 @@
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
                         <Setter Property="Margin" Value="5,0,20,0"></Setter>
-                    </Style> 
+                    </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MetroDataGridColumnHeader}">
@@ -243,16 +316,24 @@
                                         IsReadOnly="True"
                                         Header="Length"
                                         Width="*">
-                                        <DataGridTextColumn.Binding>
-                                        <Binding Path="TotalTime" StringFormat="m\:ss"/>
-                                        </DataGridTextColumn.Binding>
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="TotalTime" StringFormat="m\:ss"/>
+                        </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
                 </DataGrid.Columns>
 
                 <Control.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Play"></MenuItem>
-                        <MenuItem Header="Add to playlist"></MenuItem>
+                    <ContextMenu >
+                        <MenuItem Header="Play" Click="ContextMenuItem_OnClick"></MenuItem>
+                        <MenuItem Header="Add to playlist"                               
+                                  ItemsSource="{Binding PlaylistNamesInContextMenu, Mode=OneWay}"
+                                  Click="MenuItem_OnClick"
+                                  CommandParameter=""
+                                  >
+                        </MenuItem>
+                        <MenuItem Header="Remove From Playlist"
+                            Command="{Binding RemoveSongFromPlaylistCommand}">
+                        </MenuItem>
                         <MenuItem Header="Remove from queue"></MenuItem>
                         <MenuItem Header="Go to directory"></MenuItem>
                     </ContextMenu>
@@ -266,22 +347,23 @@
 
         <Grid Column="1" Row="1" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="625*"></ColumnDefinition>
+                <ColumnDefinition Width="53*"></ColumnDefinition>
+                <ColumnDefinition Width="155*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Width="35" Height="35" Margin="20,15,0,5" BorderThickness="0" Background="Transparent"
+            <Button Width="35" Height="35" Margin="305,21,285,11" BorderThickness="0" Background="Transparent"
                    Command="{Binding PreviousSongCommand}"
                     >
                 <iconPacks:Material Width="25" Height="20" Kind="SkipPrevious"
                     />
             </Button>
 
-            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="120,10,0,0" Width="45" Height="45"
+            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="350,16,230,6" Width="45" Height="45"
                         Background="Transparent" Grid.Row="0" Grid.Column="0"
                     Command="{Binding PlayMusicCommand}">
                 <Button.Style>
@@ -298,27 +380,26 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="220,15,0,5" BorderThickness="0" Background="Transparent"
+            <Button Grid.Row="0" Grid.Column="0" Height="35" Width="35" Margin="405,21,185,11" BorderThickness="0" Background="Transparent"
                     Command="{Binding NextSongCommand}"
                     >
                 <iconPacks:Material Width="25" Height="20" Kind="SkipNext"
                     />
             </Button>
 
-            <Label x:Name="CurrentTrackPositionLabel"
-                   Grid.Row="1" Grid.Column="0"
+            <Label x:Name="CurrentTrackPositionLabel" Grid.Column="0"
                    HorizontalAlignment="Left"
-                   Margin="70,-5,0,8"
+                   Margin="70,64,0,10"
                    VerticalContentAlignment="Top"
                    Width="40"
-                   Height="25"
+                   Height="25" Grid.RowSpan="2"
                    >
-                   <TextBlock>
+                <TextBlock>
                     <TextBlock Text="{Binding TrackPosition, StringFormat=m\\:ss}" />
                    </TextBlock>
             </Label>
             <Slider x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
-                             Width="Auto" Margin="110,0,0,10"
+                             Width="Auto" Margin="110,1,0,12"
                              Height="20"
                              MinHeight="2"
                              IsEnabled="True"
@@ -330,13 +411,12 @@
                                        >
             </Slider>
 
-            <Label x:Name="CurrentTrackLengthLabel"
-                   Grid.Row="1" Grid.Column="1"
+            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1"
                    HorizontalAlignment="Left"
-                   Margin="0,-5,0,8"
+                   Margin="0,64,0,10"
                    VerticalContentAlignment="Top"
                    Width="40"
-                   Height="25"
+                   Height="25" Grid.RowSpan="2"
             >
                 <TextBlock>
                     <TextBlock Text="{Binding TrackTotalTime, StringFormat=m\\:ss}" />
@@ -344,8 +424,8 @@
             </Label>
 
             <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="1" Grid.Row="1" Margin="30,-10,130,0" Command="{Binding MuteCommand}"
-                BorderThickness="0">
+                Grid.Column="1" Margin="41,66,141,9" Command="{Binding MuteCommand}"
+                BorderThickness="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Content" Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeOff}"/>
@@ -361,12 +441,12 @@
                 </Button.Style>
             </Button>
 
-            <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="1"
+            <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="2"
                         Minimum="0"
                         Maximum="100"
                         Value="{Binding Volume, Mode=TwoWay}"
                         Height="25"
-                        Width="100" Margin="40,-5,0,0">
+                        Width="100" Margin="21,1,34,6">
             </Slider>
 
         </Grid>

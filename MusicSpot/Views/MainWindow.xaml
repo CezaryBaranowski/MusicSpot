@@ -5,7 +5,7 @@
         xmlns:views="clr-namespace:MusicSpot.Views"
         Title="MusicSpot" Height="800" Width="1200" MinHeight="600" MinWidth="800"
                       ResizeMode="CanResizeWithGrip"
-                                            
+                    
 >
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
@@ -57,8 +57,8 @@
             <controls:MetroTabItem Header="Music" Margin="0,0,-8,0">
                 <views:MusicView DataContext="{Binding MusicViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Video" Margin="4,0,-8,0">
-                <views:VideoView DataContext="{Binding VideoViewModel}" />
+            <controls:MetroTabItem Header="Discover" Margin="4,0,-8,0">
+                <views:VideoView DataContext="{Binding MusicViewModel}" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedSingleRowTabControl>
 
