@@ -317,6 +317,18 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        private int _trackPositionSeconds;
+
+        public int TrackPositionSeconds
+        {
+            get => _trackPosition.Seconds;
+            set
+            {
+                _trackPositionSeconds = value;
+                OnPropertyChanged();
+            }
+        }
+
         private TimeSpan _trackTotalTime;
         public TimeSpan TrackTotalTime
         {

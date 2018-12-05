@@ -387,19 +387,19 @@
                     />
             </Button>
 
-            <Label x:Name="CurrentTrackPositionLabel" Grid.Column="0"
+            <Label x:Name="CurrentTrackPositionLabel" Grid.Row="1" Grid.Column="0"
                    HorizontalAlignment="Left"
-                   Margin="70,64,0,10"
+                   Margin="70,0,0,12"
                    VerticalContentAlignment="Top"
                    Width="40"
-                   Height="25" Grid.RowSpan="2"
+                   Height="25"
                    >
                 <TextBlock>
                     <TextBlock Text="{Binding TrackPosition, StringFormat=m\\:ss}" />
                    </TextBlock>
             </Label>
             <Slider x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
-                             Width="Auto" Margin="110,1,0,12"
+                             Width="Auto" Margin="110,0,0,12"
                              Height="20"
                              MinHeight="2"
                              IsEnabled="True"
@@ -407,16 +407,16 @@
                              ValueChanged="MusicProgressBar_OnValueChanged"
                              Maximum="{Binding TrackTotalTime.TotalSeconds, Mode=OneWay}"
                              Minimum="0"
-                             Value="{Binding TrackPosition.TotalSeconds, Mode=OneWay, Delay=100}"
+                             Value="{Binding TrackPosition.TotalSeconds, Mode=OneWay, Delay=500}"
                                        >
             </Slider>
 
-            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1"
+            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1" Grid.Row="1"
                    HorizontalAlignment="Left"
-                   Margin="0,64,0,10"
+                   Margin="8,0,0,12"
                    VerticalContentAlignment="Top"
                    Width="40"
-                   Height="25" Grid.RowSpan="2"
+                   Height="25"
             >
                 <TextBlock>
                     <TextBlock Text="{Binding TrackTotalTime, StringFormat=m\\:ss}" />
@@ -424,7 +424,7 @@
             </Label>
 
             <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="1" Margin="41,66,141,9" Command="{Binding MuteCommand}"
+                Grid.Column="2" Grid.Row="1" Margin="0,0,135,10" Command="{Binding MuteCommand}"
                 BorderThickness="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -446,7 +446,7 @@
                         Maximum="100"
                         Value="{Binding Volume, Mode=TwoWay}"
                         Height="25"
-                        Width="100" Margin="21,1,34,6">
+                        Width="100" Margin="25,0,34,8">
             </Slider>
 
         </Grid>

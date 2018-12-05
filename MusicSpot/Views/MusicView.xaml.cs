@@ -47,7 +47,7 @@ namespace MusicSpot.Views
         private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (Math.Abs(e.OldValue - e.NewValue) > 2)
-                MusicPlayer.MusicPlayer.audioFileReader.CurrentTime = new TimeSpan(0, 0, 0, (int)e.NewValue);
+                MusicPlayer.MusicPlayer.RepositionSong(new TimeSpan(0, 0, 0, (int)e.NewValue)); 
         }
 
         private void SearchBox_OnKeyDown(object sender, KeyEventArgs e)

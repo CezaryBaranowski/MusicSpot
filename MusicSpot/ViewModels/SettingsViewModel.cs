@@ -34,8 +34,7 @@ namespace MusicSpot.ViewModels
         {
             //         _musicDirectories.Add(@"E:\Muzyka\Muzyka\Klasyczna");
             _musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
-            _videoDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
-            _videoDirectories.Add(@"C:\Programowanie\NET");
+            _musicDirectories.Add(@"E:\Muzyka\Muzyka\Rock");
         }
 
         public static SettingsViewModel GetInstance()
