@@ -126,6 +126,7 @@
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
     <Compile Include="Models\Playlist.cs" />
+    <Compile Include="Models\PlaylistManager.cs" />
     <Compile Include="Models\SimpleCommand.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\Video.cs" />
