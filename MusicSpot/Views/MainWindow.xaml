@@ -10,7 +10,8 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout
-                Position="Right"
+                Margin="0,0,0,0"
+                Position="Bottom"
                 AreAnimationsEnabled="True"
                 Header="MusicSpot Settings"
                 Theme="Adapt"

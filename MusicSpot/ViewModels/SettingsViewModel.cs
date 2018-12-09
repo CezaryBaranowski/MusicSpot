@@ -34,7 +34,7 @@ namespace MusicSpot.ViewModels
         {
             //         _musicDirectories.Add(@"E:\Muzyka\Muzyka\Klasyczna");
             _musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
-            _musicDirectories.Add(@"E:\Muzyka\Muzyka\Rock");
+            //_musicDirectories.Add(@"E:\Muzyka\Muzyka\Rock");
         }
 
         public static SettingsViewModel GetInstance()
@@ -78,16 +78,6 @@ namespace MusicSpot.ViewModels
             private set => _videoDirectories = value;
         }
 
-        public void AddVideoDirectory(string directory)
-        {
-            VideoDirectories.Add(directory);
-        }
-
-        public void RemoveVideoDirectory(string directory)
-        {
-            VideoDirectories.Remove(directory);
-        }
-
         private string _musicDirectoriesSelectedItem;
         public string MusicDirectoriesSelectedItem
         {
@@ -95,17 +85,6 @@ namespace MusicSpot.ViewModels
             set
             {
                 _musicDirectoriesSelectedItem = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _videoDirectoriesSelectedItem;
-        public string VideoDirectoriesSelectedItem
-        {
-            get => _videoDirectoriesSelectedItem;
-            set
-            {
-                _videoDirectoriesSelectedItem = value;
                 OnPropertyChanged();
             }
         }
