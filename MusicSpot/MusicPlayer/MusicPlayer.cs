@@ -9,7 +9,6 @@ namespace MusicSpot.MusicPlayer
 {
     static class MusicPlayer
     {
-
         // playing device representation
         public static IWavePlayer waveOutDevice = new NAudio.Wave.WaveOutEvent();
 
@@ -17,6 +16,8 @@ namespace MusicSpot.MusicPlayer
         //private static NAudio.Vorbis.VorbisWaveReader vorbisAudioFileReader;
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer(50);
+
+        private static int songIndex = 0;
 
         public static void PlayAudioFile(string fileName)
         {
@@ -89,7 +90,6 @@ namespace MusicSpot.MusicPlayer
                 {
                     if (currentlySelectedSong.Path.Equals(currentlyPlayedSong.Path) == false)
                     {
-                        timer.Stop();
                         PlayAudioFile(currentlySelectedSong.Path);
                         MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
                     }
@@ -97,7 +97,6 @@ namespace MusicSpot.MusicPlayer
                 }
                 else
                 {
-                    timer.Stop();
                     PlayAudioFile(currentlySelectedSong.Path);
                     MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
                 }
@@ -108,22 +107,21 @@ namespace MusicSpot.MusicPlayer
             }
         }
 
-
-
         public static void MouseDoubleClickPlayAction(object parameter)
         {
-
-            //var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
             Song song = (Song)parameter;
-            MusicViewModel.GetInstance().CurrentlyPlayedSong = song;
-            PlayAudioFile(song.Path);
-            // MusicViewModel.GetInstance().CurrentlyPlayedSong = song;
+            var currentSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
+            if (currentSong == null || song.Path != currentSong.Path)
+            {
+                MusicViewModel.GetInstance().CurrentlyPlayedSong = song;
+                songIndex = MusicViewModel.GetInstance().FilteredSongs.IndexOf(song);
+                PlayAudioFile(song.Path);
+            }
         }
 
         public static bool CanClickNextSongButton(object parameter)
         {
-            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
-            var currentlyPlayedSongIndex = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlyPlayedSong);
+            var currentlyPlayedSongIndex = songIndex;
             if (currentlyPlayedSongIndex < MusicViewModel.GetInstance().FilteredSongs.Count - 1)
                 return true;
             return false;
@@ -131,18 +129,17 @@ namespace MusicSpot.MusicPlayer
 
         public static void NextSongAction(object parameter)
         {
-            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
-            var index = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlyPlayedSong) + 1;
-            var nextlyPlayedSong = MusicViewModel.GetInstance().FilteredSongs.ElementAt(index);
+            var newIndex = songIndex + 1;
+            var nextlyPlayedSong = MusicViewModel.GetInstance().FilteredSongs.ElementAt(newIndex);
             MusicViewModel.GetInstance().CurrentlySelectedSong = nextlyPlayedSong;
             MusicViewModel.GetInstance().CurrentlyPlayedSong = nextlyPlayedSong;
+            songIndex++;
             PlayAudioFile(nextlyPlayedSong.Path);
         }
 
         public static bool CanClickPreviousSongButton(object parameter)
         {
-            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
-            var currentlyPlayedSongIndex = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlyPlayedSong);
+            var currentlyPlayedSongIndex = songIndex;
             if (currentlyPlayedSongIndex >= 1)
                 return true;
             return false;
@@ -150,11 +147,11 @@ namespace MusicSpot.MusicPlayer
 
         public static void PreviousSongAction(object parameter)
         {
-            var currentlyPlayedSong = MusicViewModel.GetInstance().CurrentlyPlayedSong;
-            var index = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlyPlayedSong) - 1;
-            var nextlyPlayedSong = MusicViewModel.GetInstance().FilteredSongs.ElementAt(index);
+            var newIndex = songIndex - 1;
+            var nextlyPlayedSong = MusicViewModel.GetInstance().FilteredSongs.ElementAt(newIndex);
             MusicViewModel.GetInstance().CurrentlySelectedSong = nextlyPlayedSong;
             MusicViewModel.GetInstance().CurrentlyPlayedSong = nextlyPlayedSong;
+            songIndex--;
             PlayAudioFile(nextlyPlayedSong.Path);
         }
 
@@ -186,8 +183,6 @@ namespace MusicSpot.MusicPlayer
         public static void UpdateCurrentTrackTime(Object source, ElapsedEventArgs e)       // Method for timer
         {
             MusicViewModel.GetInstance().TrackPosition = audioFileReader.CurrentTime;
-            //var ms = audioFileReader.CurrentTime;
-            //var mm = MusicViewModel.GetInstance().TrackPosition;
         }
 
         public static void RepositionSong(TimeSpan newTimespan)

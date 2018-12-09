@@ -40,14 +40,16 @@ namespace MusicSpot.Views
         {
             System.Windows.Controls.DataGrid dg = sender as DataGrid;
             object dgc = dg.CurrentItem;
-            MusicPlayer.MusicPlayer.MouseDoubleClickPlayAction(dgc);
-
+            if (dgc != null)
+            {
+                MusicPlayer.MusicPlayer.MouseDoubleClickPlayAction(dgc);
+            }
         }
 
         private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (Math.Abs(e.OldValue - e.NewValue) > 2)
-                MusicPlayer.MusicPlayer.RepositionSong(new TimeSpan(0, 0, 0, (int)e.NewValue)); 
+            if (Math.Abs((UInt16)e.OldValue - (UInt16)e.NewValue) > 2)
+                MusicPlayer.MusicPlayer.RepositionSong(new TimeSpan(0, 0, 0, (int)e.NewValue));
         }
 
         private void SearchBox_OnKeyDown(object sender, KeyEventArgs e)
