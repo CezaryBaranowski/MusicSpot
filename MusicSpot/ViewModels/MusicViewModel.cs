@@ -132,7 +132,7 @@ namespace MusicSpot.ViewModels
 
         #endregion
 
-        #region Properties
+        #region Properties           
 
         private bool _isPlaying;
         public bool IsPlaying
@@ -526,10 +526,11 @@ namespace MusicSpot.ViewModels
             Songs = new ObservableCollection<Song>();
             FilteredSongs = new ObservableCollection<Song>();
             GenresLoaded = false;
-            if (!musicFilesStrings.Any())
+            var filesStrings = musicFilesStrings as string[] ?? musicFilesStrings.ToArray();
+            if (!filesStrings.Any())
                 return;
 
-            foreach (var musicFile in musicFilesStrings)
+            foreach (var musicFile in filesStrings)
             {
                 File f = File.Create(musicFile);
 

@@ -21,12 +21,6 @@ namespace MusicSpot.Models
 
         public static void AddEmptyPlaylist(string name)
         {
-            //if (MusicViewModel.GetInstance().Playlists == null || MusicViewModel.GetInstance().PlaylistsNames == null)
-            //{
-            //    MusicViewModel.GetInstance().Playlists = new ObservableCollection<Playlist>();
-            //    MusicViewModel.GetInstance().PlaylistsNames = new ObservableCollection<string>() { "None" };
-            //}
-
             Playlist newPlaylist = new Playlist(name);
             MusicViewModel.GetInstance().Playlists.Add(newPlaylist);
             MusicViewModel.GetInstance().PlaylistsNames.Add(newPlaylist.Name);

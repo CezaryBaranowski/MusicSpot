@@ -61,6 +61,17 @@ namespace MusicSpot.MusicPlayer
             }
         }
 
+        public static void StopPlayer()
+        {
+            var instance = MusicViewModel.GetInstance();
+            instance.CurrentlySelectedSong =
+                instance.FilteredSongs.FirstOrDefault();
+            instance.IsPlaying = false;
+            instance.TrackPosition = TimeSpan.Zero;
+            instance.TrackTotalTime = TimeSpan.Zero;
+            instance.CurrentlyPlayedSong = null;
+        }
+
         public static bool CanClickPlayPauseButton(object parameter)    // May cause bug - test it 
         {
             if (MusicViewModel.GetInstance().CurrentlySelectedSong != null || waveOutDevice.PlaybackState == PlaybackState.Playing)
@@ -151,6 +162,10 @@ namespace MusicSpot.MusicPlayer
         {
             if (CanClickNextSongButton(null))
                 NextSongAction(null);
+            else
+            {
+                StopPlayer();
+            }
         }
 
         public static void MuteSoundAction(object parameter)
