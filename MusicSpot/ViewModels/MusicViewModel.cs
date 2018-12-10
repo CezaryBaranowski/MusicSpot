@@ -39,6 +39,8 @@ namespace MusicSpot.ViewModels
             IsMuted = false;
             IsEditingFilesEnabled = true;
             Volume = 100.0f;
+            FilteredSongs = new ObservableCollection<Song>();
+            SongsToFilter = new ObservableCollection<Song>();
             // PlaylistManager.InitPlaylists();
             RefreshMusicDirectoriesAndLoadSongsAsync();
             MyMusicGenres = new ObservableCollection<string> { "All" };
@@ -224,6 +226,17 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        private ObservableCollection<Song> _songsToFilter = new ObservableCollection<Song>();
+        public ObservableCollection<Song> SongsToFilter
+        {
+            get => _songsToFilter;
+            set
+            {
+                _songsToFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
         private IList<Playlist> _playlists = new ObservableCollection<Playlist>();
         public IList<Playlist> Playlists
         {
@@ -392,10 +405,6 @@ namespace MusicSpot.ViewModels
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
             await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories())));
-            //LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories()));
-
-            //var uiContext = SynchronizationContext.Current;
-            //Task.Run(() => { uiContext.Send(x => LoadMusicFilesFromDirectories(), null); });
         }
         #endregion
 
@@ -421,21 +430,28 @@ namespace MusicSpot.ViewModels
         public void FilterSongs(object parameter)                   // Async may be needed
         {
             var pattern = (parameter != null) ? parameter.ToString() : "";
-            FilteredSongs = new ObservableCollection<Song>();
+            //FilteredSongs = new ObservableCollection<Song>();
             if (pattern.Length > 2)
             {
+                SongsToFilter = FilteredSongs;
+                FilteredSongs = new ObservableCollection<Song>();
                 LoadSongsByTitle(pattern);
                 LoadSongsByArtist(pattern);
                 if (FilteredSongs.Count == 0)
                     LoadSongsByAlbum(pattern);
             }
             else if (pattern.Length == 0)
-                FilteredSongs = Songs;
+            {
+                SongsToFilter = Songs;
+                LoadSongsByGenre();
+            }
+            //else if (pattern.Length == 0)
+            //    FilteredSongs = Songs;
         }
 
         public void LoadSongsByTitle(string title)
         {
-            foreach (var song in Songs)
+            foreach (var song in SongsToFilter)
             {
                 if (song.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -445,7 +461,7 @@ namespace MusicSpot.ViewModels
         }
         public void LoadSongsByArtist(string artist)
         {
-            foreach (var song in Songs)
+            foreach (var song in SongsToFilter)
             {
                 if (song.Artist.IndexOf(artist, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -455,7 +471,7 @@ namespace MusicSpot.ViewModels
         }
         public void LoadSongsByAlbum(string album)
         {
-            foreach (var song in Songs)
+            foreach (var song in SongsToFilter)
             {
                 if (song.Album?.IndexOf(album, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -469,15 +485,16 @@ namespace MusicSpot.ViewModels
             string genre = SelectedGenre;
             if (!genre.Equals("All"))
             {
+                SongsToFilter = Songs;
                 FilteredSongs = new ObservableCollection<Song>();
-                var songsToAdd = Songs.Where(s =>
+                var songsToAdd = SongsToFilter.Where(s =>
                     s.Genres.Any(g => g.IndexOf(genre, StringComparison.OrdinalIgnoreCase) >= 0));
                 foreach (var song in songsToAdd)
                 {
                     FilteredSongs.Add(song);
                 }
             }
-            else FilteredSongs = Songs;
+            else FilteredSongs = SongsToFilter;
         }
 
         #endregion
