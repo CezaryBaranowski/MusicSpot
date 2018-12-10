@@ -136,5 +136,31 @@ namespace MusicSpot.Models
 
         }
 
+        public static bool CanRemoveSongFromPlaylist(object parameter)
+        {
+            if (!MusicViewModel.GetInstance().SelectedPlaylistName.Equals("None"))
+                return true;
+            return false;
+        }
+
+        public static void RemoveSongFromPlaylist(object parameter)
+        {
+            var currentlySelectedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
+            var currentlySelectedPlaylist = MusicViewModel.GetInstance().Playlists.
+                FirstOrDefault(p => p.Name.Equals(MusicViewModel.GetInstance().SelectedPlaylistName));
+            if (currentlySelectedPlaylist != null) PlaylistManager.RemoveSongFromPlaylist(currentlySelectedPlaylist.Name, currentlySelectedSong);
+            var par = parameter;
+        }
+
+        public static bool CanAddSongToPlaylist(object parameter)
+        {
+            return true;
+        }
+
+        public static void AddSongToPlaylist(object parameter)
+        {
+            var par = parameter;
+        }
+
     }
 }

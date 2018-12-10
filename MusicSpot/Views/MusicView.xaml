@@ -326,18 +326,21 @@
 
                 <Control.ContextMenu>
                     <ContextMenu >
-                        <MenuItem Header="Play" Click="ContextMenuItem_OnClick"></MenuItem>
+                        <MenuItem Header="Play" 
+                                  Click="ContextMenuPlay_OnClick"></MenuItem>
                         <MenuItem Header="Add to playlist"                               
                                   ItemsSource="{Binding PlaylistNamesInContextMenu, Mode=OneWay}"
-                                  Click="MenuItem_OnClick"
-                                  CommandParameter=""
-                                  >
-                        </MenuItem>
+                                  Click="MenuItemAddToPlaylist_OnClick"
+                                  ></MenuItem>
                         <MenuItem Header="Remove From Playlist"
                             Command="{Binding RemoveSongFromPlaylistCommand}">
                         </MenuItem>
-                        <MenuItem Header="Remove from queue"></MenuItem>
-                        <MenuItem Header="Go to directory"></MenuItem>
+                        <MenuItem Header="Remove from queue"
+                                 Click="MenuItemRemoveFromQueue_Click">
+                        </MenuItem>
+                        <MenuItem Header="Go to directory"
+                                  Click="MenuItemRemoveGoToDirectory_Click">
+                        </MenuItem>
                     </ContextMenu>
                 </Control.ContextMenu>
             </DataGrid>

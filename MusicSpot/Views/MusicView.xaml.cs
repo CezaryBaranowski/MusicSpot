@@ -3,6 +3,8 @@ using MahApps.Metro.Controls.Dialogs;
 using MusicSpot.Models;
 using MusicSpot.ViewModels;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,11 +84,8 @@ namespace MusicSpot.Views
             var addedItem = (string)e.AddedItems[0];
             if (!addedItem.Equals("None"))
             {
-                // if (!addedItem.Equals(MusicViewModel.GetInstance().SelectedPlaylistName))
-                // {
                 MusicViewModel.GetInstance().SelectedPlaylistName = addedItem;
                 MusicViewModel.GetInstance().LoadSongsFromPlaylist();
-                //}
             }
             else
             {
@@ -109,18 +108,38 @@ namespace MusicSpot.Views
             await window.ShowMessageAsync("", "Add song to playlist by right clicking on song and choosing option from context menu ");
         }
 
-        private void ContextMenuItem_OnClick(object sender, RoutedEventArgs e)
+        private void ContextMenuPlay_OnClick(object sender, RoutedEventArgs e)
         {
-            var info = e;
+            System.Windows.Controls.MenuItem mi = (MenuItem)e.OriginalSource;
+            var actionName = (string)mi.Header;
+            if (actionName.Equals("Play") && MusicViewModel.GetInstance().CurrentlySelectedSong != null)
+            {
+                MusicPlayer.MusicPlayer.PlayAudioFile(MusicViewModel.GetInstance().CurrentlySelectedSong.Path);
+                MusicViewModel.GetInstance().CurrentlyPlayedSong = MusicViewModel.GetInstance().CurrentlySelectedSong;
+            }
         }
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        private void MenuItemAddToPlaylist_OnClick(object sender, RoutedEventArgs e)
         {
             //playlist info
             System.Windows.Controls.MenuItem mi = (MenuItem)e.OriginalSource;
             var playlistName = (string)mi.Header;
             var song = MusicViewModel.GetInstance().CurrentlySelectedSong;
             PlaylistManager.AddSongToPlaylist(playlistName, song);
+
+        }
+
+        private void MenuItemRemoveFromQueue_Click(object sender, RoutedEventArgs e)
+        {
+            MusicViewModel.GetInstance().FilteredSongs.Remove(MusicViewModel.GetInstance().CurrentlySelectedSong);
+        }
+
+        private void MenuItemRemoveGoToDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var fullPath = MusicViewModel.GetInstance().CurrentlySelectedSong.Path;
+            var directory = Path.GetDirectoryName(fullPath);
+
+            Process.Start("explorer.exe", directory);
 
         }
     }

@@ -41,7 +41,6 @@ namespace MusicSpot.ViewModels
             Volume = 100.0f;
             FilteredSongs = new ObservableCollection<Song>();
             SongsToFilter = new ObservableCollection<Song>();
-            // PlaylistManager.InitPlaylists();
             RefreshMusicDirectoriesAndLoadSongsAsync();
             MyMusicGenres = new ObservableCollection<string> { "All" };
             PlaylistsNames.Add("None");
@@ -60,6 +59,15 @@ namespace MusicSpot.ViewModels
                                                 CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPlayPauseButton,
                                                 ExecuteDelegate = MusicPlayer.MusicPlayer.PlayPauseButtonAction
                                             });
+
+        //private ICommand playSelectedSongCommand;
+
+        //public ICommand PlaySelectedSongCommand => playSelectedSongCommand ??
+        //                                           (playSelectedSongCommand = new SimpleCommand
+        //                                           {
+        //                                               CanExecuteDelegate = MusicPlayer.MusicPlayer.CanPlaySelectedSong,
+        //                                               ExecuteDelegate = MusicPlayer.MusicPlayer.PlaySelectedSong
+        //                                           });
 
         private ICommand muteCommand;
 
@@ -102,35 +110,18 @@ namespace MusicSpot.ViewModels
         public ICommand RemoveSongFromPlaylistCommand => removeSongFromPlaylistCommand ??
                                               (removeSongFromPlaylistCommand = new SimpleCommand
                                               {
-                                                  CanExecuteDelegate = CanRemoveSongFromPlaylist,
-                                                  ExecuteDelegate = RemoveSongFromPlaylist
+                                                  CanExecuteDelegate = PlaylistManager.CanRemoveSongFromPlaylist,
+                                                  ExecuteDelegate = PlaylistManager.RemoveSongFromPlaylist
                                               });
 
-        public bool CanRemoveSongFromPlaylist(object parameter)
-        {
-            if (!SelectedPlaylistName.Equals("None"))
-                return true;
-            return false;
-        }
+        //private ICommand addSongToPlaylistCommand;
 
-        public void RemoveSongFromPlaylist(object parameter)
-        {
-            var css = CurrentlySelectedSong;
-            var csp = Playlists.FirstOrDefault(p => p.Name.Equals(SelectedPlaylistName));
-            if (csp != null) PlaylistManager.RemoveSongFromPlaylist(csp.Name, css);
-            var par = parameter;
-        }
-
-        //private ICommand addToPlaylistCommand;
-
-        //public ICommand AddToPlaylistCommand => addToPlaylistCommand ??
-        //                                      (addToPlaylistCommand = new SimpleCommand
+        //public ICommand AddSongToPlaylistCommand => addSongToPlaylistCommand ??
+        //                                      (addSongToPlaylistCommand = new SimpleCommand
         //                                      {
-        //                                          CanExecuteDelegate = CanFilterSongs,
-        //                                          ExecuteDelegate = FilterSongs
+        //                                          CanExecuteDelegate = PlaylistManager.CanAddSongToPlaylist,
+        //                                          ExecuteDelegate = PlaylistManager.AddSongToPlaylist
         //                                      });
-
-
 
         #endregion
 
@@ -430,7 +421,6 @@ namespace MusicSpot.ViewModels
         public void FilterSongs(object parameter)                   // Async may be needed
         {
             var pattern = (parameter != null) ? parameter.ToString() : "";
-            //FilteredSongs = new ObservableCollection<Song>();
             if (pattern.Length > 2)
             {
                 SongsToFilter = FilteredSongs;
@@ -445,8 +435,6 @@ namespace MusicSpot.ViewModels
                 SongsToFilter = Songs;
                 LoadSongsByGenre();
             }
-            //else if (pattern.Length == 0)
-            //    FilteredSongs = Songs;
         }
 
         public void LoadSongsByTitle(string title)
