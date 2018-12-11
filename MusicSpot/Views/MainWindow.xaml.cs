@@ -29,7 +29,13 @@ namespace MusicSpot
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             await Task.Run(() => PlaylistManager.InitPlaylists());
-            await MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
+            if (App.StartupSongsPaths.Count > 0)
+            {
+                MusicViewModel.GetInstance().LoadSongsToMusicView(App.StartupSongsPaths);
+                MusicViewModel.GetInstance().RefreshMusicDirectories();
+            }
+            else
+                await MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
             _applicationLoaded = true;
         }
 

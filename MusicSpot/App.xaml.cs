@@ -9,7 +9,7 @@ namespace MusicSpot
     /// </summary>
     public partial class App : Application
     {
-        public IList<string> StartupSongsPaths = new List<string>();
+        public static IList<string> StartupSongsPaths = new List<string>();
 
         protected override void OnStartup(StartupEventArgs e)
         {
