@@ -11,6 +11,8 @@ namespace MusicSpot
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private static bool _applicationLoaded = false;
+
         public MainWindow()
         {
             //var runArgs = Environment.GetCommandLineArgs();
@@ -27,6 +29,13 @@ namespace MusicSpot
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             await Task.Run(() => PlaylistManager.InitPlaylists());
+            await MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
+            _applicationLoaded = true;
+        }
+
+        public static bool IsApplicationLoaded()
+        {
+            return _applicationLoaded;
         }
     }
 }

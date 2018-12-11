@@ -5,7 +5,6 @@ using MusicSpot.ViewModels;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,8 +32,11 @@ namespace MusicSpot.Views
             {
                 var musicViewModel = MusicViewModel.GetInstance();
                 musicViewModel.RefreshSelectedSong();
-                Task.Run(() => musicViewModel.LoadSongsToMusicView(
-                    musicViewModel.LoadMusicFilesFromDirectories(musicViewModel.GetMusicDirectories())));
+                 System.Threading.Tasks.Task.Run(() => musicViewModel.LoadSongsToMusicView(
+                     musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories())));
+
+                //musicViewModel.LoadSongsToMusicView(
+                //    musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories()));
             }
         }
 
@@ -70,7 +72,7 @@ namespace MusicSpot.Views
         private void MusicGenresComboBox_OnGotMouseCapture(object sender, MouseEventArgs e)
         {
             if (!MusicViewModel.GetInstance().GenresLoaded)
-                MusicViewModel.GetInstance().InitGenres();
+                GenresManager.InitGenres();
             MusicViewModel.GetInstance().GenresLoaded = true;
         }
 
@@ -81,16 +83,19 @@ namespace MusicSpot.Views
 
         private void PlaylistsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (MainWindow.IsApplicationLoaded() == false)
+                return;
+
             var addedItem = (string)e.AddedItems[0];
             if (!addedItem.Equals("None"))
             {
                 MusicViewModel.GetInstance().SelectedPlaylistName = addedItem;
-                MusicViewModel.GetInstance().LoadSongsFromPlaylist();
+                MusicViewModel.GetInstance().LoadSongsFromPlaylistToMusicView();
             }
             else
             {
                 MusicViewModel.GetInstance().SelectedPlaylistName = addedItem;
-                MusicViewModel.GetInstance().LoadSongsFromPlaylist();
+                MusicViewModel.GetInstance().LoadSongsFromPlaylistToMusicView();
             }
         }
 

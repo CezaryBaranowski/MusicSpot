@@ -8,7 +8,7 @@ using System.Xml.XPath;
 
 namespace MusicSpot.Models
 {
-    public class PlaylistManager
+    public static class PlaylistManager
     {
 
         public static string PlaylistDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\MusicSpot\Playlists";
@@ -149,16 +149,6 @@ namespace MusicSpot.Models
             var currentlySelectedPlaylist = MusicViewModel.GetInstance().Playlists.
                 FirstOrDefault(p => p.Name.Equals(MusicViewModel.GetInstance().SelectedPlaylistName));
             if (currentlySelectedPlaylist != null) PlaylistManager.RemoveSongFromPlaylist(currentlySelectedPlaylist.Name, currentlySelectedSong);
-            var par = parameter;
-        }
-
-        public static bool CanAddSongToPlaylist(object parameter)
-        {
-            return true;
-        }
-
-        public static void AddSongToPlaylist(object parameter)
-        {
             var par = parameter;
         }
 

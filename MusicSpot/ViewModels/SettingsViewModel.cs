@@ -1,4 +1,5 @@
 ﻿using MusicSpot.MahAppsMetro;
+using MusicSpot.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -33,8 +34,13 @@ namespace MusicSpot.ViewModels
         private void Initialize()
         {
             //         _musicDirectories.Add(@"E:\Muzyka\Muzyka\Klasyczna");
-            _musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
+            //_musicDirectories.Add(@"C:\Programowanie\NET\MusicSpotTestMedia");
             //_musicDirectories.Add(@"E:\Muzyka\Muzyka\Rock");
+
+            foreach (var directory in DirectoryManager.LoadMusicDirectoriesFromXML())
+            {
+                _musicDirectories.Add(directory);
+            }
         }
 
         public static SettingsViewModel GetInstance()
@@ -60,15 +66,17 @@ namespace MusicSpot.ViewModels
         public void AddMusicDirectory(string directory)
         {
             _musicDirectories.Add(directory);
+            DirectoryManager.SaveMusicDirectoryToXML(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
+            MusicViewModel.GetInstance().RefreshMusicDirectories();
         }
 
         public void RemoveMusicDirectory(string directory)
         {
             _musicDirectories.Remove(directory);
+            DirectoryManager.RemoveMusicDirectoryFromXML(directory);
             OnPropertyChanged("MusicDirectories");
-            MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
+            MusicViewModel.GetInstance().RefreshMusicDirectories();
         }
 
         private ObservableCollection<string> _videoDirectories;

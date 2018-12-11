@@ -125,11 +125,11 @@
     <Compile Include="MahAppsMetro\AppTheme.cs" />
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
+    <Compile Include="Models\DirectoryManager.cs" />
     <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\PlaylistManager.cs" />
     <Compile Include="Models\SimpleCommand.cs" />
     <Compile Include="Models\Song.cs" />
-    <Compile Include="Models\Video.cs" />
     <Compile Include="MusicPlayer\MusicPlayer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="APIControllers\LastFmController.cs" />
@@ -137,6 +137,7 @@
     <Compile Include="APIControllers\SpotifyController.cs" />
     <Compile Include="MahAppsMetro\AccentColorMenuData.cs" />
     <Compile Include="MahAppsMetro\AppThemeMenuData.cs" />
+    <Compile Include="Models\GenresManager.cs" />
     <Compile Include="ViewModels\ImageToSourceConverter.cs" />
     <Compile Include="ViewModels\MusicViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />

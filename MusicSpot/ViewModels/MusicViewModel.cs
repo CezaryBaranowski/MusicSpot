@@ -41,12 +41,17 @@ namespace MusicSpot.ViewModels
             Volume = 100.0f;
             FilteredSongs = new ObservableCollection<Song>();
             SongsToFilter = new ObservableCollection<Song>();
-            RefreshMusicDirectoriesAndLoadSongsAsync();
+            //RefreshMusicDirectoriesAndLoadSongsAsync();
             MyMusicGenres = new ObservableCollection<string> { "All" };
             PlaylistsNames.Add("None");
             SelectedPlaylistName = "None";
             MusicSelectedDirectory = "All";
             SelectedGenre = "All";
+        }
+
+        public void RefreshSelectedSong()
+        {
+            CurrentlySelectedSong = CurrentlyPlayedSong;
         }
 
         #region Commands
@@ -59,15 +64,6 @@ namespace MusicSpot.ViewModels
                                                 CanExecuteDelegate = MusicPlayer.MusicPlayer.CanClickPlayPauseButton,
                                                 ExecuteDelegate = MusicPlayer.MusicPlayer.PlayPauseButtonAction
                                             });
-
-        //private ICommand playSelectedSongCommand;
-
-        //public ICommand PlaySelectedSongCommand => playSelectedSongCommand ??
-        //                                           (playSelectedSongCommand = new SimpleCommand
-        //                                           {
-        //                                               CanExecuteDelegate = MusicPlayer.MusicPlayer.CanPlaySelectedSong,
-        //                                               ExecuteDelegate = MusicPlayer.MusicPlayer.PlaySelectedSong
-        //                                           });
 
         private ICommand muteCommand;
 
@@ -108,20 +104,12 @@ namespace MusicSpot.ViewModels
         private ICommand removeSongFromPlaylistCommand;
 
         public ICommand RemoveSongFromPlaylistCommand => removeSongFromPlaylistCommand ??
-                                              (removeSongFromPlaylistCommand = new SimpleCommand
-                                              {
-                                                  CanExecuteDelegate = PlaylistManager.CanRemoveSongFromPlaylist,
-                                                  ExecuteDelegate = PlaylistManager.RemoveSongFromPlaylist
-                                              });
-
-        //private ICommand addSongToPlaylistCommand;
-
-        //public ICommand AddSongToPlaylistCommand => addSongToPlaylistCommand ??
-        //                                      (addSongToPlaylistCommand = new SimpleCommand
-        //                                      {
-        //                                          CanExecuteDelegate = PlaylistManager.CanAddSongToPlaylist,
-        //                                          ExecuteDelegate = PlaylistManager.AddSongToPlaylist
-        //                                      });
+                                                         (removeSongFromPlaylistCommand = new SimpleCommand
+                                                         {
+                                                             CanExecuteDelegate =
+                                                                 PlaylistManager.CanRemoveSongFromPlaylist,
+                                                             ExecuteDelegate = PlaylistManager.RemoveSongFromPlaylist
+                                                         });
 
         #endregion
 
@@ -390,12 +378,19 @@ namespace MusicSpot.ViewModels
             return new List<string> { MusicSelectedDirectory };
         }
 
-        public async void RefreshMusicDirectoriesAndLoadSongsAsync()
+        public void RefreshMusicDirectories()
         {
             _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
             _musicDirectories.Insert(0, "All");
             OnPropertyChanged(nameof(MusicDirectories));
-            await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories())));
+        }
+
+        public async Task RefreshMusicDirectoriesAndLoadSongsAsync()
+        {
+            _musicDirectories = new ObservableCollection<string>(SettingsViewModel.GetInstance().MusicDirectories);
+            _musicDirectories.Insert(0, "All");
+            OnPropertyChanged(nameof(MusicDirectories));
+            await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesNamesFromDirectories(GetMusicDirectories())));
         }
         #endregion
 
@@ -487,7 +482,9 @@ namespace MusicSpot.ViewModels
 
         #endregion
 
-        public async void LoadSongsFromPlaylist()
+        #region SongsLoading
+
+        public async void LoadSongsFromPlaylistToMusicView()
         {
             string currentlySelectedPlaylistName = SelectedPlaylistName;
 
@@ -502,15 +499,10 @@ namespace MusicSpot.ViewModels
                     LoadSongsToMusicView(musicFilesStrings);
                 }
             }
-            else await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesFromDirectories(GetMusicDirectories())));
+            else await Task.Run(() => LoadSongsToMusicView(LoadMusicFilesNamesFromDirectories(GetMusicDirectories())));
         }
 
-        public void RefreshSelectedSong()
-        {
-            CurrentlySelectedSong = CurrentlyPlayedSong;
-        }
-
-        public IEnumerable<string> LoadMusicFilesFromDirectories(ICollection<string> directories)
+        public IEnumerable<string> LoadMusicFilesNamesFromDirectories(ICollection<string> directories)
         {
             IEnumerable<string> musicFiles = new List<string>();
 
@@ -557,24 +549,7 @@ namespace MusicSpot.ViewModels
                 }
             }
         }
-
-        public void InitGenres()
-        {
-            MyMusicGenres = new ObservableCollection<string> { "All" };
-
-            foreach (var song in Songs)
-            {
-                var genres = song.Genres as IEnumerable<string>;
-                if (genres.Any())
-                {
-                    genres = genres.Except(MyMusicGenres);
-                    foreach (var genre in genres)
-                    {
-                        MyMusicGenres.Add(genre);
-                    }
-                }
-            }
-        }
+        #endregion
 
     }
 }
