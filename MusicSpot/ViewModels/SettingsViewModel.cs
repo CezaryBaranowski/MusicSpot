@@ -17,7 +17,6 @@ namespace MusicSpot.ViewModels
         private SettingsViewModel()
         {
             MusicDirectories = new ObservableCollection<string>();
-            VideoDirectories = new ObservableCollection<string>();
 
             Initialize();
 
@@ -77,13 +76,6 @@ namespace MusicSpot.ViewModels
             DirectoryManager.RemoveMusicDirectoryFromXML(directory);
             OnPropertyChanged("MusicDirectories");
             MusicViewModel.GetInstance().RefreshMusicDirectories();
-        }
-
-        private ObservableCollection<string> _videoDirectories;
-        public ObservableCollection<string> VideoDirectories
-        {
-            get => _videoDirectories;
-            private set => _videoDirectories = value;
         }
 
         private string _musicDirectoriesSelectedItem;

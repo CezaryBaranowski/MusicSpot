@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicSpot", "MusicSpot\MusicSpot.csproj", "{06B02AF8-BCE6-47C8-A898-D53766A9713C}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{9A8D23A9-093F-4F00-A937-C9D58C5271BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{06B02AF8-BCE6-47C8-A898-D53766A9713C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06B02AF8-BCE6-47C8-A898-D53766A9713C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06B02AF8-BCE6-47C8-A898-D53766A9713C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8D23A9-093F-4F00-A937-C9D58C5271BA}.Debug|Any CPU.ActiveCfg = Debug
+		{9A8D23A9-093F-4F00-A937-C9D58C5271BA}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

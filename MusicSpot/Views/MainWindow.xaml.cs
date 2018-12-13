@@ -15,7 +15,6 @@ namespace MusicSpot
 
         public MainWindow()
         {
-            //var runArgs = Environment.GetCommandLineArgs();
             InitializeComponent();
             this.DataContext = MainViewModel.GetInstance();
             this.Loaded += OnLoaded;

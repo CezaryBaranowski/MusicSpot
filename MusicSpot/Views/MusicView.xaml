@@ -16,6 +16,12 @@
         <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
                                        x:Key="ImageToSourceConverter">
         </global2:ImageToSourceConverter>
+
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+        </ControlTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -36,7 +42,12 @@
         <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
                     Orientation="Vertical" Margin="0,10,0,0"
                     Grid.RowSpan="2"
-                    Background="#FF232222">
+                    >
+            <StackPanel.Style>
+                <Style TargetType="{x:Type StackPanel}">
+
+                </Style>
+            </StackPanel.Style>
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                     <Setter Property="Margin" Value="10,10,0,0"/>
@@ -130,7 +141,6 @@
                 </Button.Style>
             </Button>
 
-
             <Image Margin="10,30,0,0"
                Width ="Auto"
                Height="Auto" 
@@ -146,8 +156,7 @@
                     </Style>
                 </Image.Style>
             </Image>
-
-            <Button 
+            <Button
                    x:Name="ArtistNameButton"
                    Width="Auto"
                    Height="Auto"
@@ -155,27 +164,15 @@
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                   Margin="10,15,0,0"
+                   Margin="10,15,0,0" 
+                   Template="{DynamicResource ButtonBaseControlTemplate1}"
                    >
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Background" Value="#FF232222"></Setter>
-                        <Setter Property="BorderThickness" Value="0"></Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="#FF232222" />
-                                <Setter Property="BorderThickness" Value="0"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
                 <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            TextDecorations="Underline"
-                           Background="#FF232222"
-                           Foreground="White"
+                           Background="Transparent"
                            FontSize="14"
                            FontWeight="UltraLight"
                            FontStyle="Normal"
@@ -183,7 +180,6 @@
                            FontFamily="Lucida Sans" 
                            Height="Auto" 
                            Width="Auto">
-
                 </TextBlock>
             </Button>
 
@@ -195,27 +191,15 @@
                    Cursor="Hand"
                    Padding="0,0,0,0"
                    Margin="10,5,0,0"
-                   >
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Background" Value="#FF232222"></Setter>
-                        <Setter Property="BorderThickness" Value="0"></Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="#FF232222" />
-                                <Setter Property="BorderThickness" Value="0"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+                   Template="{DynamicResource ButtonBaseControlTemplate1}"
+                    >
 
                 <TextBlock Text="{Binding CurrentlyPlayedSong.Title}"
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            TextDecorations="Underline"
-                           Background="#FF232222"
-                           Foreground="White"
+                           Background="Transparent"
                            FontSize="14"
                            FontWeight="UltraLight"
                            FontStyle="Normal"
@@ -261,7 +245,7 @@
 
                 <Image.Effect>
                     <BlurEffect Radius="20"></BlurEffect>
-                    
+
                 </Image.Effect>
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">

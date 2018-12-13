@@ -32,8 +32,8 @@ namespace MusicSpot.Views
             {
                 var musicViewModel = MusicViewModel.GetInstance();
                 musicViewModel.RefreshSelectedSong();
-                 System.Threading.Tasks.Task.Run(() => musicViewModel.LoadSongsToMusicView(
-                     musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories())));
+                System.Threading.Tasks.Task.Run(() => musicViewModel.LoadSongsToMusicView(
+                    musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories())));
 
                 //musicViewModel.LoadSongsToMusicView(
                 //    musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories()));

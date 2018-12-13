@@ -12,7 +12,8 @@ namespace MusicSpot.MusicPlayer
         // playing device representation
         public static IWavePlayer waveOutDevice = new NAudio.Wave.WaveOutEvent();
 
-        public static AudioFileReader audioFileReader;
+        //public static AudioFileReader audioFileReader;
+        public static MediaFoundationReader audioFileReader;
         //private static NAudio.Vorbis.VorbisWaveReader vorbisAudioFileReader;
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer(50);
@@ -23,7 +24,8 @@ namespace MusicSpot.MusicPlayer
         {
             CloseWaveOut();
             waveOutDevice = new NAudio.Wave.WaveOut();
-            audioFileReader = new AudioFileReader(fileName);
+            audioFileReader = new MediaFoundationReader(fileName);
+            //audioFileReader = new AudioFileReader(fileName);
             MusicViewModel.GetInstance().TrackTotalTime = audioFileReader.TotalTime;
             MusicViewModel.GetInstance().IsPlaying = true;
             audioFileReader.Position = 0;
@@ -92,6 +94,7 @@ namespace MusicSpot.MusicPlayer
                     {
                         PlayAudioFile(currentlySelectedSong.Path);
                         MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
+                        songIndex = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlySelectedSong);
                     }
                     else ResumeAudioFile();
                 }
@@ -99,6 +102,7 @@ namespace MusicSpot.MusicPlayer
                 {
                     PlayAudioFile(currentlySelectedSong.Path);
                     MusicViewModel.GetInstance().CurrentlyPlayedSong = currentlySelectedSong;
+                    songIndex = MusicViewModel.GetInstance().FilteredSongs.IndexOf(currentlySelectedSong);
                 }
             }
             else
@@ -183,6 +187,7 @@ namespace MusicSpot.MusicPlayer
         public static void UpdateCurrentTrackTime(Object source, ElapsedEventArgs e)       // Method for timer
         {
             MusicViewModel.GetInstance().TrackPosition = audioFileReader.CurrentTime;
+
         }
 
         public static void RepositionSong(TimeSpan newTimespan)
