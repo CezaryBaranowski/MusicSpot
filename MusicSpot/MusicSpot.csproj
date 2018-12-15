@@ -31,6 +31,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -92,6 +94,9 @@
     <Reference Include="NAudio.Vorbis, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.Vorbis.1.0.0.0\lib\net35\NAudio.Vorbis.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NVorbis, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NVorbis.0.8.6\lib\net35\NVorbis.dll</HintPath>
     </Reference>
@@ -116,6 +121,12 @@
     <Reference Include="taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Unosquare.Labs.EmbedIO, Version=1.16.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmbedIO.1.16.0\lib\net47\Unosquare.Labs.EmbedIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Unosquare.Swan.Lite, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unosquare.Swan.Lite.0.36.1\lib\net452\Unosquare.Swan.Lite.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -125,6 +136,68 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="API\Spotify\WebAuth\AuthorizationCodeAuth.cs" />
+    <Compile Include="API\Spotify\WebAuth\AuthUtil.cs" />
+    <Compile Include="API\Spotify\WebAuth\CredentialsAuth.cs" />
+    <Compile Include="API\Spotify\WebAuth\ImplictGrantAuth.cs" />
+    <Compile Include="API\Spotify\WebAuth\SpotifyAuthServer.cs" />
+    <Compile Include="API\Spotify\Web\Enums\AlbumType.cs" />
+    <Compile Include="API\Spotify\Web\Enums\FollowType.cs" />
+    <Compile Include="API\Spotify\Web\Enums\RepeatState.cs" />
+    <Compile Include="API\Spotify\Web\Enums\Scope.cs" />
+    <Compile Include="API\Spotify\Web\Enums\SearchType.cs" />
+    <Compile Include="API\Spotify\Web\Enums\TimeRangeType.cs" />
+    <Compile Include="API\Spotify\Web\Enums\TrackType.cs" />
+    <Compile Include="API\Spotify\Web\IClient.cs" />
+    <Compile Include="API\Spotify\Web\Models\AnalysisMeta.cs" />
+    <Compile Include="API\Spotify\Web\Models\AnalysisSection.cs" />
+    <Compile Include="API\Spotify\Web\Models\AnalysisSegment.cs" />
+    <Compile Include="API\Spotify\Web\Models\AnalysisTimeSlice.cs" />
+    <Compile Include="API\Spotify\Web\Models\AnalysisTrack.cs" />
+    <Compile Include="API\Spotify\Web\Models\ArrayResponse.cs" />
+    <Compile Include="API\Spotify\Web\Models\AudioAnalysis.cs" />
+    <Compile Include="API\Spotify\Web\Models\AudioFeatures.cs" />
+    <Compile Include="API\Spotify\Web\Models\AvailabeDevices.cs" />
+    <Compile Include="API\Spotify\Web\Models\BasicModel.cs" />
+    <Compile Include="API\Spotify\Web\Models\Category.cs" />
+    <Compile Include="API\Spotify\Web\Models\CategoryList.cs" />
+    <Compile Include="API\Spotify\Web\Models\CategoryPlaylist.cs" />
+    <Compile Include="API\Spotify\Web\Models\CursorPaging.cs" />
+    <Compile Include="API\Spotify\Web\Models\Device.cs" />
+    <Compile Include="API\Spotify\Web\Models\FeaturedPlaylists.cs" />
+    <Compile Include="API\Spotify\Web\Models\FollowedArtists.cs" />
+    <Compile Include="API\Spotify\Web\Models\FullAlbum.cs" />
+    <Compile Include="API\Spotify\Web\Models\FullArtist.cs" />
+    <Compile Include="API\Spotify\Web\Models\FullPlaylist.cs" />
+    <Compile Include="API\Spotify\Web\Models\FullTrack.cs" />
+    <Compile Include="API\Spotify\Web\Models\GeneralModels.cs" />
+    <Compile Include="API\Spotify\Web\Models\NewAlbumReleases.cs" />
+    <Compile Include="API\Spotify\Web\Models\Paging.cs" />
+    <Compile Include="API\Spotify\Web\Models\PlaybackContext.cs" />
+    <Compile Include="API\Spotify\Web\Models\PlayHistory.cs" />
+    <Compile Include="API\Spotify\Web\Models\PrivateProfile.cs" />
+    <Compile Include="API\Spotify\Web\Models\PublicProfile.cs" />
+    <Compile Include="API\Spotify\Web\Models\Recommendations.cs" />
+    <Compile Include="API\Spotify\Web\Models\RecommendationSeed .cs" />
+    <Compile Include="API\Spotify\Web\Models\RecommendationSeedGenres.cs" />
+    <Compile Include="API\Spotify\Web\Models\ResponseInfo.cs" />
+    <Compile Include="API\Spotify\Web\Models\SearchItem.cs" />
+    <Compile Include="API\Spotify\Web\Models\SeveralAlbums.cs" />
+    <Compile Include="API\Spotify\Web\Models\SeveralArtists.cs" />
+    <Compile Include="API\Spotify\Web\Models\SeveralAudioFeatures.cs" />
+    <Compile Include="API\Spotify\Web\Models\SeveralTracks.cs" />
+    <Compile Include="API\Spotify\Web\Models\SimpleAlbum.cs" />
+    <Compile Include="API\Spotify\Web\Models\SimpleArtist.cs" />
+    <Compile Include="API\Spotify\Web\Models\SimplePlaylist.cs" />
+    <Compile Include="API\Spotify\Web\Models\SimpleTrack.cs" />
+    <Compile Include="API\Spotify\Web\Models\Snapshot.cs" />
+    <Compile Include="API\Spotify\Web\Models\Token.cs" />
+    <Compile Include="API\Spotify\Web\Models\TuneableTrack.cs" />
+    <Compile Include="API\Spotify\Web\ProxyConfig.cs" />
+    <Compile Include="API\Spotify\Web\SpotifyWebAPI.cs" />
+    <Compile Include="API\Spotify\Web\SpotifyWebBuilder.cs" />
+    <Compile Include="API\Spotify\Web\SpotifyWebClient.cs" />
+    <Compile Include="API\Spotify\Web\Util.cs" />
     <Compile Include="MahAppsMetro\AppTheme.cs" />
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
@@ -195,6 +268,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="API\Spotify\WebAuth\SpotifyAPI.Web.Auth.nuspec" />
+    <None Include="API\Spotify\Web\SpotifyAPI.Web.nuspec" />
     <None Include="MusicSpot_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -223,12 +298,28 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\" />
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\css\bulma.min.css" />
+    <Content Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\start.html" />
+    <Content Include="API\Spotify\WebAuth\Resources\ImplicitGrantAuth\index.html" />
+    <Content Include="API\Spotify\WebAuth\SpotifyAPI.Web.Auth.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\images\1.png" />
+    <Resource Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\images\2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
 if exist "$(TargetPath)" if not exist "$(TargetPath).locked" move "$(TargetPath)" "$(TargetPath).locked"</PreBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
 </Project>
