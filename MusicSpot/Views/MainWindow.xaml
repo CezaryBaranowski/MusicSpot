@@ -49,7 +49,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             TabStripMargin="6"
-            Background="#FF131313"
+            Background="Transparent"
             
             TabStripPlacement="Top"
             controls:TabControlHelper.Transition="Up"
