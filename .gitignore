@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
  # Resources files
 /MusicSpot/Resources
+/MusicSpot/API/Spotify
