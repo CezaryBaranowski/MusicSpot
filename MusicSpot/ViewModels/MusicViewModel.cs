@@ -18,6 +18,7 @@ namespace MusicSpot.ViewModels
 
         private static readonly MusicViewModel musicViewModel = new MusicViewModel();
 
+
         static MusicViewModel()
         {
         }

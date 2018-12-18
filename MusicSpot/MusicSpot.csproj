@@ -212,6 +212,7 @@
     <Compile Include="MahAppsMetro\AppThemeMenuData.cs" />
     <Compile Include="Models\GenresManager.cs" />
     <Compile Include="Utils\ImageToSourceConverter.cs" />
+    <Compile Include="ViewModels\DiscoveryViewModel.cs" />
     <Compile Include="ViewModels\MusicViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -222,8 +223,8 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VideoView.xaml.cs">
-      <DependentUpon>VideoView.xaml</DependentUpon>
+    <Compile Include="Views\DiscoveryView.xaml.cs">
+      <DependentUpon>DiscoveryView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -245,7 +246,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VideoView.xaml">
+    <Page Include="Views\DiscoveryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,6 +268,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="API\Spotify\WebAuth\SpotifyAPI.Web.Auth.nuspec" />
     <None Include="API\Spotify\Web\SpotifyAPI.Web.nuspec" />

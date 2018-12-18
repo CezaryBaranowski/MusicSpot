@@ -1,21 +1,21 @@
-﻿using MusicSpot.ViewModels;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using DiscoveryViewModel = MusicSpot.ViewModels.DiscoveryViewModel;
 
 namespace MusicSpot.Views
 {
     /// <summary>
     /// Interaction logic for Video.xaml
     /// </summary>
-    public partial class VideoView : UserControl
+    public partial class DiscoveryView : UserControl
     {
-        public MusicViewModel dataModel;
+        private DiscoveryViewModel dataModel;
 
-        public VideoView()
+        public DiscoveryView()
         {
             InitializeComponent();
-            dataModel = MusicViewModel.GetInstance();
+            dataModel = DiscoveryViewModel.GetInstance();
             this.DataContext = dataModel;
         }
 

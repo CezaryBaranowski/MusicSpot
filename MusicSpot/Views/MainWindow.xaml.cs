@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MusicSpot.Models;
 using MusicSpot.ViewModels;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,11 +13,14 @@ namespace MusicSpot
     public partial class MainWindow : MetroWindow
     {
         private static bool _applicationLoaded = false;
+        private object MainWindowContext;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = MainViewModel.GetInstance();
+            MainWindowContext = new
+            { MainWindowModel = MainViewModel.GetInstance(), MusicViewModel = MusicViewModel.GetInstance() };
+            this.DataContext = MainWindowContext;
             this.Loaded += OnLoaded;
         }
 
@@ -41,6 +45,12 @@ namespace MusicSpot
         public static bool IsApplicationLoaded()
         {
             return _applicationLoaded;
+        }
+
+        private void MusicProgressBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (Math.Abs((UInt16)e.OldValue - (UInt16)e.NewValue) > 2)
+                MusicPlayer.MusicPlayer.RepositionSong(new TimeSpan(0, 0, 0, (int)e.NewValue));
         }
     }
 }

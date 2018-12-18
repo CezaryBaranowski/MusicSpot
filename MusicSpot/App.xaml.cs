@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MusicSpot.API.Spotify.Web;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 
@@ -10,6 +11,7 @@ namespace MusicSpot
     public partial class App : Application
     {
         public static IList<string> StartupSongsPaths = new List<string>();
+        private static SpotifyWebAPI _spotify;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -26,6 +28,7 @@ namespace MusicSpot
                 }
 
             }
+
         }
     }
 }
