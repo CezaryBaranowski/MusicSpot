@@ -10,9 +10,12 @@ namespace MusicSpot.Views
     /// </summary>
     public partial class SettingsView : UserControl
     {
+        public SettingsViewModel dataModel;
         public SettingsView()
         {
             InitializeComponent();
+            dataModel = SettingsViewModel.GetInstance();
+            this.DataContext = dataModel;
         }
 
         private void RemoveMusicDirectories(object sender, RoutedEventArgs e)
@@ -24,8 +27,6 @@ namespace MusicSpot.Views
 
         private void AddMusicDirectory(object sender, RoutedEventArgs e)
         {
-            //Task.Run(() =>
-            //{
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.InitialDirectory = "E:\\Muzyka\\Muzyka";
             dialog.IsFolderPicker = true;
@@ -36,13 +37,7 @@ namespace MusicSpot.Views
             }
 
             var viewModel = SettingsViewModel.GetInstance();
-            //Application.Current.Dispatcher.BeginInvoke((Action)delegate
-            //{
-            //    if (directory != null) viewModel.AddMusicDirectory(directory);
-            //});
             if (directory != null) viewModel.AddMusicDirectory(directory);
-            //    return directory;
-            //}).ConfigureAwait(false);
         }
 
     }

@@ -51,7 +51,6 @@
     </UserControl.Resources>
 
 
-
     <Grid>
 
         <Grid.ColumnDefinitions>

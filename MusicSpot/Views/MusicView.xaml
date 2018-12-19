@@ -150,25 +150,6 @@
             </Image>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NamesLabel" 
-                    Orientation="Vertical" Margin="0,0,0,0"
-        >
-            <StackPanel.Style>
-                <Style TargetType="{x:Type StackPanel}">
-
-                </Style>
-            </StackPanel.Style>
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                    <Setter Property="Margin" Value="10,10,0,0"/>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-                </Style>
-            </StackPanel.Resources>
-
-        </StackPanel>
-
         <!--MainMusicGrid-->
 
         <Grid x:Name="MainMusicPanel"

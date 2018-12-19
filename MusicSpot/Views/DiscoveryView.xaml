@@ -28,8 +28,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition Height="*" MinHeight="90"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -74,80 +73,6 @@
             </Image>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" x:Name="NamesLabel" 
-                    Orientation="Vertical" Margin="0,0,0,0"
-        >
-            <StackPanel.Style>
-                <Style TargetType="{x:Type StackPanel}">
-
-                </Style>
-            </StackPanel.Style>
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                    <Setter Property="Margin" Value="10,10,0,0"/>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-                </Style>
-            </StackPanel.Resources>
-
-            <Button
-                   x:Name="ArtistNameButton"
-                   Width="Auto"
-                   Height="Auto"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Cursor="Hand"
-                   Padding="0,0,0,0"
-                   Margin="10,15,0,0" 
-                MinHeight="30"
-                   Template="{DynamicResource ButtonBaseControlTemplate1}"
-                   >
-                <TextBlock Text="{Binding CurrentlyPlayedSong.Artist}"
-                           TextWrapping="Wrap"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           TextDecorations="Underline"
-                           Background="Transparent"
-                           FontSize="14"
-                           FontWeight="UltraLight"
-                           FontStyle="Normal"
-                           MinHeight="25"
-                           FontFamily="Lucida Sans" 
-                           Height="Auto" 
-                           Width="Auto">
-                </TextBlock>
-            </Button>
-
-            <Button x:Name="TitleNameButton"
-                   Width="Auto"
-                   Height="Auto"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Cursor="Hand"
-                   Padding="0,0,0,0"
-                   Margin="10,0,0,0"
-                   Template="{DynamicResource ButtonBaseControlTemplate1}"
-                    >
-
-                <TextBlock Text="{Binding CurrentlyPlayedSong.Title}"
-                           TextWrapping="Wrap"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           TextDecorations="Underline"
-                           Background="Transparent"
-                           FontSize="14"
-                           FontWeight="UltraLight"
-                           FontStyle="Normal"
-                           MinHeight="25"
-                           FontFamily="Lucida Sans" 
-                           Height="Auto" 
-                           Width="Auto">
-
-                </TextBlock>
-            </Button>
-        </StackPanel>
-
         <!--MainMusicGrid-->
 
         <Grid x:Name="MainDiscoveryPanel"
@@ -175,120 +100,6 @@
                     </Style>
                 </Image.Style>
             </Image>
-
-        </Grid>
-
-
-        <!--Lower playing control panel-->
-
-        <Grid Column="1" Row="1" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="12*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" MinHeight="60"></RowDefinition>
-                <RowDefinition Height="*" MinHeight="60"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Button Width="30" Height="30" Margin="315,10,285,15" BorderThickness="0" Background="Transparent"
-                   Command="{Binding PreviousSongCommand}" VerticalAlignment="Center"
-                    >
-                <iconPacks:Material Width="20" Height="15" Kind="SkipPrevious"
-                    />
-            </Button>
-
-            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="350,10,230,15" Width="35" Height="37"
-                        Background="Transparent" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                    Command="{Binding PlayMusicCommand}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Content" Value="{iconPacks:Material Height=25, Kind=PlayCircleOutline, Width=25}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsPlaying, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=25, Kind=PlayCircleOutline, Width=25}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsPlaying, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=25, Kind=PauseCircleOutline, Width=25}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="30" Width="30" Margin="405,10,195,15" BorderThickness="0" Background="Transparent"
-                    Command="{Binding NextSongCommand}" VerticalAlignment="Center"
-                    >
-                <iconPacks:Material Width="20" Height="15" Kind="SkipNext"
-                    />
-            </Button>
-
-            <Label x:Name="CurrentTrackPositionLabel" Grid.Row="1" Grid.Column="0"
-                   HorizontalAlignment="Left"
-                   Margin="70,0,0,40"
-                   VerticalContentAlignment="Top"
-                   Width="40"
-                   Height="25"
-                   >
-                <TextBlock>
-                    <TextBlock Text="{Binding TrackPosition, StringFormat=m\\:ss}" />
-                   </TextBlock>
-            </Label>
-            <Slider x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
-                    VerticalAlignment="Top"
-                             Width="Auto" Margin="110,5,0,0"
-                             Height="20"
-                             MinHeight="15"
-                             IsEnabled="True"
-                             IsMoveToPointEnabled="True"
-                             ValueChanged="MusicProgressBar_OnValueChanged"
-                             Maximum="{Binding TrackTotalTime.TotalSeconds, Mode=OneWay}"
-                             Minimum="0"
-                             Value="{Binding TrackPosition.TotalSeconds, Mode=OneWay, Delay=500}"
-                                       >
-            </Slider>
-
-            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1" Grid.Row="1"
-                   HorizontalAlignment="Left"
-                   Margin="8,0,0,40"
-                   VerticalContentAlignment="Top"
-                   Width="40"
-                   Height="25"
-            >
-                <TextBlock>
-                    <TextBlock Text="{Binding TrackTotalTime, StringFormat=m\\:ss}" />
-                </TextBlock>
-            </Label>
-
-            <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="2" Grid.Row="1" Margin="0,3,160,0" Command="{Binding MuteCommand}"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Left"
-                BorderThickness="0">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                        <Setter Property="Content" Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeOff}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeMute}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                <Setter Property="ContentControl.Content"  Value="{iconPacks:Material Height=15, Width=15, Kind=VolumeHigh}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-            <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="2"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Left"
-                        Minimum="0"
-                        Maximum="100"
-                        Value="{Binding Volume, Mode=TwoWay}"
-                        Height="25"
-                        Width="100" Margin="35,3,34,0">
-            </Slider>
 
         </Grid>
 

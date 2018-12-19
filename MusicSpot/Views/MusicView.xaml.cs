@@ -28,12 +28,12 @@ namespace MusicSpot.Views
         private void ChangeMusicDirectory(object sender, SelectionChangedEventArgs e)
         {
             var addedItem = (string)e.AddedItems[0];
-            if (!addedItem.Equals("All"))
+            if (e.RemovedItems.Count > 0)
             {
                 var musicViewModel = MusicViewModel.GetInstance();
                 musicViewModel.RefreshSelectedSong();
                 System.Threading.Tasks.Task.Run(() => musicViewModel.LoadSongsToMusicView(
-                    musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories())));
+                musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories())));
 
                 //musicViewModel.LoadSongsToMusicView(
                 //    musicViewModel.LoadMusicFilesNamesFromDirectories(musicViewModel.GetMusicDirectories()));
