@@ -60,7 +60,7 @@
                Width ="Auto"
                Height="Auto" 
                MinHeight="150"
-                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
+               Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
                 <Image.Effect>
                     <DropShadowEffect BlurRadius="50"></DropShadowEffect>
@@ -73,7 +73,7 @@
             </Image>
         </StackPanel>
 
-        <!--MainMusicGrid-->
+        <!--MainDiscoveryGrid-->
 
         <Grid x:Name="MainDiscoveryPanel"
             Row="0"
@@ -86,9 +86,8 @@
                    Grid.Row="0"
                 Margin="10,10,10,0"
                    Stretch="UniformToFill"
-                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
+                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             >
-
                 <Image.Effect>
                     <BlurEffect Radius="20"></BlurEffect>
 

@@ -7,6 +7,7 @@
             SelectedTabIndex = 0;
             SettingsViewModel = SettingsViewModel.GetInstance();
             MusicViewModel = MusicViewModel.GetInstance();
+            DiscoveryViewModel = DiscoveryViewModel.GetInstance();
         }
         //ensure beforefieldinit off
         static MainViewModel()
@@ -25,6 +26,18 @@
             set
             {
                 _musicViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DiscoveryViewModel _discoveryViewModel;
+
+        public DiscoveryViewModel DiscoveryViewModel
+        {
+            get => _discoveryViewModel;
+            set
+            {
+                _discoveryViewModel = value;
                 OnPropertyChanged();
             }
         }

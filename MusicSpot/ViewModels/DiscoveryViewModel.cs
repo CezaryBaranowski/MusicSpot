@@ -1,6 +1,8 @@
-﻿namespace MusicSpot.ViewModels
+﻿using MusicSpot.Models;
+
+namespace MusicSpot.ViewModels
 {
-    class DiscoveryViewModel
+    public sealed class DiscoveryViewModel : ViewModelBase
     {
 
         private static readonly DiscoveryViewModel discoveryViewModel = new DiscoveryViewModel();
@@ -22,6 +24,17 @@
         private void InitDiscoveryViewModel()
         {
 
+        }
+
+        private Song _currentlyPlayedSong;
+        public Song CurrentlyPlayedSong
+        {
+            get => _currentlyPlayedSong;
+            set
+            {
+                _currentlyPlayedSong = value;
+                OnPropertyChanged();
+            }
         }
     }
 }

@@ -206,6 +206,7 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        //temporary collection
         private ObservableCollection<Song> _songsToFilter = new ObservableCollection<Song>();
         public ObservableCollection<Song> SongsToFilter
         {
@@ -274,14 +275,15 @@ namespace MusicSpot.ViewModels
             set
             {
                 _currentlyPlayedSong = value;
-                if (_currentlySelectedSong != null)
+                if (_currentlyPlayedSong != null)
                 {
-                    File f = File.Create(CurrentlySelectedSong.Path);
+                    File f = File.Create(CurrentlyPlayedSong.Path);
                     byte[] bin = null;
                     if (f.Tag.Pictures.Length > 0)
                         bin = f.Tag.Pictures[0].Data.Data;
-                    CurrentlySelectedSong.AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null;
+                    CurrentlyPlayedSong.AlbumArt = (bin != null) ? Image.FromStream(new MemoryStream(bin)) : null;
                 }
+                DiscoveryViewModel.GetInstance().CurrentlyPlayedSong = CurrentlyPlayedSong;
                 OnPropertyChanged();
             }
         }

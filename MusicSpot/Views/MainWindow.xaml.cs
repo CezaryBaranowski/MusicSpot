@@ -18,9 +18,9 @@ namespace MusicSpot
         public MainWindow()
         {
             InitializeComponent();
-            MainWindowContext = new
-            { MainViewModel = MainViewModel.GetInstance(), MusicViewModel = MusicViewModel.GetInstance() };
-            this.DataContext = MainWindowContext;
+            //MainWindowContext = new
+            //{ MainViewModel = MainViewModel.GetInstance(), MusicViewModel = MusicViewModel.GetInstance() };
+            this.DataContext = MainViewModel.GetInstance();
             this.Loaded += OnLoaded;
         }
 
