@@ -115,7 +115,7 @@
                     >
             </ListBox>
             <Button
-                        Margin="50,20,0,0"
+                        Margin="60,20,0,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Left"
@@ -124,7 +124,7 @@
 
             </Button>
             <Button
-                        Margin="0,-25,50,0"
+                        Margin="0,-25,60,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Right"

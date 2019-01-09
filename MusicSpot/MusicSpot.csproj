@@ -76,6 +76,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.11.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.11\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -136,6 +139,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="API\Spotify\SpotifyApiInitializer.cs" />
     <Compile Include="API\Spotify\WebAuth\AuthorizationCodeAuth.cs" />
     <Compile Include="API\Spotify\WebAuth\AuthUtil.cs" />
     <Compile Include="API\Spotify\WebAuth\CredentialsAuth.cs" />
@@ -198,6 +202,7 @@
     <Compile Include="API\Spotify\Web\SpotifyWebBuilder.cs" />
     <Compile Include="API\Spotify\Web\SpotifyWebClient.cs" />
     <Compile Include="API\Spotify\Web\Util.cs" />
+    <Compile Include="API\Tekstowo\TekstowoCrawler.cs" />
     <Compile Include="MahAppsMetro\AppTheme.cs" />
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
@@ -281,6 +286,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\last.fm credentials" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -299,14 +305,17 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\css\bulma.min.css" />
     <Content Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\start.html" />
     <Content Include="API\Spotify\WebAuth\Resources\ImplicitGrantAuth\index.html" />
     <Content Include="API\Spotify\WebAuth\SpotifyAPI.Web.Auth.csproj" />
+    <Resource Include="Resources\spotify_icon2.png" />
+    <Resource Include="spotify_icon.png" />
+    <Resource Include="Resources\spotify credentials.txt" />
+    <Resource Include="Resources\spotify_icon.png" />
+    <Resource Include="Resources\yt_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\images\1.png" />

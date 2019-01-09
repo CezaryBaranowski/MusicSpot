@@ -94,7 +94,7 @@ namespace MusicSpot.Models
             }
             doc.Add(playlistElement);
 
-            doc.Save(playlist.Path);
+            doc.Save(playlist.Path + ".xml");
         }
 
         private static Playlist ReadPlaylistFromXML(string path)

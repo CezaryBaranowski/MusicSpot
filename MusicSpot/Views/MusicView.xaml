@@ -49,8 +49,6 @@
                 </Style>
             </StackPanel.Resources>
             <Label FontSize="18" FontStretch="Expanded" Margin="10,0,0,0">Local Music</Label>
-            <Button>Songs</Button>
-            <Button>Artists</Button>
 
 
             <TextBox x:Name="SearchBox" Margin="10, 10, 5, 0"
@@ -90,7 +88,7 @@
 
             <TextBlock 
                 Margin="10,10,0,0"
-                Text="Select Your Genre" />
+                Text="Select Genre" />
             <ComboBox x:Name="MusicGenresComboBox"
                       Margin="10,10,3,0"
                       HorizontalAlignment="Stretch"
@@ -156,7 +154,7 @@
             Row="0"
             Column="1"
               ClipToBounds="True"
-              Margin="5,5,0,0"
+              Margin="0,-50,0,0"
             HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" MinHeight="200"></RowDefinition>

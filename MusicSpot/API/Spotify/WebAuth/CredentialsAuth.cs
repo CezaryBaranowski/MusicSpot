@@ -22,21 +22,30 @@ namespace MusicSpot.API.Spotify.WebAuth
 
         public async Task<Token> GetToken()
         {
-            string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSecret));
-
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            try
             {
-                new KeyValuePair<string, string>("grant_type", "client_credentials")
-            };
+                string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSecret));
 
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Basic {auth}");
-            HttpContent content = new FormUrlEncodedContent(args);
+                List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("grant_type", "client_credentials")
+                };
 
-            HttpResponseMessage resp = await client.PostAsync("https://accounts.spotify.com/api/token", content);
-            string msg = await resp.Content.ReadAsStringAsync();
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Basic {auth}");
+                HttpContent content = new FormUrlEncodedContent(args);
 
-            return JsonConvert.DeserializeObject<Token>(msg);
+                HttpResponseMessage resp = client.PostAsync("https://accounts.spotify.com/api/token", content).Result;
+                string msg = await resp.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<Token>(msg);
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
     }
 }

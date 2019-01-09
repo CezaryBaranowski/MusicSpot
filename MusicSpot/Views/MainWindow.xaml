@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="MusicSpot.MainWindow"
+﻿<controls:MetroWindow x:Class="MusicSpot.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -51,7 +51,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="Menu" Width="*"></ColumnDefinition>
+            <ColumnDefinition Name="Menu" MinWidth="200" Width="*"></ColumnDefinition>
             <ColumnDefinition Name ="Content" Width="5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -68,10 +68,10 @@
             controls:TabControlHelper.Transition="Up"
 
             SelectedIndex="{Binding SelectedTabIndex}">
-            <controls:MetroTabItem Header="Music" Margin="0,0,-8,0">
+            <controls:MetroTabItem Header="Music" Margin="-3,0,3,0">
                 <views:MusicView DataContext="{Binding MusicViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Discover" Margin="4,0,-8,0"
+            <controls:MetroTabItem Header="Discover" Margin="-2,0,3,0"
                                    >
                 <views:DiscoveryView DataContext="{Binding DiscoveryViewModel}"/>
             </controls:MetroTabItem>
@@ -85,19 +85,18 @@
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" MinHeight="60"></RowDefinition>
-                <RowDefinition Height="2*" MinHeight="60"></RowDefinition>
+                <RowDefinition Height="*" MinHeight="50"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Width="30" Height="30" Margin="315,10,285,15" BorderThickness="0" Background="Transparent"
-                   Command="{Binding MusicViewModel.PreviousSongCommand}" VerticalAlignment="Center"
+            <Button Width="30" Height="30" Margin="315,40,285,15" BorderThickness="0" Background="Transparent"
+                   Command="{Binding MusicViewModel.PreviousSongCommand}" VerticalAlignment="Top"
                     >
                 <iconPacks:Material Width="20" Height="15" Kind="SkipPrevious"
                     />
             </Button>
 
-            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="350,10,230,15" Width="35" Height="37"
-                        Background="Transparent" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+            <Button x:Name="PlayPauseButton" BorderThickness="0" BorderBrush="White" Margin="350,35,230,15" Width="35" Height="37"
+                        Background="Transparent" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top"
                     Command="{Binding MusicViewModel.PlayMusicCommand}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -113,17 +112,18 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Row="0" Grid.Column="0" Height="30" Width="30" Margin="405,10,195,15" BorderThickness="0" Background="Transparent"
-                    Command="{Binding MusicViewModel.NextSongCommand}" VerticalAlignment="Center"
+            <Button Grid.Row="0" Grid.Column="0" Height="30" Width="30" Margin="405,40,195,15" BorderThickness="0" Background="Transparent"
+                    Command="{Binding MusicViewModel.NextSongCommand}" VerticalAlignment="Top"
                     >
                 <iconPacks:Material Width="20" Height="15" Kind="SkipNext"
                     />
             </Button>
 
-            <Label x:Name="CurrentTrackPositionLabel" Grid.Row="1" Grid.Column="0"
+            <Label x:Name="CurrentTrackPositionLabel" Grid.Row="0" Grid.Column="0"
                    HorizontalAlignment="Left"
-                   Margin="70,0,0,40"
-                   VerticalContentAlignment="Top"
+                   VerticalAlignment="Top"
+                   Margin="70,80,0,0"
+                   
                    Width="40"
                    Height="25"
                    >
@@ -131,9 +131,9 @@
                     <TextBlock Text="{Binding MusicViewModel.TrackPosition, StringFormat=m\\:ss}" />
                    </TextBlock>
             </Label>
-            <Slider x:Name="MusicProgressBar" Grid.Row="1" Grid.Column="0"
+            <Slider x:Name="MusicProgressBar" Grid.Row="0" Grid.Column="0"
                     VerticalAlignment="Top"
-                             Width="Auto" Margin="110,5,0,0"
+                             Width="Auto" Margin="110,85,0,0"
                              Height="20"
                              MinHeight="15"
                              IsEnabled="True"
@@ -145,10 +145,11 @@
                                        >
             </Slider>
 
-            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1" Grid.Row="1"
+            <Label x:Name="CurrentTrackLengthLabel" Grid.Column="1" Grid.Row="0"
                    HorizontalAlignment="Left"
-                   Margin="8,0,0,40"
-                   VerticalContentAlignment="Top"
+                   VerticalAlignment="Top"
+                   Margin="8,80,0,0"
+                   
                    Width="40"
                    Height="25"
             >
@@ -158,7 +159,7 @@
             </Label>
 
             <Button x:Name="MuteOnOff" Width="25" Height="25" Background="Transparent" 
-                Grid.Column="2" Grid.Row="1" Margin="0,3,160,0" Command="{Binding MusicViewModel.MuteCommand}"
+                Grid.Column="2" Grid.Row="0" Margin="0,83,160,0" Command="{Binding MusicViewModel.MuteCommand}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                 BorderThickness="0">
@@ -177,14 +178,14 @@
                 </Button.Style>
             </Button>
 
-            <Slider x:Name="VolumeControl" Grid.Row="1" Grid.Column="2"
+            <Slider x:Name="VolumeControl" Grid.Row="0" Grid.Column="2"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                         Minimum="0"
                         Maximum="100"
                         Value="{Binding MusicViewModel.Volume, Mode=TwoWay}"
                         Height="25"
-                        Width="100" Margin="35,3,34,0">
+                        Width="100" Margin="35,83,34,0">
             </Slider>
 
         </Grid>
@@ -201,7 +202,7 @@
             </StackPanel.Style>
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                    <Setter Property="Margin" Value="10,10,0,0"/>
+                    <Setter Property="Margin" Value="10,0,0,0"/>
                     <Setter Property="BorderThickness" Value="0"></Setter>
                     <Setter Property="Background" Value="Transparent"></Setter>
                     <Setter Property="HorizontalAlignment" Value="Left"></Setter>
@@ -217,7 +218,7 @@
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                   Margin="10,15,0,0" 
+                   Margin="10,50,0,0" 
                    MinHeight="30"
                    Template="{DynamicResource ButtonBaseControlTemplate1}"
                    >
@@ -244,7 +245,7 @@
                    HorizontalAlignment="Center"
                    Cursor="Hand"
                    Padding="0,0,0,0"
-                   Margin="10,0,0,0"
+                   Margin="10,-5,0,0"
                    Template="{DynamicResource ButtonBaseControlTemplate1}"
                     >
 

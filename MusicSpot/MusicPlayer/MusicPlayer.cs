@@ -195,15 +195,5 @@ namespace MusicSpot.MusicPlayer
             audioFileReader.CurrentTime = newTimespan;
         }
 
-        //public static bool CanPlaySelectedSong(object parameter)
-        //{
-        //    return true;
-        //}
-
-        //public static void PlaySelectedSong(object parameter)
-        //{
-        //    var par = parameter;
-        //}
-
     }
 }

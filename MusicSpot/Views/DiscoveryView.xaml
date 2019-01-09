@@ -27,10 +27,6 @@
 
     <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="5*"></ColumnDefinition>
@@ -40,30 +36,22 @@
         <!--Left Navigation panel-->
 
         <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
-                    Orientation="Vertical" Margin="0,10,0,0"
+                    Orientation="Vertical" Margin="10,10,0,0"
                     >
             <StackPanel.Style>
                 <Style TargetType="{x:Type StackPanel}">
 
                 </Style>
             </StackPanel.Style>
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
-                    <Setter Property="Margin" Value="10,10,0,0"/>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-                </Style>
-            </StackPanel.Resources>
 
-            <Image Margin="10,40,0,0"
+            <Image Margin="0,10,0,0"
                Width ="Auto"
                Height="Auto" 
                MinHeight="150"
                Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
                 <Image.Effect>
-                    <DropShadowEffect BlurRadius="50"></DropShadowEffect>
+                    <DropShadowEffect BlurRadius="30"></DropShadowEffect>
                 </Image.Effect>
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
@@ -71,34 +59,147 @@
                     </Style>
                 </Image.Style>
             </Image>
+
+            <FlowDocumentScrollViewer  Height="450">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run FontSize="12" FontFamily="Italic" Text="{Binding SongLyrics}"></Run>
+                    </Paragraph>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+
         </StackPanel>
 
         <!--MainDiscoveryGrid-->
 
         <Grid x:Name="MainDiscoveryPanel"
+
             Row="0"
             Column="1"
               ClipToBounds="True"
-              Margin="5,5,0,0"
+              Margin="5,-50,0,0"
             HorizontalAlignment="Stretch">
+
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="PictureRow" Height="3*"></RowDefinition>
+                <RowDefinition x:Name="ArtistDetailsRow" Height="2*"></RowDefinition>
+                <RowDefinition x:Name="SongDetailsRow" Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
 
             <Image Grid.Column="0"
                    Grid.Row="0"
-                Margin="10,10,10,0"
+                   Grid.ColumnSpan="2"
+                   Margin="10,-100,10,0"
+                   MinHeight="250"
                    Stretch="UniformToFill"
-                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                   Source="{Binding Path=ArtistImage, 
+                        Converter={StaticResource ImageToSourceConverter}, 
+                        Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             >
-                <Image.Effect>
-                    <BlurEffect Radius="20"></BlurEffect>
 
+                <Image.RenderTransform>
+                    <TranslateTransform X="0" Y="0" />
+                </Image.RenderTransform>
+                <Image.Clip>
+                    <RectangleGeometry Rect="0 0 1900 600" />
+                </Image.Clip>
+
+                <Image.Effect>
+                    <BlurEffect Radius="5"></BlurEffect>
                 </Image.Effect>
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Setter Property="ClipToBounds" Value="True"></Setter>
-                        <Setter Property="Stretch" Value="None"></Setter>
                     </Style>
                 </Image.Style>
             </Image>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+                <Label HorizontalContentAlignment="Center" 
+                       HorizontalAlignment="Right" 
+                       FontSize="16" FontFamily="Lucida" 
+                       Margin="0,10,0,0">Most Popular Songs</Label>
+
+            <ListView
+                
+                Height="Auto"
+                      Margin="0, 10, 10, 0"
+                      BorderThickness="0"
+                      ItemsSource="{Binding ArtistTopTracks}"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Right"
+                      >
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" 
+                                        Width="240"/>
+                        <GridViewColumn Header="Popularity" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Popularity}" TextAlignment="Center" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Listen On"
+                                        Width ="100"
+                                        >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="YoutubeButton" BorderThickness="0" Grid.Row="1" Grid.Column="0" Height ="20" Width="20" 
+                                                Template="{DynamicResource ButtonBaseControlTemplate1}"
+                                                Click="ButtonBase_OnClick"
+                                                Padding="0,0,0,0"
+                                                Margin="10,0,10,0"
+                                        >
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                                    <Setter Property="Background" Value="Transparent"></Setter>
+                                                </Style>
+                                            </Button.Style>
+
+                                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                                   Margin="0,0,0,0" Source="/Resources/yt_icon.png" 
+                                                   Height="20" Width="20" />
+
+                                        </Button>
+
+
+                                        <Button x:Name="SpotifyButton"
+                                                BorderThickness="0" Grid.Row="1" Grid.Column="0" Height ="20" Width="20" 
+                                                Template="{DynamicResource ButtonBaseControlTemplate1}"
+                                                Click="ButtonBase2_OnClick"
+                                                Padding="0,0,0,0"
+                                                Margin="10,0,10,0"
+                                        >
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                                    <Setter Property="Background" Value="Transparent"></Setter>
+                                                </Style>
+                                            </Button.Style>
+
+                                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                                   Margin="0,0,0,0" Source="/Resources/spotify_icon.png" 
+                                                   Height="20" Width="20" />
+
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            </StackPanel>
+
 
         </Grid>
 

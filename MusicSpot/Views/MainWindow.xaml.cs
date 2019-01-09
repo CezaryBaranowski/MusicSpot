@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MusicSpot
+namespace MusicSpot.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -13,13 +13,10 @@ namespace MusicSpot
     public partial class MainWindow : MetroWindow
     {
         private static bool _applicationLoaded = false;
-        private object MainWindowContext;
 
         public MainWindow()
         {
             InitializeComponent();
-            //MainWindowContext = new
-            //{ MainViewModel = MainViewModel.GetInstance(), MusicViewModel = MusicViewModel.GetInstance() };
             this.DataContext = MainViewModel.GetInstance();
             this.Loaded += OnLoaded;
         }
@@ -39,7 +36,10 @@ namespace MusicSpot
             }
             else
                 await MusicViewModel.GetInstance().RefreshMusicDirectoriesAndLoadSongsAsync();
+
             _applicationLoaded = true;
+
+            DiscoveryViewModel.GetInstance().InitSpotifyAPI();
         }
 
         public static bool IsApplicationLoaded()
