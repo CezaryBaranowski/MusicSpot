@@ -203,10 +203,12 @@
     <Compile Include="API\Spotify\Web\SpotifyWebClient.cs" />
     <Compile Include="API\Spotify\Web\Util.cs" />
     <Compile Include="API\Tekstowo\TekstowoCrawler.cs" />
+    <Compile Include="API\Wiki\WikipediaProcessor.cs" />
     <Compile Include="MahAppsMetro\AppTheme.cs" />
     <Compile Include="MahAppsMetro\SafeRaise.cs" />
     <Compile Include="MahAppsMetro\ThemeManager.cs" />
     <Compile Include="Models\DirectoryManager.cs" />
+    <Compile Include="Models\FullArtistWithImage.cs" />
     <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\PlaylistManager.cs" />
     <Compile Include="Models\SimpleCommand.cs" />

@@ -4,7 +4,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:views="clr-namespace:MusicSpot.Views"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="MusicSpot" Height="800" Width="1200" MinHeight="600" MinWidth="800"
+        Title="MusicSpot" Height="800" Width="1200" MinHeight="700" MinWidth="1100"
                       ResizeMode="CanResizeWithGrip"
                     
 >

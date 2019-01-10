@@ -1,4 +1,5 @@
 ﻿using MusicSpot.API.Spotify.Web.Models;
+using MusicSpot.Models;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,6 @@ namespace MusicSpot.Views
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Otwieram Youtube");
             Button btn = (Button)e.Source;
             var selectedTrack = (FullTrack)btn.DataContext;
             if (selectedTrack != null)
@@ -39,12 +39,29 @@ namespace MusicSpot.Views
 
         private void ButtonBase2_OnClick(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Otwieram Spotify");
             Button btn = (Button)e.Source;
             var selectedTrack = (FullTrack)btn.DataContext;
 
             var adress = selectedTrack.ExternUrls["spotify"];
             System.Diagnostics.Process.Start(adress);
+        }
+
+        private void SimilarArtistsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.Source;
+            var selectedArtist = (FullArtistWithImage)btn.DataContext;
+
+            var adress = selectedArtist.FullArtist.ExternalUrls["spotify"];
+            System.Diagnostics.Process.Start(adress);
+
+        }
+
+        private void WikiButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            string baseAdress = "https://en.wikipedia.org/wiki/";
+            string artistName = DiscoveryViewModel.GetInstance().CurrentlyPlayedSong.Artist;
+            string url = string.Concat(baseAdress, artistName);
+            System.Diagnostics.Process.Start(url);
         }
     }
 }

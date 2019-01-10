@@ -81,21 +81,7 @@
             </Menu>
         </Grid>
 
-        <Grid Column="1" x:Name="Player">
-            <Grid Margin="0,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*">
-                    </ColumnDefinition>
-                    <ColumnDefinition Width="*">
-                    </ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Label FontSize="18">
-                    Music Player
-                </Label>
-            </Grid>
-        </Grid>
-        <StackPanel Grid.Column="2" x:Name="Directories">
+        <StackPanel Grid.Column="1" x:Name="Directories">
 
             <Label
                 FontSize="18" Margin="0,0,0,0" HorizontalAlignment="Center">
@@ -115,7 +101,7 @@
                     >
             </ListBox>
             <Button
-                        Margin="60,20,0,0"
+                        Margin="60,20,0,5"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Left"
@@ -124,7 +110,7 @@
 
             </Button>
             <Button
-                        Margin="0,-25,60,0"
+                        Margin="0,-35,60,0"
                         Height="20"
                         Width="50"
                         HorizontalAlignment="Right"

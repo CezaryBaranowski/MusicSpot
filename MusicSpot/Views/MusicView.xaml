@@ -10,7 +10,7 @@
         xmlns:global2="clr-namespace:"
         mc:Ignorable="d"
              Name="MusicPanel"
-             d:DesignHeight="800" d:DesignWidth="1000"
+             d:DesignHeight="800" d:DesignWidth="1000" MinHeight="600" MinWidth="800"
        >
 
     <UserControl.Resources>

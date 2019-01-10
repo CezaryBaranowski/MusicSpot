@@ -39,7 +39,7 @@ namespace MusicSpot.ViewModels
             PlayControlOn = true;
             IsMuted = false;
             IsEditingFilesEnabled = true;
-            Volume = 10.0f;
+            Volume = 50.0f;
             FilteredSongs = new ObservableCollection<Song>();
             SongsToFilter = new ObservableCollection<Song>();
             //RefreshMusicDirectoriesAndLoadSongsAsync();
@@ -290,6 +290,12 @@ namespace MusicSpot.ViewModels
                 {
                     if (DiscoveryViewModel.GetInstance().IsSpotifyApiInitialized())
                         DiscoveryViewModel.GetInstance().LoadNewArtistDetails(_currentlyPlayedSong.Artist);
+                }
+                else
+                if (lastlyPlayedSong.Artist.Equals(_currentlyPlayedSong.Artist))
+                {
+                    if (DiscoveryViewModel.GetInstance().IsSpotifyApiInitialized())
+                        DiscoveryViewModel.GetInstance().LoadsNewSongDetails();
                 }
 
             }

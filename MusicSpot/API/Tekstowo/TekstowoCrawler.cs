@@ -29,16 +29,25 @@ namespace MusicSpot.API.Tekstowo
                     var htmlDocument = new HtmlDocument();
                     htmlDocument.LoadHtml(html);
 
-
                     var text = htmlDocument.DocumentNode
                         .Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("song-text"))?.InnerHtml;
 
-                    var lyrics = System.Web.HttpUtility.HtmlDecode(text);
-                    lyrics = Regex.Replace(lyrics, "<br>", "");
-                    lyrics = Regex.Replace(lyrics, "    ", "");
-                    lyrics = lyrics.Substring(30, lyrics.Length - 240);
+                    if (text != null)
+                    {
+                        var lyrics = System.Web.HttpUtility.HtmlDecode(text);
+                        if (lyrics.Length > 1)
+                        {
+                            lyrics = Regex.Replace(lyrics, "<br>", "");
+                            lyrics = Regex.Replace(lyrics, "    ", "");
+                            lyrics = lyrics.Substring(33, lyrics.Length - 246);
 
-                    return lyrics;
+                            return lyrics;
+                        }
+
+                        return "";
+                    }
+
+                    return "";
                 }
 
                 return "";

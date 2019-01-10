@@ -10,7 +10,7 @@
         xmlns:global2="clr-namespace:"
         xmlns:viewModels="clr-namespace:MusicSpot.ViewModels"
         mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="1000"
+             d:DesignHeight="800" d:DesignWidth="1000" MinHeight="600" MinWidth="800"
              
        >
     <UserControl.Resources>
@@ -35,7 +35,7 @@
 
         <!--Left Navigation panel-->
 
-        <StackPanel Grid.Column="0" Grid.Row="0" x:Name="NavigationPanel" 
+        <StackPanel Grid.Column="0" x:Name="NavigationPanel" 
                     Orientation="Vertical" Margin="10,10,0,0"
                     >
             <StackPanel.Style>
@@ -60,7 +60,7 @@
                 </Image.Style>
             </Image>
 
-            <FlowDocumentScrollViewer  Height="450">
+            <FlowDocumentScrollViewer Margin="0,20,0,0" VerticalContentAlignment="Top" Height="360">
                 <FlowDocument>
                     <Paragraph>
                         <Run FontSize="12" FontFamily="Italic" Text="{Binding SongLyrics}"></Run>
@@ -120,26 +120,120 @@
                 </Image.Style>
             </Image>
 
+             <Grid Row="1" Column="0" RowSpan="2">
+
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"></ColumnDefinition>
+                     <ColumnDefinition Width="*"></ColumnDefinition>
+                 </Grid.ColumnDefinitions>
+
+
+                 <TextBlock Grid.Column="0" Grid.ColumnSpan="2" FontSize="24" FontStyle="Italic" FontStretch="Expanded" 
+                            Text="{Binding CurrentlyPlayedSong.Artist}"
+                            TextAlignment="Center"
+                            Margin="10,0,0,0"
+                 >
+                 </TextBlock>
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,25,0,0">
+
+                    <TextBlock  FontSize="20" FontStyle="Italic" FontStretch="Expanded" 
+                               Text="Recommended"
+                               TextAlignment="Center"
+                               Margin="10,15,0,0"
+                    >
+                    </TextBlock>
+
+                    <ItemsControl Height="Auto" HorizontalContentAlignment="Left" ItemsSource="{Binding RelatedArtists}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Click="SimilarArtistsButton_OnClick" Height="Auto" Width="Auto" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="CornflowerBlue"></Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Margin="20,5,0,0" Width="80" Height="60"
+                                                    Source="{Binding SmallImage, 
+                                                    Converter={StaticResource ImageToSourceConverter}, 
+                                                    Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                                </Image>
+                                                <TextBlock Margin="15,20,0,0" FontSize="14" Text="{Binding FullArtist.Name}"></TextBlock>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,25,0,0">
+
+                    <Button Click="WikiButton_OnClick" Height="Auto" Width="Auto" HorizontalAlignment="Center">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="CornflowerBlue"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Template>
+                            <ControlTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="0,0,0,0" FontSize="14" Text="Wiki Note"></TextBlock>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+
+                    <FlowDocumentScrollViewer Margin="0,5,0,0" VerticalContentAlignment="Top" Height="350">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run FontWeight="ExtraLight" FontSize="12" FontFamily="Italic" Text="{Binding ArtistBio}"></Run>
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+
+                </StackPanel>
+
+            </Grid>
+
             <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
                 <Label HorizontalContentAlignment="Center" 
-                       HorizontalAlignment="Right" 
+                       HorizontalAlignment="Center" 
                        FontSize="16" FontFamily="Lucida" 
-                       Margin="0,10,0,0">Most Popular Songs</Label>
+                       Margin="70,10,0,0">Most Popular Songs</Label>
 
-            <ListView
-                
+                <ListView
+               
                 Height="Auto"
-                      Margin="0, 10, 10, 0"
+                      Margin="0, 20, 0, 0"
                       BorderThickness="0"
                       ItemsSource="{Binding ArtistTopTracks}"
                 HorizontalContentAlignment="Center"
                 HorizontalAlignment="Right"
                       >
-                <ListView.View>
+
+
+                    <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Name}"
                                         Header="Name" 
-                                        Width="240"/>
+                                        Width="160"/>
+
                         <GridViewColumn Header="Popularity" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -148,7 +242,15 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Listen On"
+                        <GridViewColumn Header="Album"  Width="140">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Album.Name}" TextAlignment="Center" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                            <GridViewColumn Header="Listen On"
                                         Width ="100"
                                         >
                             <GridViewColumn.CellTemplate>

@@ -3,6 +3,7 @@ using MusicSpot.API.Spotify.Web;
 using MusicSpot.API.Spotify.Web.Enums;
 using MusicSpot.API.Spotify.Web.Models;
 using MusicSpot.API.Tekstowo;
+using MusicSpot.API.Wiki;
 using MusicSpot.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -18,6 +19,8 @@ namespace MusicSpot.ViewModels
     {
 
         private SpotifyWebAPI _api;
+
+        //private static MemoryStream mem = new MemoryStream();
 
         private static readonly DiscoveryViewModel discoveryViewModel = new DiscoveryViewModel();
 
@@ -38,7 +41,7 @@ namespace MusicSpot.ViewModels
         private void InitDiscoveryViewModel()
         {
             MostPopularArtistTracks = new ObservableCollection<FullTrack>();
-            RelatedArtists = new ObservableCollection<FullArtist>();
+            RelatedArtists = new ObservableCollection<FullArtistWithImage>();
             ArtistTopTracks = new ObservableCollection<FullTrack>();
         }
 
@@ -73,9 +76,51 @@ namespace MusicSpot.ViewModels
                 SeveralTracks artistsTopTracks = await _api.GetArtistsTopTracksAsync(artist.Id, "us");
                 ArtistTopTracks = new ObservableCollection<FullTrack>(artistsTopTracks.Tracks);
 
+                RelatedArtists = new ObservableCollection<FullArtistWithImage>();
+                await LoadRelatedArtists(artist);
+
                 await LoadSongLyrics(MusicViewModel.GetInstance().CurrentlyPlayedSong.Title, artist.Name);
+
+                await LoadArtistBio(artist.Name);
             }
 
+        }
+
+        public async Task LoadArtistBio(string artistName)
+        {
+            ArtistBio = await WikiProcessor.GetArticle(artistName);
+        }
+
+        public async Task LoadRelatedArtists(FullArtist artist)
+        {
+            var relatedArtists = await _api.GetRelatedArtistsAsync(artist.Id);
+
+            foreach (var relatedArtist in relatedArtists.Artists.Take(5))
+            {
+                if (relatedArtist != null)
+                {
+                    Image smallImg = await LoadRelatedArtistsImages(relatedArtist);
+                    var ra = new FullArtistWithImage { FullArtist = relatedArtist, SmallImage = smallImg };
+                    RelatedArtists.Add(ra);
+                }
+            }
+        }
+
+        public async Task<Image> LoadRelatedArtistsImages(FullArtist artist)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                var data = await webClient.DownloadDataTaskAsync(artist.Images.LastOrDefault().Url);
+
+                var mem = new MemoryStream(data);
+                return Image.FromStream(mem);
+            }
+        }
+
+        public async void LoadsNewSongDetails()
+        {
+            var artist = MusicViewModel.GetInstance().CurrentlyPlayedSong.Artist;
+            await LoadSongLyrics(MusicViewModel.GetInstance().CurrentlyPlayedSong.Title, artist);
         }
 
         public async Task LoadSongLyrics(string songName, string artistName)
@@ -95,6 +140,8 @@ namespace MusicSpot.ViewModels
                 }
             }
         }
+
+        #region Properties
 
         private Song _currentlyPlayedSong;
         public Song CurrentlyPlayedSong
@@ -118,8 +165,8 @@ namespace MusicSpot.ViewModels
             }
         }
 
-        private ObservableCollection<FullArtist> _relatedArtists;
-        public ObservableCollection<FullArtist> RelatedArtists
+        private ObservableCollection<FullArtistWithImage> _relatedArtists;
+        public ObservableCollection<FullArtistWithImage> RelatedArtists
         {
             get => _relatedArtists;
             set
@@ -174,5 +221,6 @@ namespace MusicSpot.ViewModels
             }
         }
 
+        #endregion
     }
 }

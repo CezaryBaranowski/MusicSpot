@@ -68,7 +68,7 @@ namespace MusicSpot.MusicPlayer
         {
             var instance = MusicViewModel.GetInstance();
             instance.CurrentlySelectedSong =
-                instance.FilteredSongs.FirstOrDefault();
+            instance.FilteredSongs.FirstOrDefault();
             instance.IsPlaying = false;
             instance.TrackPosition = TimeSpan.Zero;
             instance.TrackTotalTime = TimeSpan.Zero;
