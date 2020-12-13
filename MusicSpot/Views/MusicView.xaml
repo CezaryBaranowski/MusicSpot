@@ -7,17 +7,12 @@
         xmlns:local="clr-namespace:MusicSpot.Views"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:global2="clr-namespace:"
+        xmlns:global2="clr-namespace:MusicSpot"
         mc:Ignorable="d"
              Name="MusicPanel"
              d:DesignHeight="800" d:DesignWidth="1000" MinHeight="600" MinWidth="800"
        >
 
-    <UserControl.Resources>
-        <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
-                                       x:Key="ImageToSourceConverter">
-        </global2:ImageToSourceConverter>
-    </UserControl.Resources>
 
     <Grid>
 
@@ -135,7 +130,6 @@
                Width ="Auto"
                Height="Auto" 
                MinHeight="150"
-               Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
                 <Image.Effect>
                     <DropShadowEffect BlurRadius="50"></DropShadowEffect>
@@ -173,7 +167,6 @@
                    Grid.Row="0"
                 Margin="10,10,10,0"
                    Stretch="UniformToFill"
-                   Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
             >
 
                 <Image.Effect>

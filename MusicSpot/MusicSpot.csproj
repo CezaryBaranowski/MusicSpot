@@ -57,21 +57,6 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>D6C61EDA5B0E5C82C98804E7AC3C5412FAC4A1C8</ManifestCertificateThumbprint>
   </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>MusicSpot_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>true</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
@@ -313,10 +298,9 @@
     <Content Include="API\Spotify\WebAuth\Resources\AuthorizationCodeAuth\start.html" />
     <Content Include="API\Spotify\WebAuth\Resources\ImplicitGrantAuth\index.html" />
     <Content Include="API\Spotify\WebAuth\SpotifyAPI.Web.Auth.csproj" />
-    <Resource Include="Resources\spotify_icon2.png" />
     <Resource Include="spotify_icon.png" />
     <Resource Include="Resources\spotify credentials.txt" />
-    <Resource Include="Resources\spotify_icon.png" />
+    <Resource Include="Resources\spotify_icon_2.png" />
     <Resource Include="Resources\yt_icon.png" />
   </ItemGroup>
   <ItemGroup>

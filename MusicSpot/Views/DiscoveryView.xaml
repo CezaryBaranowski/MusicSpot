@@ -7,16 +7,13 @@
         xmlns:local="clr-namespace:MusicSpot.Views"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:global2="clr-namespace:"
+        xmlns:global2="clr-namespace:MusicSpot"
         xmlns:viewModels="clr-namespace:MusicSpot.ViewModels"
         mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1000" MinHeight="600" MinWidth="800"
              
        >
     <UserControl.Resources>
-        <global2:ImageToSourceConverter x:Name="ImageToSourceConverter"
-                                       x:Key="ImageToSourceConverter">
-        </global2:ImageToSourceConverter>
 
         <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -48,7 +45,6 @@
                Width ="Auto"
                Height="Auto" 
                MinHeight="150"
-               Source="{Binding Path=CurrentlyPlayedSong.AlbumArt, Converter={StaticResource ImageToSourceConverter}}"
                >
                 <Image.Effect>
                     <DropShadowEffect BlurRadius="30"></DropShadowEffect>
@@ -98,9 +94,6 @@
                    Margin="10,-100,10,0"
                    MinHeight="250"
                    Stretch="UniformToFill"
-                   Source="{Binding Path=ArtistImage, 
-                        Converter={StaticResource ImageToSourceConverter}, 
-                        Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             >
 
                 <Image.RenderTransform>
@@ -160,11 +153,6 @@
                                     <Button.Template>
                                         <ControlTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Margin="20,5,0,0" Width="80" Height="60"
-                                                    Source="{Binding SmallImage, 
-                                                    Converter={StaticResource ImageToSourceConverter}, 
-                                                    Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                                </Image>
                                                 <TextBlock Margin="15,20,0,0" FontSize="14" Text="{Binding FullArtist.Name}"></TextBlock>
                                             </StackPanel>
                                         </ControlTemplate>
