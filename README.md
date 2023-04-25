@@ -15,9 +15,9 @@ MusicSpot is a local music player integrated with some music sites delivering us
 <img src = "images/back%20white.png" width=700)>
 
 ### Usage
-You can generate installer with a Setup project included in repository from Visual Studio and run application normally by building the Setup and then clicking <i> install </i>.
+You can generate installer with a Setup project included in repository from Visual Studio and run application by building the Setup and then clicking <i> install </i>.
 
-You can also build the solution by installing the necessary libraries in nuget package manager and run it inside IDE
+You can also build the solution by installing necessary libraries in nuget package manager and run it inside IDE
 
 ```c#
 Update-Package
