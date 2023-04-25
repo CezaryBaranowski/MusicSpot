@@ -3,7 +3,7 @@ Modern media player with music APIs integration. Based on Spotify style with foc
 
 Written in C# with WPF and NET Framework 4.7
 
-Graphic library used: Mahapps Metro: https://github.com/MahApps/MahApps.Metro
+UI library used: Mahapps Metro: https://github.com/MahApps/MahApps.Metro
 
 Integration with Spotify thanks to SpotifyAPI by JohnnyCrazy: https://github.com/JohnnyCrazy/SpotifyAPI-NET
 
